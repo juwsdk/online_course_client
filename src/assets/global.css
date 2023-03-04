@@ -1,0 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+}
+*::selection {
+  background-color:#c7e0f4 ;
+  color:black ;
+}
+/* html,body{
+  height: 100%;
+} */
