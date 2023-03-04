@@ -4,109 +4,112 @@
   color:white;
   background-color: #424f63;
   width: 200px;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   /* border-right: 1px solid lightgray; */
-  ">
-    <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-      <el-radio-button :label="false" circle>展开</el-radio-button>
-      <el-radio-button :label="true" circle>收起</el-radio-button>
-    </el-radio-group> -->
-    <!-- <el-button   type="success" @click="handle" style="height: 5vh; border-radius: 0; width: auto;"></el-button> -->
-    <el-menu 
-    :collapse="isCollapse"
-     router text-color="#FFF" background-color="#424f63"   style="/*width: 150px;*/"  default-active="1-4-1"
-      class="elMenuVertical"
-      >
-      <el-menu-item index="/myindex">
-        <i class="el-icon-s-home"></i>
-        <span slot="title">我的主页</span>
-      </el-menu-item>
-      <!-- 课程 -->
-      <el-submenu index="#">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span slot="title">课程管理</span>
+  " :style="contentStyle">
+    <el-menu :collapse="isCollapse" router text-color="#FFF" background-color="#424f63" style="/*width: 150px;*/"
+      default-active="1" class="elMenuVertical" :style="contentStyle">
+      <!-- 递归渲染 menuList -->
+      <template v-for="(menuitem,index) of menuList">
+        
+        <template v-if="menuitem.children.length>0">
+          <el-submenu :index="menuitem.path" :key="menuitem.name+index">
+            <template slot="title">
+              <i :class="menuitem.icon"></i>
+              <span>{{menuitem.title}}</span>
+            </template>
+            <el-menu-item-group>
+              <template v-for="menuchild in menuitem.children">
+                <el-menu-item :index="menuitem.path+'/'+menuchild.path" :key="menuchild.name+index">
+                  <i :class="menuchild.icon"></i>
+                  <span>{{menuchild.title}}</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+          </el-submenu>
         </template>
-        <el-menu-item index="/course/courses">
-          <i class="el-icon-monitor"></i>
-          <span slot="title">我的课程</span>
-        </el-menu-item>
-        <el-menu-item index="/course/courseselect">
-          <i class="el-icon-reading"></i>
-          <span slot="title">公共选课</span>
-        </el-menu-item>
-        <el-menu-item index="/course/coursesta">
-          <i class="el-icon-s-data"></i>
-          <span slot="title">打卡/统计</span>
-        </el-menu-item>
-      </el-submenu>
-
-      <el-menu-item index="/homework">
-        <i class="el-icon-notebook-1"></i>
-        <span>作业</span>
-      </el-menu-item>
-
-      <el-menu-item index="3" disabled>
-        <i class="el-icon-document"></i>
-        <span slot="title">导航三</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
-      <el-submenu index="5">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span>管理</span>
+        <template v-else>
+          <el-menu-item :index="menuitem.path" :key="menuitem+index">
+            <i :class="menuitem.icon"></i>
+            <span slot="title">{{menuitem.title}}</span>
+          </el-menu-item>
         </template>
-        <el-menu-item >
-          <i class="el-icon-bank-card"></i>
-          <span>Op管理</span>
-        </el-menu-item>
-        <el-menu-item >
-          <i class="el-icon-s-custom"></i>
-          <span>教师管理</span>
-        </el-menu-item>
-        <el-menu-item >
-          <i class="el-icon-s-check"></i>
-          <span>学生管理</span>
-        </el-menu-item>
-      </el-submenu>
-      <el-menu-item index="6">
-        <i class="el-icon-s-data"></i>
-          <span slot="title">查询/统计</span>
-      </el-menu-item>
-      
+      </template>
     </el-menu>
   </el-aside>
 </template>
 <script>
+  import router from '@/router';
   export default {
     name: 'CourseSider',
+    props: ['isCollapse'],//父传子,控制折叠
     data() {
       return {
-        isCollapse: false
+        //动态加载路由
+        menuList: [],
       };
     },
     methods: {
+      //自带
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      handle(){
-        this.isCollapse=!this.isCollapse;
+      //开关
+      handle() {
+        this.isCollapse = !this.isCollapse;
+      },
+      //封装获取的路由信息
+      getMenuList(routes) {
+        const menuList = [];
+        routes.forEach(route => {
+          if (route.path && route.name) {
+            const menu = {//获取目录项
+              title: route.meta.title ? route.meta.title : '',
+              name: route.name,
+              path: route.path,
+              icon: route.meta.icon ? route.meta.icon : '',
+              children: []
+            };
+            if (route.children) {
+              menu.children = this.getMenuList(route.children).flat();//flat合并为单层数组
+            }
+            menuList.push(menu);
+          }
+        });
+        return menuList;
       },
     },
     computed: {
-
-    }
+      contentStyle() {
+        return this.isCollapse ? { width: '80px' } : { width: '200px' };
+      },
+    },
+    mounted() {
+      // console.log(JSON.stringify( router.options.routes));
+      this.menuList = this.getMenuList(router.options.routes);
+      // console.log('---------------------------\n');
+      // console.log(this.menuList);
+      // console.log(JSON.stringify(this.menuList))
+    },
   }
 </script>
 <style scoped>
+  /* 非折叠样式 */
   .elMenuVertical:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
+  }
+
+  /* 设置折叠展开动画 */
+  .myside {
+    transition: width .5s linear;
+  }
+
+  .el-menu {
+    border: none;
+    transition: width .3s linear;
   }
 </style>

@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  
+  name:'MAdmine'
 }
 </script>
 <style lang="">
