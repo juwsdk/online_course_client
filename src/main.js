@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import router from './router';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/global.css'
+
 Vue.config.productionTip = false
 //使用elementui
 Vue.use(VueRouter).use(ElementUI);

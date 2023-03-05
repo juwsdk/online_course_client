@@ -1,13 +1,22 @@
 <template lang="">
   <div>
-    这是主页
+    <CourseSearchBar/>
+    <CourseTable />
   </div>
 </template>
 <script>
-export default {
-  name:'MyIndex'
-}
+  import CourseTable from '@/components/CourseTable';
+  import CourseVedio from '@/components/CourseVedio';
+  // import SearchBar from '@/components/SearchBar';
+  import CourseSearchBar from '@/components/CourseSearchBar';
+  export default {
+    name: 'MyIndex',
+    components: {
+      CourseTable,
+      CourseSearchBar
+    }
+  }
 </script>
 <style lang="">
-  
+
 </style>
