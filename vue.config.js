@@ -10,6 +10,6 @@ module.exports = defineConfig({
   lintOnSave:false,//关闭语法检查
   devServer:{
     //设置启动端口
-    port:8080
+    port:8088
   }
 })

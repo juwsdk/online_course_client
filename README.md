@@ -27,3 +27,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 npm i vue-router@3
 npm i element-ui -S
 npm install axios
+npm install viedo.js --save

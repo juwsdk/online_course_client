@@ -58,19 +58,19 @@ const router= new VueRouter({
           name:'manage-op',
           path:'manageop',
           component:MAdmine,
-          meta:{title:'管理员管理',icon:''}
+          meta:{title:'管理员管理',icon:'el-icon-user-solid'}
         },
         {
           name:'manage-student',
           path:'managestu',
           component:Mstu,
-          meta:{title:'学生管理',icon:''}
+          meta:{title:'学生管理',icon:'el-icon-s-check'}
         },
         {
           name:'manage-teacher',
           path:'manageteacher',
           component:MTeacher,
-          meta:{title:'教师管理',icon:''}
+          meta:{title:'教师管理',icon:'el-icon-s-custom'}
         }
       ]
     },

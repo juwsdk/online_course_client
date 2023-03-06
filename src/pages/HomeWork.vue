@@ -1,11 +1,15 @@
 <template lang="">
   <div>
-    这是我的作业页面
+    <CourseVedio/>
   </div>
 </template>
 <script>
+  import CourseVedio from '@/components/CourseVedio';
 export default {
   name:'HomeWork',
+  components:{
+    CourseVedio
+  }
 }
 </script>
 <style lang="">
