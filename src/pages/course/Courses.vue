@@ -1,16 +1,22 @@
 <template lang="">
   <div>
-    <div id="sklonbody">
-      <CoursesSklon v-for="index of total" :key="index" style="margin:10px;" :courseInfo="index" />
-    </div>
-    <el-row style="margin:10px 0">
-      <el-col :span="12" :offset="8">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-          :page-sizes="pageSize" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
-        </el-pagination>
-      </el-col>
+    <template v-if="chooseOne">
+      <div id="sklonbody">
+        <CoursesSklon v-for="index of total" :key="index" style="margin:10px;" :courseInfo="index" />
+      </div>
+      <el-row style="margin:10px 0">
+        <el-col :span="12" :offset="8">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            :current-page="currentPage" :page-sizes="pageSize" :page-size="10"
+            layout="total, sizes, prev, pager, next, jumper" :total="total">
+          </el-pagination>
+        </el-col>
+      </el-row>
+    </template>
+    <template v-else>
+      <router-view></router-view>
+    </template>
 
-    </el-row>
   </div>
 </template>
 <script>
@@ -24,22 +30,23 @@
       return {
         currentPage: 1,//控制分页
         total: 5,//文本总数
-        pageSize:[5,10,20,25],
+        pageSize: [5, 10, 20, 25],
+        chooseOne:false,//点击数据则加载子路由窗口
         // myindex:20//假数据
-        
+
       }
     },
-    computed:{
-      courseInfo(){
+    computed: {
+      courseInfo() {
         this.courseInfo++;
       }
     },
     methods: {
       handleCurrentChange(pageNum) {
-        this.pageNum=pageNum;
+        this.pageNum = pageNum;
       },//控制分页
       handleSizeChange(pagesize) {
-        this.total=pagesize*this.pageNum;
+        this.total = pagesize * this.pageNum;
       }//控制分页大小
     },
   }
