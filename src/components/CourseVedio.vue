@@ -17,7 +17,7 @@
 <script>
   // import videojs from 'video.js'
   // import 'video.js/dist/video-js.css'
-  import axios from '@/api/api.js'
+  import axios from '@/api'
   export default {
     name: 'CourseVedio',
     data(){

@@ -1,10 +1,11 @@
 <template lang="">
-  <div style="width: 240px">
+  <div style="width: 240px;
+  ">
     <p>
       <label style="margin-right: 16px;">切换 Loading</label>
       <el-switch v-model="loading" />
     </p>
-    <el-skeleton style="width: 240px" :loading="loading" animated>
+    <el-skeleton style="width: 240px;margin: 0 auto;" :loading="loading" animated>
       <template slot="template">
         <el-skeleton-item variant="image" style="width: 240px; height: 240px;" />
         <div style="padding: 14px;">

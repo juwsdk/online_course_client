@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="margin: 10px;">
-      <el-row >
+      <el-row>
         <el-col :span="1" :offset="0">
           <el-button type="primary" size="mini" @click="">新增</el-button>
         </el-col>
@@ -14,12 +14,8 @@
       </el-row>
     </div>
     <el-table :data="tableData" stripe :border="true" sortable style="width: 100%;">
-      <el-table-column prop="date" label="日期" sortable>
-      </el-table-column>
-      <el-table-column prop="name" label="姓名">
-      </el-table-column>
-      <el-table-column prop="address" label="地址">
-      </el-table-column>
+      <!-- 放置单元格 -->
+      <slot name="atablecol"></slot>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -37,48 +33,57 @@
 
 </template>
 <script>
-  import CourseVedio from './CourseVedio';
+  import axios from '@/api';
   export default {
     name: 'CourseTable',
     components: {
 
     },
+    props: ['tableInterfce'],//获取api接口
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+        tableData: [],
         currentPage: 1,//控制分页
         total: 10,//文本总数
+        pageSize: 10,
       }
     },
 
     methods: {
-      handleCurrentChange() {
-
+      handleCurrentChange(pageNum) {
+        this.currentPage = pageNum;
+        console.log(this.currentPage);
+        this.loadData();
       },//控制分页
-      handleSizeChange() {
-
-      }//控制分页大小
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.loadData();
+      },//控制分页大小
+      loadData() {
+        axios.get(this.tableInterfce.prefix + this.tableInterfce.tableList, {
+          params: {
+            pageNum: this.currentPage,
+            pageSize: this.pageSize
+          }
+        })
+          .then(res => {
+            // console.log(this.currentPage);
+            this.total = res.data.total;
+            this.tableData = res.data.list;
+            // console.log(this.tableData)
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+    },
+    created() {
+      this.loadData();
     },
   }
 </script>
 <style scoped>
-.el-col{
-  padding-right: 3px;
-}
+  .el-col {
+    padding-right: 3px;
+  }
 </style>

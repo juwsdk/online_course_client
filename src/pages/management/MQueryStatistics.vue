@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  
+  name:'MQueryStatistics'
 }
 </script>
 <style lang="">

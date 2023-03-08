@@ -14,12 +14,7 @@ export default {
       component: TeacherIndex,
       meta: { title: '主页查询', icon: 'el-icon-s-data' },
     },
-    {
-      name: 'homeworkass',
-      path: 'homeworkass',
-      component: THomWAss,
-      meta: { title: '作业布置', cion: 'el-icon-s-marketing' }
-    },
+   
     {
       name: 'coursemange',
       path: 'coursemange',
@@ -30,9 +25,15 @@ export default {
           name: 'coursemange',
           path: 'coursemange',
           component: TCourseMangeDeta,
-          meta: { title: '教师课程管理', icon: '' },
+          meta: { title: '教师课程管理详情', icon: '' },
         }
       ]
+    },
+    {
+      name: 'homeworkass',
+      path: 'homeworkass',
+      component: THomWAss,
+      meta: { title: '作业布置', icon: 'el-icon-s-marketing' }
     },
   ]
 }

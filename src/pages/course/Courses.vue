@@ -2,7 +2,11 @@
   <div>
     <template v-if="chooseOne">
       <div id="sklonbody">
-        <CoursesSklon v-for="index of total" :key="index" style="margin:10px;" :courseInfo="index" />
+        <CoursesSklon v-for="index of total" :key="index" style="
+        flex-basis: calc(25% - 10px);
+        margin-right: 10px;
+        align-items: center;
+        " :courseInfo="index" />
       </div>
       <el-row style="margin:10px 0">
         <el-col :span="12" :offset="8">
@@ -31,7 +35,7 @@
         currentPage: 1,//控制分页
         total: 5,//文本总数
         pageSize: [5, 10, 20, 25],
-        chooseOne:false,//点击数据则加载子路由窗口
+        chooseOne:true,//点击数据则加载子路由窗口
         // myindex:20//假数据
 
       }
@@ -57,6 +61,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    /* justify-content: space-between; */
+    align-items: center;
     /* padding: 10px; */
   }
 </style>
