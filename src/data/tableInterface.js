@@ -1,7 +1,8 @@
 //定义了table应该访问的后端接口
 const studentInterface={
   "prefix":"/student",
-  "tableList":"/studentList"
+  "tableList":"/studentList",
+  "insertOne":"/studentInsert"
 };
 const teacherInterface={
   "prefix":"/teacher",

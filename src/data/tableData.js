@@ -3,6 +3,7 @@ const studentTable={
     "学号":"studentId",
     "姓名":"studentName",
     "性别":"studentGender",
+    "密码":"studentPassword",
     "生日":"studentBirthday",
     "电话":"studentPhonenum",
     "邮箱":"studentEmail",

@@ -17,7 +17,7 @@ axios.defaults.responseType = 'json';
 
 // 在响应返回后，可以做一些数据处理的操作，比如统一处理错误信息等
 axios.interceptors.response.use(function (response) {
-  let res=response.headers
+  // let res=response.headers
   // console.log(res);
   return response;
 }, function (error) {

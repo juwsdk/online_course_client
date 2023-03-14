@@ -1,26 +1,19 @@
 <template lang="">
   <div>
-    <template v-if="chooseOne">
-      <div id="sklonbody">
-        <CoursesSklon v-for="index of total" :key="index" style="
+    <div id="sklonbody">
+      <CoursesSklon v-for="index of total" :key="index" style="
         flex-basis: calc(25% - 10px);
         margin-right: 10px;
         align-items: center;
         " :courseInfo="index" />
-      </div>
-      <el-row style="margin:10px 0">
-        <el-col :span="12" :offset="8">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-            :current-page="currentPage" :page-sizes="pageSize" :page-size="10"
-            layout="total, sizes, prev, pager, next, jumper" :total="total">
-          </el-pagination>
-        </el-col>
-      </el-row>
-    </template>
-    <template v-else>
-      <router-view></router-view>
-    </template>
-
+    </div>
+    <el-row style="margin:10px 0">
+      <el-col :span="12" :offset="8">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+          :page-sizes="pageSize" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -35,7 +28,6 @@
         currentPage: 1,//控制分页
         total: 5,//文本总数
         pageSize: [5, 10, 20, 25],
-        chooseOne:true,//点击数据则加载子路由窗口
         // myindex:20//假数据
 
       }
@@ -51,7 +43,7 @@
       },//控制分页
       handleSizeChange(pagesize) {
         this.total = pagesize * this.pageNum;
-      }//控制分页大小
+      },//控制分页大小
     },
   }
 </script>

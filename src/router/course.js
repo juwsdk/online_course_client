@@ -11,17 +11,35 @@ export default {
   // redirect:'/course/courses',
   children: [
     {
-      name: 'courses',
-      path: 'courses',
-      component: Courses,
+      name: 'mycourse',
+      path: 'mycourse',
+      component: { render: (e) => e("router-view") },
       meta: { title: '课程', icon: 'el-icon-monitor' },
+      redirect:'/course/mycourse/courses',
       children: [
         {
+          // 展示所有教学视频
+          name:'courses',
+          path:'courses',
+          component:Courses,
+          meta:{ title: '', icon: '' }
+        },
+        {
+          // 根据卡片取出哪一个教学视频
           name: 'onecourse',
-          path: 'onecourse',
+          path: 'courses/:id',
           component: OneCourse,
-          meta: { title: 'dd', icon: '' }
-        }
+          meta: { title: '', icon: '' },
+          children:[
+            {
+              // 多少集
+              name: 'onecourseddd',
+              path: ':name',
+              // component: OneCourse,
+              meta: { title: '', icon: '' },
+            }
+          ]
+        },
       ]
     },
     {

@@ -5,8 +5,8 @@
 }
 
 *::selection {
-  background-color: #c7e0f4;
-  color: purple;
+  background-color: #00b294;
+  color: white;
 }
 /* 滚动条样式 */
 ::-webkit-scrollbar {

@@ -18,7 +18,7 @@
         </div>
       </template>
       <template>
-        <el-card :body-style="{ padding: '0px', marginBottom: '1px' }">
+        <el-card :body-style="{ padding: '0px', marginBottom: '1px' }" @click.native="pushShow">
           <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
             class="image" />
           <div style="padding: 14px;">
@@ -41,6 +41,18 @@
       return {
         loading: true,
         currentDate: '2021-06-01'
+      }
+    },
+    methods: {
+      pushShow(){//点击加载详情页面
+        // alert("111111111");
+        // console.log(this.$router);
+        this.$router.push({//通过push跳转页面
+          name:'onecourse',
+          params:{
+            id:this.courseInfo
+          }
+        });
       }
     },
   }

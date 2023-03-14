@@ -1,8 +1,10 @@
 <template lang="">
   <div>
-    <CourseSearchBar>
-    </CourseSearchBar>
-    <CourseTable :tableInterfce="aTableInterface">
+    <!-- <CourseSearchBar>
+      <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
+        v-if="searchlable !='密码'" :key="index" slot="selectOne"></el-option>
+    </CourseSearchBar> -->
+    <CourseTable :tableInterfce="aTableInterface" :tableInfo="tableInfo">
       <template v-slot:atablecol>
         <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
           :prop="tableprop" sortable />

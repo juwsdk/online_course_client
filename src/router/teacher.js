@@ -16,8 +16,8 @@ export default {
     },
    
     {
-      name: 'coursemange',
-      path: 'coursemange',
+      name: 'coursemanges',
+      path: 'coursemanges',
       component: TCourseMange,
       meta: { title: '教师课程管理', icon: 'el-icon-reading' },
       children: [
