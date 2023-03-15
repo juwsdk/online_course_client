@@ -28,13 +28,13 @@
       style="width: 100%;" :style="contentStyle">
       <!-- 放置单元格 -->
       <slot name="atablecol"></slot>
-      <!-- 功能操作区 -->
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
+        <!-- 功能操作区 -->
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
     </el-table>
 
     <!-- 分页 -->
@@ -77,6 +77,8 @@
         pageSize: 10,
         loading: true,//是否还在加载
         dialogVisible: false,//弹窗状态
+        fuzzyColumn:'',
+        fuzzyValue:'',
       }
     },
 
@@ -99,11 +101,13 @@
         axios.get(this.tableInterfce.prefix + this.tableInterfce.tableList, {
           params: {
             pageNum: this.currentPage,
-            pageSize: this.pageSize
+            pageSize: this.pageSize,
+            fuzzyColumn:this.fuzzyColumn,
+            fuzzyValue:this.fuzzyValue
           }
         })
           .then(res => {
-            // console.log(this.currentPage);
+            // console.log(this.fuzzyValue);
             this.total = res.data.total;
             this.tableData = res.data.list;
             this.loading = false;
@@ -136,8 +140,12 @@
             console.error(err);
           })
       },
-      fuzzyQuery(pageNum, pageSize) {//模糊查询
-        console.log(pageSize + '|||' + pageNum);
+      fuzzyQuery(searchSelect, searchinput) {//模糊查询
+        // console.log(searchinput + '|||' + searchSelect);
+        this.fuzzyColumn=searchSelect;
+        this.fuzzyValue=searchinput;
+        // console.log(this.fuzzyColumn+"\\\\"+this.searchSelect);
+        this.loadData();
       }
     },
     created() {
@@ -145,6 +153,7 @@
       // console.log(this.form);
     },
     computed: {
+     
       contentStyle() {//没有数据时用这个调表格样式
         return this.loading ? { height: '70vh' } : { height: 'auto' };
       }

@@ -1,7 +1,7 @@
 <template lang="">
-  <div>
-    <div id="sklonbody">
-      <CoursesSklon v-for="index of total" :key="index" style="
+    <div>
+      <CourseCards/>
+      <!-- <CourseCard v-for="index of total" :key="index" style="
         flex-basis: calc(25% - 10px);
         margin-right: 10px;
         align-items: center;
@@ -13,48 +13,39 @@
           :page-sizes="pageSize" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 <script>
-  import CoursesSklon from '@/components/CoursesSklon';
+  import CourseCards from '@/components/CourseCards';
   export default {
     name: 'Courses',
     components: {
-      CoursesSklon
+      CourseCards
     },
-    data() {
-      return {
-        currentPage: 1,//控制分页
-        total: 5,//文本总数
-        pageSize: [5, 10, 20, 25],
-        // myindex:20//假数据
+    // data() {
+    //   return {
+    //     currentPage: 1,//控制分页
+    //     total: 5,//文本总数
+    //     pageSize: [5, 10, 20, 25],
+    //     // myindex:20//假数据
 
-      }
-    },
-    computed: {
-      courseInfo() {
-        this.courseInfo++;
-      }
-    },
-    methods: {
-      handleCurrentChange(pageNum) {
-        this.pageNum = pageNum;
-      },//控制分页
-      handleSizeChange(pagesize) {
-        this.total = pagesize * this.pageNum;
-      },//控制分页大小
-    },
+    //   }
+    // },
+    // computed: {
+    //   courseInfo() {
+    //     this.courseInfo++;
+    //   }
+    // },
+    // methods: {
+    //   handleCurrentChange(pageNum) {
+    //     this.pageNum = pageNum;
+    //   },//控制分页
+    //   handleSizeChange(pagesize) {
+    //     this.total = pagesize * this.pageNum;
+    //   },//控制分页大小
+    // },
   }
 </script>
 <style scoped>
-  #sklonbody {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    /* justify-content: space-between; */
-    align-items: center;
-    /* padding: 10px; */
-  }
 </style>

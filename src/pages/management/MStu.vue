@@ -9,14 +9,15 @@
       <!-- 搜索项下拉框信息 具有三层的两个slot插槽传递结构-->
       <template v-slot:selectOneG>
         <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
-        v-if="searchlable !='密码'" :key="index"></el-option>
+          v-if="searchlable !='密码'" :key="index"></el-option>
       </template>
-      
+
       <!-- 表头及单元格信息 -->
       <template v-slot:atablecol>
         <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" v-if="tablelable != '密码'"
           :label="tablelable" :prop="tableprop" sortable />
         </el-table-column>
+
       </template>
       <!-- 表格弹出新增/修改框信息 -->
       <template v-slot:adialogitem>
@@ -46,6 +47,7 @@
         <el-form-item label="地址">
           <el-input type="textarea" v-model="form.studentAddress"></el-input>
         </el-form-item>
+
       </template>
 
     </CourseTable>

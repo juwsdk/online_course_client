@@ -1,13 +1,13 @@
 <template lang="">
-  <div style="width: 240px;
+  <div style="width: 224px;
   ">
     <p>
       <label style="margin-right: 16px;">切换 Loading</label>
       <el-switch v-model="loading" />
     </p>
-    <el-skeleton style="width: 240px;margin: 0 auto;" :loading="loading" animated>
+    <el-skeleton style="width: 224px;margin: 0 auto;" :loading="loading" animated>
       <template slot="template">
-        <el-skeleton-item variant="image" style="width: 240px; height: 240px;" />
+        <el-skeleton-item variant="image" style="width: 224px; height: 238px;" />
         <div style="padding: 14px;">
           <el-skeleton-item variant="h3" style="width: 50%;" />
           <div
@@ -35,7 +35,7 @@
 </template>
 <script>
   export default {
-    name: 'CoursesSklon',
+    name: 'CourseCard',
     props: ['courseImage', 'courseInfo'],
     data () {
       return {
@@ -58,5 +58,7 @@
   }
 </script>
 <style scoped>
-
+.image{
+  width: 224px;
+}
 </style>

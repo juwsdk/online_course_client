@@ -23,10 +23,12 @@
       //查找信息，发送axios请求，更新表格
       searchInfo(){
         // console.log(this.searchinput+'||'+this.searchSelect);
-        if(this.searchinput.trim()=='' || this.searchSelect.trim()=='')
+        if(this.searchSelect.trim()=='')
           return;//都为空点击确认，什么也不做
+        else if(this.searchinput.trim()=='')
+          this.$emit('fuzzyQuery','','');//显示所有信息
         //发送给父组件查询的信息
-        this.$emit('fuzzyQuery',this.searchinput,this.searchSelect);
+        else this.$emit('fuzzyQuery',this.searchSelect,this.searchinput);
       }
     },
   }

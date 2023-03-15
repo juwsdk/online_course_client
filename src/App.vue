@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <CourseLayout />
+    <!-- <CourseLayout /> -->
+    <router-view></router-view>
   </div>
 </template>
 <script>
-  import CourseLayout from '@/layout/';
+  // import CourseLayout from '@/layout/';
   export default {
     name: 'App',
     components: {
-      CourseLayout
+      // CourseLayout
     }
   }
 </script>
