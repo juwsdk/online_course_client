@@ -1,6 +1,15 @@
 <template lang="">
-    <div>
-      <CourseCards/>
+    <div style="height: calc( 100vh - 100px);">
+      <CourseCards class="myCourseCards">
+        <template v-slot:cards>
+          <CourseCard v-for="index of 8" :key="index" style="
+          flex-basis: calc(25% - 10px);
+          margin-right: 10px;
+          align-items: center;
+          " :courseInfo="index" 
+          :routeName="routeName"/>
+        </template>
+      </CourseCards>
       <!-- <CourseCard v-for="index of total" :key="index" style="
         flex-basis: calc(25% - 10px);
         margin-right: 10px;
@@ -18,10 +27,17 @@
 </template>
 <script>
   import CourseCards from '@/components/CourseCards';
+  import CourseCard from '@/components/CourseCard';
   export default {
     name: 'Courses',
     components: {
-      CourseCards
+      CourseCards,
+      CourseCard
+    },
+    data() {
+      return {
+        routeName:'onecourse',
+      }
     },
     // data() {
     //   return {
@@ -48,4 +64,8 @@
   }
 </script>
 <style scoped>
+.myCourseCards{
+  height: 100%;
+  overflow: scroll;
+}
 </style>

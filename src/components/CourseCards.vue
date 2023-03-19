@@ -1,11 +1,7 @@
 <template>
   <div>
     <div id="sklonbody">
-      <CourseCard v-for="index of total" :key="index" style="
-        flex-basis: calc(25% - 10px);
-        margin-right: 10px;
-        align-items: center;
-        " :courseInfo="index" />
+      <slot name="cards"></slot>
     </div>
     <el-row style="margin:10px 0">
       <el-col :span="12" :offset="8">
@@ -48,12 +44,14 @@
 </script>
 <style>
   #sklonbody {
-    width: 80%;
+    width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    height: auto;
+    min-width: 400px;
   }
    /* justify-content: space-between; *//* padding: 10px; */
 </style>

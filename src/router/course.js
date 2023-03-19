@@ -43,10 +43,28 @@ export default {
       ]
     },
     {
-      name: 'course-select',
-      path: 'courseselect',
-      component: CourseSelect,
-      meta: { title: '课程选择', icon: 'el-icon-reading' }
+      name: 'course-selects',
+      path: 'courseselects',
+      component: { render: (e) => e("router-view") },
+      meta: { title: '课程选择', icon: 'el-icon-reading' },
+      redirect:'/course/courseselects/courseselect',
+      children: [
+        {
+          // 展示所有教学视频
+          name:'course-select',
+          path:'courseselect',
+          component:CourseSelect,
+          meta:{ title: '', icon: '' }
+        },
+        {
+          // 根据卡片取出哪一个教学视频
+          name: 'course-select-detial',
+          path: 'courseselect/:id',
+          component: OneCourse,
+          meta: { title: '', icon: '' }
+        },
+      ]
+
     },
     {
       name: 'course-sta',

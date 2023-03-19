@@ -18,12 +18,19 @@ export default {
     {
       name: 'coursemanges',
       path: 'coursemanges',
-      component: TCourseMange,
+      component: { render: (e) => e("router-view") },
+      redirect:'/teacher/coursemanges/coursemange',
       meta: { title: '教师课程管理', icon: 'el-icon-reading' },
       children: [
         {
           name: 'coursemange',
           path: 'coursemange',
+          component: TCourseMange,
+          meta: { title: '教师课程管理', icon: '' },
+        },
+        {
+          name: 'courseMangeD',
+          path: 'courseMange/:id',
           component: TCourseMangeDeta,
           meta: { title: '教师课程管理详情', icon: '' },
         }

@@ -1,4 +1,5 @@
 // 定义了对应的table表头及对应的字段
+//前三个是管理员管理的表
 const studentTable={
     "学号":"studentId",
     "姓名":"studentName",
@@ -23,5 +24,11 @@ const admTable={
   "管理员密码":"admPassword",
   "管理员权限":"admAuthoritylevels"
 };
+//教师的课程表
+const teacherCourseTable={
+  "课程名":"courseName",
+  "学生学号":"studentId",
+  "学生名":"studentName",
+}
 export default studentTable;
-export {studentTable,teacherTable,admTable};
+export {studentTable,teacherTable,admTable,teacherCourseTable};

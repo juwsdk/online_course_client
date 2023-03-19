@@ -29,7 +29,7 @@ const router = new VueRouter({
       children: [
         {
           name: 'myindex',
-          path: 'myindex',
+          path: '/myindex',
           component: MyIndex,
           meta: { title: '主页', icon: 'el-icon-s-home' }
         },

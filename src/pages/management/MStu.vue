@@ -17,8 +17,8 @@
         <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" v-if="tablelable != '密码'"
           :label="tablelable" :prop="tableprop" sortable />
         </el-table-column>
-
       </template>
+
       <!-- 表格弹出新增/修改框信息 -->
       <template v-slot:adialogitem>
         <el-form-item label="学号" v-show="showId">

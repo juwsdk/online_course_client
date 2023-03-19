@@ -1,15 +1,10 @@
 <template lang="">
-  <div>
-    <el-page-header @back="goBack" content="详情页面">
-    </el-page-header>
-    
-    <div style="display: flex;">
-      <el-main style="height: 80vh; background-color: antiquewhite;flex-grow: 4;">
-        <span>这是具体的课程{{$route.params.id}}</span>
-        <!-- 展示具体课程 -->
-        <router-view />
-      </el-main>
-
+  <DetailView>
+    <template v-slot:pageHeader>
+      <el-page-header @back="goBack" :content="'课程页面'+$route.params.id">
+      </el-page-header>
+    </template>
+    <template v-slot:pageAside>
       <el-menu default-active="2" class="el-menu-vertical-demo" style="width:200px;">
         <el-menu-item>
           <span slot="title">1</span>
@@ -24,13 +19,22 @@
           <span slot="title">4</span>
         </el-menu-item>
       </el-menu>
-    </div>
-
-  </div>
+    </template>
+    
+    <template v-slot:pageMain>
+      <CourseVedio />
+    </template>
+  </DetailView>
 </template>
 <script>
+  import DetailView from '@/layout/CourseDetail';
+  import CourseVedio from '@/components/CourseVedio';
   export default {
     name: 'OneCourse',
+    components: {
+      DetailView,
+      CourseVedio
+    },
     methods: {
       goBack() {//跳转到详情页面
         this.$router.replace('/course/mycourse/courses');
@@ -38,6 +42,6 @@
     },
   }
 </script>
-<style lang="">
+<style>
 
 </style>
