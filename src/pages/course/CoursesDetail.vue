@@ -30,7 +30,7 @@
   import DetailView from '@/layout/CourseDetail';
   import CourseVedio from '@/components/CourseVedio';
   export default {
-    name: 'OneCourse',
+    name: 'CoursesDetail',
     components: {
       DetailView,
       CourseVedio

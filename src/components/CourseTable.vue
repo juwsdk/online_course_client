@@ -109,6 +109,7 @@
         })
           .then(res => {
             // console.log(this.fuzzyValue);
+            console.log(res);
             this.total = res.data.total;
             this.tableData = res.data.list;
             this.loading = false;

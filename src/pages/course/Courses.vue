@@ -7,9 +7,10 @@
           margin-right: 10px;
           align-items: center;
           " :courseInfo="index" 
-          :routeName="routeName"/>
+          :routeName="routeName" @loadCourse="loadCourse"/>
         </template>
       </CourseCards>
+
       <!-- <CourseCard v-for="index of total" :key="index" style="
         flex-basis: calc(25% - 10px);
         margin-right: 10px;
@@ -36,31 +37,13 @@
     },
     data() {
       return {
-        routeName:'onecourse',
+        routeName:'CoursesDetail',
+        courseInterface:'',
+        list:[],//获取信息用于卡片展示
       }
+      
     },
-    // data() {
-    //   return {
-    //     currentPage: 1,//控制分页
-    //     total: 5,//文本总数
-    //     pageSize: [5, 10, 20, 25],
-    //     // myindex:20//假数据
-
-    //   }
-    // },
-    // computed: {
-    //   courseInfo() {
-    //     this.courseInfo++;
-    //   }
-    // },
-    // methods: {
-    //   handleCurrentChange(pageNum) {
-    //     this.pageNum = pageNum;
-    //   },//控制分页
-    //   handleSizeChange(pagesize) {
-    //     this.total = pagesize * this.pageNum;
-    //   },//控制分页大小
-    // },
+  
   }
 </script>
 <style scoped>

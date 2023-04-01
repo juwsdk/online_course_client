@@ -1,7 +1,8 @@
 import Courses from '@/pages/course/Courses'
 import CourseSelect from '@/pages/course/CourseSelect';
 import CourseSta from '@/pages/course/CourseSta';
-import OneCourse from '@/pages/course/OneCourse';
+import CoursesDetail from '@/pages/course/CoursesDetail';
+import CourseSelectDetail from '@/pages/course/CourseSelectDetail';
 export default {
   //课程路由
   name: 'path',
@@ -26,9 +27,9 @@ export default {
         },
         {
           // 根据卡片取出哪一个教学视频
-          name: 'onecourse',
+          name: 'CoursesDetail',
           path: 'courses/:id',
-          component: OneCourse,
+          component: CoursesDetail,
           meta: { title: '', icon: '' },
           children:[
             {
@@ -60,7 +61,7 @@ export default {
           // 根据卡片取出哪一个教学视频
           name: 'course-select-detial',
           path: 'courseselect/:id',
-          component: OneCourse,
+          component: CourseSelectDetail,
           meta: { title: '', icon: '' }
         },
       ]

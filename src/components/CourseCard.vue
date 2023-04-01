@@ -18,10 +18,9 @@
           <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
             class="image" />
           <div style="padding: 14px;">
-            <span>好吃的汉堡</span>
+            <span>{{courseInfo.courseName}}</span>
             <div class="bottom card-header">
-              <span class="time">{{ currentDate }}</span>
-              <el-button type="text" class="button">操作按钮</el-button>
+              <span class="text">{{courseInfo.teacherName}}</span>
             </div>
           </div>
         </el-card>
@@ -46,7 +45,7 @@
         this.$router.push({//通过push跳转页面
           name:this.routeName,
           params:{
-            id:this.courseInfo
+            id:this.courseInfo.courseId
           }
         });
       }

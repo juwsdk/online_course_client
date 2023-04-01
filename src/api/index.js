@@ -17,9 +17,18 @@ axios.defaults.responseType = 'json';
 
 // 在响应返回后，可以做一些数据处理的操作，比如统一处理错误信息等
 axios.interceptors.response.use(function (response) {
-  // let res=response.headers
+  const contentType = response.headers['content-type']
+  if (contentType && (contentType.startsWith('application/octet-stream') || contentType.startsWith('application/x-binary'))) {
+    // 处理二进制数据
+    return response;
+  }
+  // 返回响应数据
+  return response.data;
+
+  // let res = response.data
+  // console.log(response);
   // console.log(res);
-  return response;
+  // return res;
 }, function (error) {
   // 统一处理错误信息
   if (error.response && error.response.status === 401) {
