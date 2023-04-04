@@ -21,8 +21,8 @@
 <script>
   import CourseTable from '@/components/CourseTable';
   import CourseSearchBar from '@/components/CourseSearchBar';
-  import { admTable } from '@/data/tableData';
-  import { admInterface } from '@/data/tableInterface';
+  import { admTable } from '@/api/tableData';
+  import { admInterface } from '@/api/tableInterface';
   export default {
     name: 'MAdmine',
     components: {

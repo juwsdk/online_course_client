@@ -49,8 +49,8 @@
 <script>
   import CourseTable from '@/components/CourseTable';
   import CourseSearchBar from '@/components/CourseSearchBar';
-  import { teacherTable } from '@/data/tableData';
-  import { teacherInterface } from '@/data/tableInterface';
+  import { teacherTable } from '@/api/tableData';
+  import { teacherInterface } from '@/api/tableInterface';
   export default {
     name: 'MTeacher',
     components: {

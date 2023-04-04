@@ -88,7 +88,7 @@
       },
     },
     mounted() {
-      // console.log(JSON.stringify( router.options.routes));
+      // console.log( router.options.routes);
       this.menuList = this.getMenuList(router.options.routes[1].children);
       console.log(router.options.routes[1].children);
       // console.log('---------------------------\n');

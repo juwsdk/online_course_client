@@ -28,7 +28,7 @@ export default {
         {
           // 根据卡片取出哪一个教学视频
           name: 'CoursesDetail',
-          path: 'courses/:id',
+          path: 'courses/:teacherId/:courseId',
           component: CoursesDetail,
           meta: { title: '', icon: '' },
           children:[
@@ -60,7 +60,7 @@ export default {
         {
           // 根据卡片取出哪一个教学视频
           name: 'course-select-detial',
-          path: 'courseselect/:id',
+          path: 'courseselect/:courseId',
           component: CourseSelectDetail,
           meta: { title: '', icon: '' }
         },

@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-  import { courseSelectInterface } from '@/data/courseInterface';
+  import { courseSelectInterface } from '@/api/courseInterface';
   import axios from '@/api';
   export default {
     name: 'CourseSelectDetail',
@@ -49,12 +49,12 @@
       loadData() {
         axios.get(this.courseSelectInterface.prefix + this.courseSelectInterface.courseDetail, {
           params: {
-            courseId: this.$route.params.id
+            courseId: this.$route.params.courseId
           }
         })
           .then(res => {
             this.course = res.data;
-            console.log(this.$route.params.id);
+            console.log(this.$route.params.courseId);
           })
           .catch(err => {
             console.error(err);

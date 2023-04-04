@@ -24,12 +24,12 @@
     components: {
       CourseCard,
     },
-    props: ['courseInterface', 'aPageSize'],
+    props: ['courseInterface', 'aPageSize','apageSize'],
     data() {
       return {
         currentPage: 1,//控制分页
         total: 4,//文本总数
-        pageSize: 5,
+        pageSize: this.apageSize,
         courseData: [],//课程数据
         // myindex:20//假数据
       }
@@ -55,7 +55,7 @@
 
       //请求数据,分页展示
       loadData() {
-        axios.get(this.courseInterface.prefix + this.courseInterface.courseList, {
+        axios.get(this.courseInterface.prefix +this.courseInterface.courseList, {
           params: {
             pageNum: this.currentPage,
             pageSize: this.pageSize,
@@ -65,6 +65,7 @@
             // console.log(res);
             this.total = res.data.total;
             this.courseData = res.data.list;
+            console.log(res.data.list);
             this.$emit('loadCourse', this.courseData);
           })
           .catch(err => {

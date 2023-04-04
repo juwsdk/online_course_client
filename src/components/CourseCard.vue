@@ -34,7 +34,7 @@
     props: ['courseImage', 'courseInfo','routeName'],
     data () {
       return {
-        loading: false,
+        loading: true,
         currentDate: '2021-06-01'
       }
     },
@@ -45,11 +45,18 @@
         this.$router.push({//通过push跳转页面
           name:this.routeName,
           params:{
-            id:this.courseInfo.courseId
-          }
+            teacherId:this.courseInfo.teacherId,
+            courseId:this.courseInfo.courseId
+          },
         });
       }
     },
+    mounted() {
+      if(this.courseInfo!=null)
+        this.loading=false;
+        console.log(this.courseInfo);
+    },
+
   }
 </script>
 <style scoped>

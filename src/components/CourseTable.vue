@@ -9,7 +9,7 @@
     </CourseSearchBar>
 
     <!-- 功能按钮 -->
-    <div style="margin: 10px;">
+    <div style="margin: 10px;" v-if="showAlter">
       <el-row>
         <el-col :span="1" :offset="0">
           <el-button type="primary" size="mini" @click="handleAdd" :disabled="loading">新增</el-button>
@@ -31,7 +31,7 @@
         <!-- 功能操作区 -->
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" v-if="showAlter">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -69,7 +69,7 @@
     components: {
       CourseSearchBar
     },
-    props: ['tableInterfce', 'form'],//获取api接口
+    props: ['tableInterfce', 'form','showAlters'],//获取api接口
     data() {
       return {
         tableData: [],
@@ -80,6 +80,7 @@
         dialogVisible: false,//弹窗状态
         fuzzyColumn:'',
         fuzzyValue:'',
+        showAlter:true//是否展示修改等功能按钮
       }
     },
 
@@ -152,6 +153,10 @@
     },
     created() {
       this.loadData();
+      //通过父组件传递的值看是否展示修改等功能区
+      if(this.showAlters==false && typeof this.showAlters !='undefined')
+        this.showAlter=false
+      // console.log(this.showAlters);
       // console.log(this.form);
     },
     computed: {

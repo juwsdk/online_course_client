@@ -56,8 +56,8 @@
 <script>
   import CourseTable from '@/components/CourseTable';
   import CourseSearchBar from '@/components/CourseSearchBar';
-  import studentTable from '@/data/tableData';
-  import studentInterface from '@/data/tableInterface';
+  import studentTable from '@/api/tableData';
+  import studentInterface from '@/api/tableInterface';
   export default {
     name: 'MStu',
     components: {
