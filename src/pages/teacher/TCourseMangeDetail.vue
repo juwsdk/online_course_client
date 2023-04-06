@@ -7,7 +7,7 @@
 
     <template v-slot:pageAside>
       <el-menu default-active="2" class="el-menu-vertical-demo" style="width:200px;" @select="handleMenuItemClick">
-        <el-menu-item index="tStudentManage" >
+        <el-menu-item index="tStudentManage">
           <span slot="title">学生管理</span>
         </el-menu-item>
         <el-menu-item index="tResSubmit">
@@ -49,7 +49,7 @@
       },
       handleMenuItemClick(index) {
         this.$router.replace({
-          name:index
+          name: index
         }).catch(error => {
           if (error.name !== 'NavigationDuplicated') {
             throw error
@@ -59,10 +59,12 @@
 
     },
     created() {
-      
+
     },
   }
 </script>
 <style scoped>
-
+  .el-menu .el-menu-item.is-active {
+    background: #f7f7f8 !important;
+  }
 </style>

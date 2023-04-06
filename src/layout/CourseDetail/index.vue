@@ -5,11 +5,11 @@
 
     </el-header>
     <el-container direction="horizontal" style="height:calc( 100vh - 180px );">
-      <el-aside width="200px" style="height: 100%;
+      <!-- <el-aside width="200px" style="height: 100%;
       overflow-x: hidden;
-      overflow-y: auto;">
+      overflow-y: auto;"> -->
         <slot name="pageAside"></slot>
-      </el-aside>
+      <!-- </el-aside> -->
       <el-container direction="vertical">
         <el-main style="height: 100%;background-color: rgba(247, 247, 248);">
           <slot name="pageMain"></slot>
@@ -24,4 +24,7 @@
   }
 </script>
 <style scoped>
+  .el-header{
+    display: flex;
+  }
 </style>

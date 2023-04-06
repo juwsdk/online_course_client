@@ -23,12 +23,13 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
+  background-image: linear-gradient(to top,#757f9a,#d7dde8);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background-image: linear-gradient(to bottom,#ece9e6,#ffffff) ;
 }
 
 /* html,body{

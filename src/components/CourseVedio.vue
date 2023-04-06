@@ -11,8 +11,6 @@
   </div>
 </template>
 <script>
-  // import videojs from 'video.js'
-  // import 'video.js/dist/video-js.css'
   import axios from '@/api'
   export default {
     name: 'CourseVedio',
@@ -37,17 +35,29 @@
             this.videoUrl = URL.createObjectURL(videoBlob);
             // this.videoUrl=this.videoUrl.substr(this.videoUrl.lastIndexOf("/") + 1);
             console.log(this.videoUrl);
+            this.noRepeatedRequests()
             // let player = videojs(this.$refs.video)
             // player.src(this.videoUrl)
+            
           })
           .catch(error => {
             console.log(error);
             // console.log('1111111111111' + this.srcUrl);
           });
+      },
+      //避免多次点击造成重复请求视频,间隔为0.5秒
+      noRepeatedRequests(){
+        //让父对象禁止点击事件
+        this.$emit('intervalAccess');
+        let timer=setTimeout(()=>{
+          //父对象恢复点击
+          this.$emit('intervalAccess');
+          clearTimeout(timer);
+        },500);
       }
     },
     mounted() {
-      this.loadData()
+      // this.loadData()
     },
     watch: {
       srcUrl() {

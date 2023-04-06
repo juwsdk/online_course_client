@@ -1,5 +1,6 @@
 <template lang="">
-  <div>
+  <div :style="isLoading" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <!-- 走马灯  v-show控制是否显示，在第一页则显示，否则不显示-->
     <el-carousel indicator-position="outside" v-show="isNotableShow">
       <el-carousel-item v-for="notableitem in notableList" :key="notableitem.courseId">
@@ -8,7 +9,8 @@
     </el-carousel>
 
     <!-- 卡片列表 -->
-    <CourseCards :courseInterface="courseInterface"  @loadCourse="loadCourse" @styleChange="styleChange" :apageSize="apageSize">
+    <CourseCards :courseInterface="courseInterface" @loadCourse="loadCourse" @styleChange="styleChange"
+      :apageSize="apageSize">
       <!-- 通过插槽放入具体的卡片 -->
       <template v-slot:cards>
         <CourseCard v-for="(listItem of list" :key="listItem.courseId" style="
@@ -39,9 +41,10 @@
         courseInterface: courseSelectInterface,
         // number:5,
         list: [],//存放课程信息，课程信息是courseCards通过axios请求获取的
-        isNotableShow:true,
-        apageSize:5,//给子传这个页面数据多少
-        notableList:[],//走马灯的内容
+        isNotableShow: true,
+        apageSize: 5,//给子传这个页面数据多少
+        notableList: [],//走马灯的内容
+        loading: true
       }
     },
     computed: {
@@ -51,27 +54,36 @@
       loadCourse(list) {
         // this.number=pageSize;
         this.list = list;
+        this.loading = false;
       },
       //子传父，chards页面根据当前是第几页来决定是否展示走马灯notable
-      styleChange(isShow){
-        this.isNotableShow=isShow;
+      styleChange(isShow) {
+        this.isNotableShow = isShow;
       },
       //加载请求走马灯的内容
-      loadData(){
+      loadData() {
         axios.get("/course/courseTopList")
-        .then(res => {
-          console.log('走马灯数据');
-          console.log(res)
-          this.notableList=res.data;
-        })
-        .catch(err => {
-          console.error(err); 
-        })
-      }
+          .then(res => {
+            console.log('走马灯数据');
+            console.log(res)
+            this.notableList = res.data;
+            this.loading = false;
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
     },
     mounted() {
       this.loadData();//加载走马灯
     },
+    computed: {
+      //是否加载完成
+      isLoading() {
+        // console.log('1111111111');
+        return this.loading ?{ height: '88vh'}  : { height: 'auto' };
+      }
+    }
 
   }
 </script>

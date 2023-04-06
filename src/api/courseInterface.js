@@ -8,10 +8,10 @@ const courseInfoInterface={
   "prefix":"/course",
   "courseList":"/31201900/courseList",
   "courseDetail":"/courseList"
-}
+};
 const teacherCourseInterface={
   "prefix":"/teacher",
   "courseList":"/6120101/teacherList"
-}
+};
 export default courseSelectInterface;
 export {courseSelectInterface,courseInfoInterface,teacherCourseInterface}

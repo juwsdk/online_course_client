@@ -1,17 +1,10 @@
 <template lang="">
-  <el-aside class="myside" style="
-  font-size: 10px;
-  color:white;
-  background-color: #424f63;
-  width: 200px;
-  overflow-x: hidden;
-  /* border-right: 1px solid lightgray; */
-  " :style="contentStyle">
-    <el-menu :collapse="isCollapse" router text-color="#FFF" background-color="#424f63" style="/*width: 150px;*/"
-      default-active="1" class="elMenuVertical" :style="contentStyle">
+  <el-aside class="myside" :style="contentStyle">
+    <el-menu :collapse="isCollapse" router text-color="#FFF" background-color="rgba(22, 131, 122,0)"
+      style="/*width: 150px;*/" default-active="1" class="elMenuVertical" :style="contentStyle">
       <!-- 递归渲染 menuList -->
       <template v-for="(menuitem,index) of menuList">
-        
+
         <template v-if="menuitem.children.length>0">
           <el-submenu :index="menuitem.path" :key="menuitem.name+index">
             <template slot="title">
@@ -107,10 +100,33 @@
   /* 设置折叠展开动画 */
   .myside {
     transition: width .5s linear;
+    font-size: 10px;
+    color: white;
+    background-image: linear-gradient(to bottom, #424f63, #454263);
+    width: 200px;
+    overflow-x: hidden;
+    /* border-right: 1px solid lightgray; */
   }
 
   .el-menu {
     border: none;
     transition: width .3s linear;
+  }
+
+  /* 菜单样式更改 */
+  .el-menu .el-menu-item:hover {
+    outline: 0 !important;
+    color: white !important;
+    background: #4b5a70 !important;
+  }
+
+  .el-menu .el-menu-item.is-active {
+    color: white !important;
+    background: #4b5a70 !important;
+  }
+
+  .el-submenu /deep/.el-submenu__title:hover {
+    color: white !important;
+    background-color: #4b5a70 !important;
   }
 </style>

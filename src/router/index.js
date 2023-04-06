@@ -8,6 +8,7 @@ import Course from './course'
 import Manage from './manage';
 import Teacher from './teacher'
 import Login from '@/pages/Login';
+import Register from '@/pages/Register';
 //创建并暴露路由
 const router = new VueRouter({
   // mode:'history',
@@ -46,7 +47,13 @@ const router = new VueRouter({
 
       ]
     },
-
+    //注册页面
+    {
+      name:'register',
+      path:'/register',
+      component:Register,
+      meta:{title:'注册',icon:''}
+    }
 
   ]
 });
