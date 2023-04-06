@@ -28,14 +28,14 @@
       style="width: 100%;" :style="contentStyle">
       <!-- 放置单元格 -->
       <slot name="atablecol"></slot>
-        <!-- 功能操作区 -->
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" v-if="showAlter">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-        
+      <!-- 功能操作区 -->
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" v-if="showAlter">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+
     </el-table>
 
     <!-- 分页 -->
@@ -44,7 +44,7 @@
         :page-sizes="[5, 10, 20, 25]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
-    
+
     <!-- dialog,点击弹出 -->
     <el-dialog title="新增/修改" :visible.sync="dialogVisible" width="600px">
       <el-form ref="form" :model="form" label-width="80px" adialogitem>
@@ -69,7 +69,7 @@
     components: {
       CourseSearchBar
     },
-    props: ['tableInterfce', 'form','showAlters'],//获取api接口
+    props: ['tableInterfce', 'form', 'showAlters'],//获取api接口
     data() {
       return {
         tableData: [],
@@ -78,9 +78,22 @@
         pageSize: 10,
         loading: true,//是否还在加载
         dialogVisible: false,//弹窗状态
-        fuzzyColumn:'',
-        fuzzyValue:'',
-        showAlter:true//是否展示修改等功能按钮
+        fuzzyColumn: '',
+        fuzzyValue: '',
+        showAlter: true,//是否展示修改等功能按钮
+        timerId: null,//设置一个定时器，没有接收到数据则过5s再次请求
+      }
+    },
+    watch: {//监视属性
+      loading() {
+        if (this.loading == false)
+          clearInterval(this.timerId);//关闭这个定时器
+      }
+    },
+    computed: {//计算属性
+      //通过父组件传递的值看是否展示修改等功能区
+      contentStyle() {//没有数据时用这个调表格样式
+        return this.loading ? { height: '70vh' } : { height: 'auto' };
       }
     },
 
@@ -104,16 +117,17 @@
           params: {
             pageNum: this.currentPage,
             pageSize: this.pageSize,
-            fuzzyColumn:this.fuzzyColumn,
-            fuzzyValue:this.fuzzyValue
+            fuzzyColumn: this.fuzzyColumn,
+            fuzzyValue: this.fuzzyValue
           }
         })
           .then(res => {
             // console.log(this.fuzzyValue);
             console.log(res);
-            this.total = res.data.total;
-            this.tableData = res.data.list;
-            this.loading = false;
+            this.total = res.data.total;//拿到表格数据总数
+            this.tableData = res.data.list;//拿到表格中的数据
+            this.loading = false;//关闭表格转圈状态
+
             // console.log(this.tableData)
           })
           .catch(err => {
@@ -145,26 +159,25 @@
       },
       fuzzyQuery(searchSelect, searchinput) {//模糊查询
         // console.log(searchinput + '|||' + searchSelect);
-        this.fuzzyColumn=searchSelect;
-        this.fuzzyValue=searchinput;
+        this.fuzzyColumn = searchSelect;
+        this.fuzzyValue = searchinput;
         // console.log(this.fuzzyColumn+"\\\\"+this.searchSelect);
         this.loadData();
       }
     },
     created() {
+      if (this.showAlters == false && typeof this.showAlters != 'undefined')
+        this.showAlter = false;
       this.loadData();
-      //通过父组件传递的值看是否展示修改等功能区
-      if(this.showAlters==false && typeof this.showAlters !='undefined')
-        this.showAlter=false
-      // console.log(this.showAlters);
-      // console.log(this.form);
+      if(this.loading==true)
+       this.timerId=setInterval(()=>{
+        this.loadData();
+       },5000);//没有请求到数据,则开启定时器
     },
-    computed: {
-     
-      contentStyle() {//没有数据时用这个调表格样式
-        return this.loading ? { height: '70vh' } : { height: 'auto' };
-      }
-    }
+    beforeDestroy() {
+      
+    },
+
   }
 </script>
 <style scoped>

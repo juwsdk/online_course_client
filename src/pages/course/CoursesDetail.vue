@@ -36,7 +36,7 @@
       <!-- 是作业时就展示这个页面 -->
       <template v-else>
         <el-collapse @change="handleChange">
-          <FileDownloadCard v-for="(homeworkItem,index) in homeworkList" :key="index" :index="index"
+          <FileDownloadCard v-for="(homeworkItem,index) in homeworkList" :key="index" :index="index" :comptype="comptype"
             :homeworkItem="homeworkItem" :srcPrefix="homeworkInterface.prefix+homeworkInterface.downLoad" />
         </el-collapse>
 
@@ -73,6 +73,7 @@
           activeTab: 'courseLearn',///进入页面时课程页面高亮
           showType: true,//true表示展示courseLearn页面，false表示展示courseHomework页面
         },
+        comptype:'student',//用来表示这是展示学生的下载组件
 
       }
     },
@@ -81,14 +82,13 @@
       goBack() {
         this.$router.replace('/course/mycourse/courses');
       },
-      //加载数据
+      //加载数据,课程的课程名路由表
       loadData() {
         axios.post(courseInfoInterface.prefix + courseInfoInterface.courseDetail + '/' + this.$route.params.courseId)
           .then(res => {
             // console.log(res);
             this.courseRoutes = res.data;
             this.showVedio(res.data[0].resFileName);
-            // console.log(1111111111 + this.srcUrl);
           })
           .catch(err => {
             console.error(err);
@@ -148,6 +148,7 @@
     padding-right: 20px;
     /* float: left; */
   }
+
   /* ::v-deep 同/deep/强制修改带有scoped的css属性 */
   ::v-deep .el-page-header__title {
     font-size: 14px;
@@ -158,7 +159,6 @@
   }
 
   ::v-deep .el-page-header__content {
-    color: rgb(201, 196, 189);
     height: 45px;
     line-height: 45px;
   }

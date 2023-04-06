@@ -31,22 +31,13 @@ export default {
           path: 'courses/:teacherId/:courseId',
           component: CoursesDetail,
           meta: { title: '', icon: '' },
-          children:[
-            {
-              // 多少集
-              name: 'onecourseddd',
-              path: ':name',
-              // component: OneCourse,
-              meta: { title: '', icon: '' },
-            }
-          ]
         },
       ]
     },
     {
       name: 'course-selects',
       path: 'courseselects',
-      component: { render: (e) => e("router-view") },
+      component: { render: (e) => e("keep-alive",[e("router-view")]) }, //缓存路由
       meta: { title: '课程选择', icon: 'el-icon-reading' },
       redirect:'/course/courseselects/courseselect',
       children: [

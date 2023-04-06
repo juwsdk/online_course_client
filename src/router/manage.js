@@ -5,7 +5,7 @@ export default{
   //管理路由
     name:'manage',
     path:'/manage',
-    component: {render: (e) => e("router-view")},
+    component: {render: (e) => e("keep-alive",[e("router-view")])}, //缓存路由
     meta:{title:'信息管理',icon:'el-icon-menu'},
     children:[
       {

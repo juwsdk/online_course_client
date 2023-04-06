@@ -6,7 +6,7 @@
     </template>
 
     <template v-slot:pageAside>
-      <el-menu default-active="2" class="el-menu-vertical-demo" style="width:200px;" @select="handleMenuItemClick">
+      <el-menu default-active="tStudentManage" class="el-menu-vertical-demo" style="width:200px;" @select="handleMenuItemClick">
         <el-menu-item index="tStudentManage">
           <span slot="title">学生管理</span>
         </el-menu-item>
@@ -26,7 +26,9 @@
     </template>
 
     <template v-slot:pageMain>
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </template>
 
   </DetailView>
@@ -66,5 +68,21 @@
 <style scoped>
   .el-menu .el-menu-item.is-active {
     background: #f7f7f8 !important;
+  }
+  .el-menu{
+    border: none;
+  }
+
+  ::v-deep .el-page-header__title {
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+    height: 45px;
+    line-height: 45px;
+  }
+
+  ::v-deep .el-page-header__content {
+    height: 45px;
+    line-height: 45px;
   }
 </style>

@@ -1,10 +1,41 @@
 <template lang="">
   <el-collapse-item :title="homeworkItem.courseHomeworkName" :name="index">
     <template>
-      <el-button style="float: right; padding: 5px;" type="text" @click="seeScore" >查看得分</el-button>
-      <el-button style="float: right; padding: 5px" type="text" @click="dialogVisible=true;">上传作业</el-button>
-      <el-button style="float: right; padding: 5px" type="text" @click="dowloadItem">下载附件</el-button>
-      
+
+      <!-- 如果父页面是学生的组件的话 -->
+      <template v-if="comptype=='student'">
+        <el-button type="text" @click="seeScore">查看得分</el-button>
+        <el-button type="text" @click="dialogVisible=true;">上传作业</el-button>
+        <el-button type="text" @click="dowloadItem">下载附件</el-button>
+      </template>
+      <!-- 如果父页面是教师组件的话 -->
+      <template v-if="comptype=='teacher'">
+        <el-button type="text" @click="toViewIsFinish">查看学生完成情况</el-button>
+        <el-popconfirm title="确定删除这个作业？" confirmButtonText="确定" cancelButtonText="取消" @confirm="deleteHomework">
+          <el-button type="text" slot="reference" style="color:#f43336;">删除</el-button>
+        </el-popconfirm>
+        <el-drawer :title="homeworkItem.courseHomeworkName+'完成情况'" :visible.sync="drawer" direction="rtl"
+          :before-close="handleClose">
+          <div>
+            <span>提交人数: 10/20</span>
+            <span style="float: right;color: #3d5d2f;">已提交</span>
+          </div>
+          <article class="drawBody">
+            <el-link class="articleN" type="success" v-for="(item,aindex) in 10" :key="aindex">成功链接</el-link>
+          </article>
+          <div>
+            <span>未提交人数:10</span>
+            <span style="float: right;color: #f67d7d;">未提交</span>
+          </div>
+          <article>
+            <el-link class="articleN" :underline="false" type="danger">危险链接</el-link>
+          </article>
+        </el-drawer>
+      </template>
+      <!-- 用作扩展其他功能框 -->
+      <template v-else>
+        <slot name="otherComp"></slot>
+      </template>
     </template>
     <el-dialog title="提交作业" :visible.sync="dialogVisible" width="420px" :before-close="handleDialogClose">
       <span>
@@ -16,7 +47,8 @@
         </el-upload>
       </span>
       <span slot="footer">
-        <el-button type="success" size="small" @click="uploadItem" style="float: left;margin-left: 100px;">上传</el-button>
+        <el-button type="success" size="small" @click="uploadItem"
+          style="float: left;margin-left: 100px;">上传</el-button>
         <el-button type="warning" size="small" @click="handleDialogClose" style="margin-right: 100px;">取消</el-button>
       </span>
     </el-dialog>
@@ -37,12 +69,13 @@
   import axios from '@/api';
   export default {
     name: 'FileDownloadCard',
-    props: ['index', 'homeworkItem', 'srcPrefix'],
+    props: ['index', 'homeworkItem', 'srcPrefix', 'comptype'],
     data() {
       return {
         // dowloadSrc: '',
         dialogVisible: false,
-        fileList: []
+        fileList: [],
+        drawer: false,//控制抽屉开关
       }
     },
     computed: {
@@ -51,6 +84,15 @@
       }
     },
     methods: {
+
+      handleRemove(file, fileList) {
+        this.fileList = fileList;
+      },
+      handleChange(file, fileList) {
+        this.fileList = fileList
+      },
+      //学生
+      //下载作业
       dowloadItem() {
         console.log(this.dowloadSrc);
         axios({
@@ -82,25 +124,35 @@
             console.error(err);
           });
       },
-      handleRemove(file, fileList) {
-        this.fileList = fileList;
-      },
-      handleChange(file, fileList) {
-        this.fileList = fileList
-      },
       //上传作业
       uploadItem() {
 
       },
       //关闭对话框
-      handleDialogClose(){
-        this.fileList=[];
-        this.dialogVisible=false;
+      handleDialogClose() {
+        this.fileList = [];
+        this.dialogVisible = false;
       },
       //查看得分
-      seeScore(){
+      seeScore() {
         this.$message.warning('未批改!');
+      },
+      //教师
+      //查看学生提交的作业
+      toViewIsFinish() {
+        this.drawer = true;
+      },
+      //删除这个作业
+      deleteHomework() {
+        // alert('触发');
+      },
+      //控制抽屉关闭
+      handleClose() {
+        this.drawer = false;
       }
+    },
+    mounted() {
+      // console.log(this.comptype);
     },
 
   }
@@ -112,7 +164,7 @@
     padding-right: 10px;
   }
 
-   ::v-deep .el-collapse-item__header {
+  ::v-deep .el-collapse-item__header {
     font-size: 18px;
     color: #0051a6;
   }
@@ -127,9 +179,29 @@
   }
 
   .contentHeader {
-    background-image:  linear-gradient(to right, #424f63, #454263);
+    background-image: linear-gradient(to right, #424f63, #454263);
     /* background-color: rgba(8, 29, 239,.7); */
     border-radius: 5px 5px 0 0;
     color: white;
+  }
+
+  .el-button {
+    float: right;
+    padding: 5px;
+  }
+
+  .el-drawer__body>* {
+    font-size: 14px;
+  }
+
+  .drawBody {
+    width: 100%;
+    height: auto;
+    /* display: flex; */
+  }
+
+  .articleN {
+    display: inline-block;
+    margin: 10px;
   }
 </style>
