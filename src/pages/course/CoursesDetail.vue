@@ -6,12 +6,14 @@
       <el-tabs v-model="tabsObj.activeTab" @tab-click="handleClick">
         <el-tab-pane label="课程学习" :name="tabsObj.tabsPage[0]"></el-tab-pane>
         <el-tab-pane label="课程作业" :name="tabsObj.tabsPage[1]"></el-tab-pane>
+        <el-tab-pane label="打卡与答疑" :name="tabsObj.tabsPage[2]"></el-tab-pane>
       </el-tabs>
     </template>
+    <!-- 展示侧边栏选择视频集数 -->
     <template v-slot:pageAside>
       <el-aside width="200px" style="height: 100%;
       overflow-x: hidden;
-      overflow-y: auto;" v-show="tabsObj.showType">
+      overflow-y: auto;" v-show="tabsObj.activeTab=='courseLearn'">
         <el-menu class="el-menu-vertical-demo" style="width:200px;
       height: 100%;
       overflow-x: hidden;
@@ -22,26 +24,28 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-
     </template>
 
     <template v-slot:pageMain>
-      <!-- 是课程时就展示这个页面 -->
-      <template v-if="tabsObj.showType">
-        <el-row :gutter="20">
-          <el-button class="clockInStyle" type="success" @click="clockInButton">打卡</el-button>
-        </el-row>
+      <!-- 是课程学习时就展示这个页面 -->
+      <template v-if="tabsObj.activeTab=='courseLearn'">
         <CourseVedio :srcUrl="srcUrl" @intervalAccess="intervalAccess" />
       </template>
-      <!-- 是作业时就展示这个页面 -->
-      <template v-else>
+      <!-- 是课程作业时就展示这个页面 -->
+      <template v-if="tabsObj.activeTab=='courseHomework'">
         <el-collapse @change="handleChange">
-          <FileDownloadCard v-for="(homeworkItem,index) in homeworkList" :key="index" :index="index" :comptype="comptype"
-            :homeworkItem="homeworkItem" :srcPrefix="homeworkInterface.prefix+homeworkInterface.downLoad" />
+          <FileDownloadCard v-for="(homeworkItem,index) in homeworkList" :key="index" :index="index"
+            :comptype="comptype" :homeworkItem="homeworkItem"
+            :srcPrefix="homeworkInterface.prefix+homeworkInterface.downLoad" />
         </el-collapse>
-
       </template>
-
+      <!-- 是打卡记录时就是这个页面 -->
+      <template v-if="tabsObj.activeTab=='courseClockAnsweringQuestions'">
+        <el-row :gutter="20">
+          <el-button class="clockInStyle" size="small" type="success" @click="clockInButton">打卡</el-button>
+          <div id="clockTime">{{clockInDate}}</div>
+        </el-row>
+      </template>
     </template>
   </DetailView>
 </template>
@@ -69,11 +73,10 @@
         resFileName: '',//当前播放的视频
         isNotClickCourse: false,//是否可以切换课程，放置多次快速点击多次发送请求
         tabsObj: {
-          tabsPage: ['courseLearn', 'courseHomework'],
+          tabsPage: ['courseLearn', 'courseHomework', 'courseClockAnsweringQuestions'],
           activeTab: 'courseLearn',///进入页面时课程页面高亮
-          showType: true,//true表示展示courseLearn页面，false表示展示courseHomework页面
         },
-        comptype:'student',//用来表示这是展示学生的下载组件
+        comptype: 'student',//用来表示这是展示学生的下载组件
 
       }
     },
@@ -133,6 +136,22 @@
       },
       handleChange() { }
     },
+    computed: {
+      //获取当前时间并格式化
+      clockInDate() {
+        let currentDate = new Date();// 创建Date对象并获取当前日期
+        // 获取当前年份、月份和日期
+        let year = currentDate.getFullYear();
+        let month = currentDate.getMonth() + 1; 
+        let date = currentDate.getDate();
+        // 将月份和日期转换为字符串，并在必要时在前面添加0
+        month = (month < 10 ? "0" : "") + month;
+        date = (date < 10 ? "0" : "") + date;
+        // 将年份、月份和日期拼接为 yyyy-MM-dd 格式的字符串
+        let formattedDate = year + "-" + month + "-" + date;
+        return formattedDate;
+      }
+    },
 
     mounted() {
       this.loadData();
@@ -161,5 +180,11 @@
   ::v-deep .el-page-header__content {
     height: 45px;
     line-height: 45px;
+  }
+  /* 时间展示的样式 */
+  #clockTime{
+    float: right;
+    background-color: #67c23a;
+    color:white;
   }
 </style>

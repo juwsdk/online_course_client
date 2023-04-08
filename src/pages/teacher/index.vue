@@ -1,32 +1,110 @@
 <template lang="">
   <div>
-    <el-descriptions title="教师信息"  :labelStyle="{ fontSize: '16px',color:'#434863' }" :contentStyle="{ fontSize: '14px' }" >
+    <!-- 教师个人信息描述 -->
+    <el-descriptions title="教师信息" :labelStyle="{ fontSize: '16px',color:'#434863' }"
+      :contentStyle="{ fontSize: '14px' }">
       <template slot="extra">
-        <el-button type="primary" size="small">修改</el-button>
+        <el-button type="primary" size="small" @click="alertteacherInfo">修改</el-button>
+        <!-- 修改教师信息对话框 -->
+        <el-dialog title="修改个人信息" :visible.sync="dialogVisible" width="450px">
+          <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="教师名">
+              <el-input v-model="form.teacherName"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="form.teacherPassword" type="password" show-password></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+              <template>
+                <el-radio v-model="form.teacherGender" label="男">男</el-radio>
+                <el-radio v-model="form.teacherGender" label="女">女</el-radio>
+              </template>
+            </el-form-item>
+            <el-form-item label="生日">
+              <el-date-picker v-model="form.teacherBirthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="电话号码">
+              <el-input v-model="form.teacherPhonenum" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+              <el-input v-model="form.teacherEmail" type="email"></el-input>
+            </el-form-item>
+            <el-form-item label="地址">
+              <el-input v-model="form.teacherAddress"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer">
+            <el-button type="success" size="small" @click="submitInfo"
+              style="float: left;margin-left: 100px;">修改</el-button>
+            <el-button type="warning" size="small" @click="handleDialogClose"
+              style="margin-right: 100px;">取消</el-button>
+          </span>
+        </el-dialog>
       </template>
-      <el-descriptions-item label="教师名">kooriookami</el-descriptions-item>
-      <el-descriptions-item label="教授课程数"></el-descriptions-item>
-      <el-descriptions-item label="选课人数">苏州市</el-descriptions-item>
-      <el-descriptions-item label="教授的课程">课程</el-descriptions-item>
+      <el-descriptions-item label="教师名">{{teacherInfo.teacherName}}</el-descriptions-item>
+      <el-descriptions-item label="教授课程数">{{courses.length}}</el-descriptions-item>
+      <el-descriptions-item label="选课人数">{{studentCount}}</el-descriptions-item>
+      <el-descriptions-item label="教授的课程">
+        {{coursesNames}}
+      </el-descriptions-item>
     </el-descriptions>
     <el-button type="success" size="mini" @click="addCourse">新增课程</el-button>
-    <CourseTable :tableInterfce="aTableInterface" :tableInfo="tableInfo" :showAlters="showAlters">
-      <template v-slot:selectOneG>
-        <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
-          :key="index">
-        </el-option>
-      </template>
-      <template v-slot:atablecol>
-        <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
-          :prop="tableprop" sortable />
-        </el-table-column>
-      </template>
-    </CourseTable>
+    <!-- 新增课程对话框 -->
+    <template>
+      <el-dialog title="新增课程" :visible.sync="dialogVisibleCourse" width="450px">
+        <el-form ref="courseform" :model="courseform" label-width="80px">
+          <el-form-item label="教师id">
+            <el-input v-model="courseform.teacherId=teacherId" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="课程名">
+            <el-input v-model="courseform.courseName" type="number"></el-input>
+          </el-form-item>
+          <el-form-item label="课程描述">
+            <el-input v-model="courseform.courseInfo" type="textarea" autosize></el-input>
+          </el-form-item>
+          <el-form-item label="课程图片">
+            <el-upload action="#" list-type="picture-card" :on-remove="handleImageRemove"
+              :on-preview="handleImagePreview" :auto-upload="false" :limit="1" :on-change="handleImageChange">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dataImage.dialogVisible">
+              <img width="100%" :src="dataImage.dialogImageUrl" class="el-upload-list__item-thumbnail" alt="">
+            </el-dialog>
+          </el-form-item>
+        </el-form>
+        <span slot="footer">
+          <el-button type="success" size="small" @click="submitInfoCourse"
+            style="float: left;margin-left: 100px;">提交</el-button>
+          <el-button type="warning" size="small" @click="dialogVisibleCourse=false"
+            style="margin-right: 100px;">取消</el-button>
+        </span>
+      </el-dialog>
+    </template>
+    <div class="chartBodyStyle">
+      <v-chart class="pieChartStyle" autoresize :option="teacherChartOptions" />
+      <div>放置一个表格</div>
+      <!-- <CourseTable class="pieChartStyle" :tableInterfce="aTableInterface" :tableInfo="tableInfo"
+        :showAlters="showAlters">
+        <template v-slot:selectOneG>
+          <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
+            :key="index">
+          </el-option>
+        </template>
+        <template v-slot:atablecol>
+          <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
+            :prop="tableprop" sortable />
+          </el-table-column>
+        </template>
+      </CourseTable> -->
+    </div>
+
   </div>
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import { teacherFindStudetTable } from '@/api/teacherTableData';
+  // import { teacherFindStudetTable } from '@/api/teacherTableData';
+  import axios from '@/api';
   import teacherMangeStudent from '@/api/teacherInterface';
   export default {
     name: 'TeacherIndex',
@@ -35,22 +113,129 @@
     },
     data() {
       return {
-        tableInfo: teacherFindStudetTable,
-        aTableInterface: teacherMangeStudent,
-        teacherId: '',
+        // tableInfo: teacherFindStudetTable,//表格的信息配置
+        // aTableInterface: teacherMangeStudent,//表格的访问接口
+        teacherMangeStudent,//后端接口
+        teacherId: '6120101',
+        teacherInfo: {},
+        form: {},//修改的信息
+        courseform: {},//新增的课程信息放在这
+        studentCount: 0,//教授学生数
+        courses: {},//教授的课程
+        teacherCourses: [],//教授的课程
         showAlters: false,//告诉表格子组件不展示修改新增功能
+        dialogVisible: false,//是否显示dialog修改个人信息
+        dialogVisibleCourse: false,//是否显示修改课程信息的对话框
+        dataImage: { dialogImageUrl: '', dialogVisible: false, fileItem: {} },//图片上传框
+        //展示教师教授课程选课人数的饼图
+        teacherChartOptions: {
+          title: { text: '选课人数统计' },
+          legend: {},
+          color: ['#91cc75', '#f36969'],
+          tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+          xAxis: [{ type: 'category', axisTick: { alignWithLabel: true } }],
+          yAxis: [{ type: 'value' }],
+          series: [{ type: 'bar', name: '选课人数' }],
+          dataset: { source: [['语文', 3], ['数学', 4], ['C', 6], ['人工', 1], ['语s文', 3], ['数z学', 4], ['Cz', 6], ['人z工', 1]] }
+        }
       }
     },
+    computed: {
+      //显示课程名字到页面
+      coursesNames() {
+        let names = '';
+        if (this.courses != null && this.courses.length > 0)
+          this.courses.forEach(courseOne => {
+            names = names + courseOne.courseName + ' ';
+          });
+        return names;
+      },
+
+    },
     methods: {
+      loadData() {
+        //拿到教师信息
+        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherId + this.teacherMangeStudent.teacherOne)
+          .then(res => {
+            this.teacherInfo = res.data;//拿到教师的信息
+          })
+          .catch(err => {
+            console.error(err);
+          });
+        //拿到教授课程数
+        axios.get(this.teacherMangeStudent.prefix + '/' + this.teacherId + this.teacherMangeStudent.countObj)
+          .then(res => {
+            console.log(res);
+            this.studentCount = res.data;
+            // console.log(this.teacherMangeStudent);
+            // console.log(res)
+          })
+          .catch(err => {
+            console.error(err);
+            // console.log('2222222222');
+            // console.log(this.teacherMangeStudent);
+          });
+        //拿到教授的课程
+        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherId + this.teacherMangeStudent.teacherList)
+          .then(res => {
+            console.log(res);
+            this.courses = res.data;
+            // console.log(res.data);
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
+      //修改教师信息
+      alertteacherInfo() {
+        this.form = this.teacherInfo;
+        this.dialogVisible = true;
+      },
+      //提交教师修改表单
+      submitInfo() {
+
+      },
+      //#region 图片处理策略
+      //删除要修改的图片
+      handleImageRemove(file) {
+        this.dataImage.fileItem = {};
+      },
+      //查看图片时
+      handleImagePreview(file) {
+        this.dataImage.dialogImageUrl = file.url;
+        this.dataImage.dialogVisible = true;
+      },
+      //当新加入图片时
+      handleImageChange(file) {
+        this.dataImage.fileItem = file;
+      },
+      //取消，关闭对话框
+      handleDialogClose() {
+        this.dialogVisible = false;
+      },
+      //增加课程
+      addCourse() {
+        this.dialogVisibleCourse = true;
+      },
+      //提交修改的课程信息
+      submitInfoCourse() {
+        console.log(this.courseform);
+      },
+      //#endregion 图片处理策略
       //拼接前缀
-      assembleUrl() {
+      /* assembleUrl(){//拼接访问路径
+        this.teacherId = this.aTableInterface.tableList;
+        console.log(this.teacherId);
+        this.$set(this.aTableInterface,'tableList','/6120101' + this.aTableInterface.tableList);
+      } */
+      /* assembleUrl() {
         console.log(this.aTableInterface);
         // console.log('=============================');
         this.teacherId = this.aTableInterface.tableList;
         console.log(this.teacherId);
         this.aTableInterface.tableList = '/6120101' + this.aTableInterface.tableList;
       },
-      //请求教师信息
+      // //请求教师信息
       loadData(){
         axios.get("",params)
         .then(res => {
@@ -59,21 +244,37 @@
         .catch(err => {
           console.error(err); 
         })
-      },
-      addCourse(){
-        //增加课程
-      }
+      }, */
+
     },
     created() {
-      this.assembleUrl()
+      // this.assembleUrl();
+    },
+    mounted() {
+      this.loadData();
     },
     destroyed() {
-      this.aTableInterface.tableList = this.teacherId;
+      // this.aTableInterface.tableList = this.teacherId;
     },
   }
 </script>
 <style scoped>
-  .descriptionStyle{
+  .descriptionStyle {
     font-size: 20px;
+  }
+
+  .chartBodyStyle {
+    margin-top: 10px;
+    height: calc(100vh - 270px);
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    /* background-image: linear-gradient(135deg,#5b247a,#1bcedf); */
+  }
+
+  .pieChartStyle {
+    width: 50%;
+    height: 100%;
+
   }
 </style>

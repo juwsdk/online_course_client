@@ -32,7 +32,7 @@
               <el-input v-model="form.studentEmail" type="email"></el-input>
             </el-form-item>
             <el-form-item label="地址">
-              <el-input v-model="form.studentAdress"></el-input>
+              <el-input v-model="form.studentAddress"></el-input>
             </el-form-item>
           </el-form-item>
         </template>
@@ -61,7 +61,7 @@
             <el-input v-model="form.teacherEmail" type="email"></el-input>
           </el-form-item>
           <el-form-item label="地址">
-            <el-input v-model="form.teacherAdress"></el-input>
+            <el-input v-model="form.teacherAddress"></el-input>
           </el-form-item>
         </template>
         <!-- 功能按钮 -->

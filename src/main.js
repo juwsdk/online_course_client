@@ -6,8 +6,13 @@ import router from './router';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/global.css'
 import axios from 'axios';
-
+import * as echarts from 'echarts';
+import VueEcharts from 'vue-echarts';
+//关闭生产提示
 Vue.config.productionTip = false;
+//将echarts挂载到vue原型上去
+Vue.component('v-chart',VueEcharts);
+Vue.prototype.$echarts=echarts;
 //使用elementui,VueRouter,axios
 Vue.use(VueRouter).use(ElementUI);
 Vue.prototype.$http=axios;

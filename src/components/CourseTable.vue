@@ -172,7 +172,7 @@
       if(this.loading==true)
        this.timerId=setInterval(()=>{
         this.loadData();
-       },5000);//没有请求到数据,则开启定时器
+       },10000);//没有请求到数据,则开启定时器
     },
     beforeDestroy() {
       

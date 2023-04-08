@@ -3,12 +3,13 @@
     <div id="loginMain">
       <div class="block">
         <span class="demonstration">选择登录类型</span>
-        <el-slider v-model="chooseModle" :step="10" :max="20" show-stops :marks="marks" @change="handleModleChange"
-          class="el-slider">
+        <el-slider :show-tooltip="false" v-model="chooseModle" :step="10" :max="20" show-stops :marks="marks"
+          @change="handleModleChange" class="el-slider">
         </el-slider>
       </div>
 
       <el-form ref="form" :model="form">
+        <!-- 学生登录 -->
         <template v-if="chooseModle==0">
           <el-form-item label="学号">
             <el-input v-model="form.studentId"></el-input>
@@ -17,7 +18,7 @@
             <el-input v-model="form.studentPassword" type="password"></el-input>
           </el-form-item>
         </template>
-
+        <!-- 教师登录 -->
         <template v-if="chooseModle==10">
           <el-form-item label="教师号">
             <el-input v-model="form.teacherId"></el-input>
@@ -26,6 +27,7 @@
             <el-input v-model="form.teacherPassword" type="password"></el-input>
           </el-form-item>
         </template>
+        <!-- 管理员登录 -->
         <template v-if="chooseModle==20">
           <el-form-item label="管理员号">
             <el-input v-model="form.admId"></el-input>
@@ -98,12 +100,13 @@
     background: linear-gradient(135deg, #ffcf71, #2376dd);
     border-radius: 5px;
   }
+
   /* 修改el-slider样式 */
   ::v-deep .el-slider__bar {
     background-image: linear-gradient(to right, blue, cyan);
   }
 
   ::v-deep .el-slider__runway {
-    background-image: linear-gradient(to left,#42e695,#3bb2b8);
+    background-image: linear-gradient(to left, #42e695, #3bb2b8);
   }
 </style>

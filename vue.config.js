@@ -3,13 +3,11 @@ module.exports = defineConfig({
   transpileDependencies: true,
   pages:{
     index:{
-      //入口
-      entry:'src/main.js'
+      entry:'src/main.js' //入口
     }
   },
   lintOnSave:false,//关闭语法检查
   devServer:{
-    //设置启动端口
-    port:8088
+    port:8088 //设置启动端口
   }
 })
