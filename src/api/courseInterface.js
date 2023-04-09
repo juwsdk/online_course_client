@@ -1,11 +1,13 @@
 //课程访问的后端接口
+const prefix="/course";
+
 const courseSelectInterface={
-  "prefix":"/course",
+  prefix,
   "courseList":"/courseList",
   "courseDetail":"/courseSelectDetail"
 };
 const courseInfoInterface={
-  "prefix":"/course",
+  prefix,
   "courseList":"/31201900/courseList",
   "courseDetail":"/courseList"
 };

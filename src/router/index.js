@@ -1,9 +1,8 @@
 //导入路由
 import VueRouter from 'vue-router';
 //导入页面
-import MyIndex from '@/pages/MyIndex';
+import MyIndex from '@/pages/';
 import CourseLayout from '@/layout/';
-import HomeWork from '@/pages/HomeWork';
 import Course from './course'
 import Manage from './manage';
 import Teacher from './teacher'
@@ -26,7 +25,7 @@ const router = new VueRouter({
       path: '/',
       redirect: '/myindex',
       component: CourseLayout,
-      meta: { title: '主页', icon: 'el-icon-s-home' },
+      meta: { title: '主页', icon: 'el-icon-s-home',requiresAuth:true},
       children: [
         {
           name: 'myindex',
@@ -37,27 +36,19 @@ const router = new VueRouter({
         Course,//课程路由
         Manage,//管理路由
         Teacher,//教师路由
-        //作业路由
-        {
-          name: 'homework',
-          path: '/homework',
-          component: HomeWork,
-          meta: { title: '作业', icon: 'el-icon-notebook-1' }
-        },
-
       ]
     },
     //注册页面
     {
-      name:'register',
-      path:'/register',
-      component:Register,
-      meta:{title:'注册',icon:''}
+      name: 'register',
+      path: '/register',
+      component: Register,
+      meta: { title: '注册', icon: '' }
     }
 
   ]
 });
-//全局前置路由守卫
+//全局前置路由守卫，对路由进行拦截
 router.beforeEach((to, from, next) => {
   next();
 })

@@ -24,7 +24,10 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 添加组件
+```js
 npm i vue-router@3
 npm i element-ui -S
 npm install axios
 npm install echarts vue-echarts
+npm i vuex@3
+```

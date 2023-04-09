@@ -61,6 +61,6 @@
 <style scoped>
   .myCourseCards {
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
   }
 </style>

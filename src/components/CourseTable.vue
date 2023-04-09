@@ -69,7 +69,7 @@
     components: {
       CourseSearchBar
     },
-    props: ['tableInterfce', 'form', 'showAlters'],//获取api接口
+    props: ['tableInterfce', 'form', 'showAlters','parentPageSize'],//获取api接口
     data() {
       return {
         tableData: [],
@@ -173,6 +173,9 @@
        this.timerId=setInterval(()=>{
         this.loadData();
        },10000);//没有请求到数据,则开启定时器
+       //父组件是否传递了自定义一页多少数据显示
+       if(this.parentPageSize!=null && typeof this.pageSize!='undefined')
+        this.pageSize=this.parentPageSize;
     },
     beforeDestroy() {
       

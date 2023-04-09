@@ -83,9 +83,9 @@
     </template>
     <div class="chartBodyStyle">
       <v-chart class="pieChartStyle" autoresize :option="teacherChartOptions" />
-      <div>放置一个表格</div>
-      <!-- <CourseTable class="pieChartStyle" :tableInterfce="aTableInterface" :tableInfo="tableInfo"
-        :showAlters="showAlters">
+      <!-- <div>放置一个表格</div> -->
+      <CourseTable class="pieChartStyle" :tableInterfce="aTableInterface" :tableInfo="tableInfo"
+        :showAlters="showAlters" :parentPageSize="parentPageSize">
         <template v-slot:selectOneG>
           <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
             :key="index">
@@ -96,14 +96,14 @@
             :prop="tableprop" sortable />
           </el-table-column>
         </template>
-      </CourseTable> -->
+      </CourseTable>
     </div>
 
   </div>
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  // import { teacherFindStudetTable } from '@/api/teacherTableData';
+  import { teacherFindStudetTable } from '@/api/teacherTableData';
   import axios from '@/api';
   import teacherMangeStudent from '@/api/teacherInterface';
   export default {
@@ -113,10 +113,10 @@
     },
     data() {
       return {
-        // tableInfo: teacherFindStudetTable,//表格的信息配置
-        // aTableInterface: teacherMangeStudent,//表格的访问接口
+        tableInfo: teacherFindStudetTable,//表格的信息配置
+        aTableInterface: teacherMangeStudent,//表格的访问接口
         teacherMangeStudent,//后端接口
-        teacherId: '6120101',
+        teacherId: this.$store.state.teacherId,
         teacherInfo: {},
         form: {},//修改的信息
         courseform: {},//新增的课程信息放在这
@@ -136,8 +136,9 @@
           xAxis: [{ type: 'category', axisTick: { alignWithLabel: true } }],
           yAxis: [{ type: 'value' }],
           series: [{ type: 'bar', name: '选课人数' }],
-          dataset: { source: [['语文', 3], ['数学', 4], ['C', 6], ['人工', 1], ['语s文', 3], ['数z学', 4], ['Cz', 6], ['人z工', 1]] }
-        }
+          dataset: { source: [] }
+        },
+        parentPageSize:5//要请求的页数范围
       }
     },
     computed: {
@@ -153,9 +154,10 @@
 
     },
     methods: {
+      //#region 教师相关操作
       loadData() {
         //拿到教师信息
-        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherId + this.teacherMangeStudent.teacherOne)
+        axios.post(this.teacherMangeStudent.prefix + '/' +  this.teacherMangeStudent.teacherOne)
           .then(res => {
             this.teacherInfo = res.data;//拿到教师的信息
           })
@@ -163,7 +165,7 @@
             console.error(err);
           });
         //拿到教授课程数
-        axios.get(this.teacherMangeStudent.prefix + '/' + this.teacherId + this.teacherMangeStudent.countObj)
+        axios.get(this.teacherMangeStudent.prefix + '/' +   this.teacherMangeStudent.countObj)
           .then(res => {
             console.log(res);
             this.studentCount = res.data;
@@ -176,7 +178,7 @@
             // console.log(this.teacherMangeStudent);
           });
         //拿到教授的课程
-        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherId + this.teacherMangeStudent.teacherList)
+        axios.post(this.teacherMangeStudent.prefix + '/' +   this.teacherMangeStudent.teacherList)
           .then(res => {
             console.log(res);
             this.courses = res.data;
@@ -195,6 +197,7 @@
       submitInfo() {
 
       },
+      //#endregion 教师相关操作
       //#region 图片处理策略
       //删除要修改的图片
       handleImageRemove(file) {
@@ -222,29 +225,21 @@
         console.log(this.courseform);
       },
       //#endregion 图片处理策略
-      //拼接前缀
-      /* assembleUrl(){//拼接访问路径
-        this.teacherId = this.aTableInterface.tableList;
-        console.log(this.teacherId);
-        this.$set(this.aTableInterface,'tableList','/6120101' + this.aTableInterface.tableList);
-      } */
-      /* assembleUrl() {
-        console.log(this.aTableInterface);
-        // console.log('=============================');
-        this.teacherId = this.aTableInterface.tableList;
-        console.log(this.teacherId);
-        this.aTableInterface.tableList = '/6120101' + this.aTableInterface.tableList;
-      },
-      // //请求教师信息
-      loadData(){
-        axios.get("",params)
+      //#region 统计表信息请求
+      loadStatisticsData(){
+        axios.post(this.teacherMangeStudent.prefix + '/' +  this.teacherMangeStudent.countCourseStudent)
         .then(res => {
-          console.log(res)
+          // console.log(res);
+          //将数据加入到统计表中 ['语文', 3], ['数学', 4], ['C', 6], ['人工', 1], ['语s文', 3], ['数z学', 4], ['Cz', 6], ['人z工', 1]
+          res.data.forEach(course => {
+            this.teacherChartOptions.dataset.source.push([course.name,course.res]);
+          });
         })
         .catch(err => {
           console.error(err); 
         })
-      }, */
+      }
+      //#endregion 统计表信息请求
 
     },
     created() {
@@ -252,9 +247,10 @@
     },
     mounted() {
       this.loadData();
+      this.loadStatisticsData();
     },
     destroyed() {
-      // this.aTableInterface.tableList = this.teacherId;
+      
     },
   }
 </script>

@@ -2,8 +2,8 @@
   <el-header class="myheader">
     <el-row>
       <el-col :span="1" :offset="0">
-        <i v-if="!isCollapse" class="el-icon-s-fold" @click="changeMenu"></i>
-        <i v-if="isCollapse" class="el-icon-s-unfold" @click="changeMenu"></i>
+        <i v-if="!isCollapse" class="el-icon-s-fold myCollapse" @click="changeMenu"></i>
+        <i v-if="isCollapse" class="el-icon-s-unfold myCollapse" @click="changeMenu"></i>
       </el-col>
       <el-col :span="4" class="item">网课管理系统<div class="grid-content bg-purple"></div></el-col>
       <el-col :span="4" :push="15" class="item">
@@ -46,7 +46,12 @@
     min-width: 400px;
     border-bottom: 1px solid lightgray;
     padding-left: 0;
+    height: 60px;
 
+  }
+  .myCollapse{
+    line-height: 60px;
+    text-align: center;
   }
 
   .el-row {

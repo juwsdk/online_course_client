@@ -34,7 +34,7 @@
   </DetailView>
 </template>
 <script>
-  import DetailView from '@/layout/CourseDetail';
+  import DetailView from '@/layout/coursedetail';
   export default {
     name: 'TCourseMangeDeta',
     components: {

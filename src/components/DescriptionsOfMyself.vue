@@ -8,27 +8,28 @@
         <i class="el-icon-user"></i>
         用户名
       </template>
-      kooriookami
+      <span>kooriookami</span>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
         <i class="el-icon-user"></i>
-        密码
+        密码 
       </template>
+     <span> ****************</span>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
         <i class="el-icon-mobile-phone"></i>
         手机号
       </template>
-      18100000000
+      <span>18100000000</span>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
         <i class="el-icon-location-outline"></i>
         居住地
       </template>
-      苏州市
+      <span>苏州市</span>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
@@ -42,7 +43,7 @@
         <i class="el-icon-office-building"></i>
         联系地址
       </template>
-      江苏省苏州市吴中区吴中大道 1188 号
+      <span>江苏省苏州市吴中区吴中大道 1188 号</span>
     </el-descriptions-item>
   </el-descriptions>
 </template>

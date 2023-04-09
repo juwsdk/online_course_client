@@ -1,4 +1,4 @@
-import TeacherIndex from '@/pages/teacher';
+import TeacherIndex from '@/pages/teacher/';
 import TCourseMange from '@/pages/teacher/TCourseMange';
 import TCourseMangeDeta from '@/pages/teacher/TCourseMangeDetail';
 import HomWAssCorrect from '@/pages/teacher/teacherDetail/THomeworkCrrect';
@@ -10,7 +10,7 @@ export default {
   name: 'teacher',
   path: '/teacher',
   component: { render: (e) => e("keep-alive",[e("router-view")]) },
-  meta: { title: '学员管理', icon: 'el-icon-menu' },
+  meta: { title: '学员管理', icon: 'el-icon-menu', requiresAuth: true, role: 'teacher' },
   children: [
     {
       name: 'teaIndex',

@@ -1,7 +1,7 @@
 <template lang="">
   <el-aside class="myside" :style="contentStyle">
-    <el-menu :collapse="isCollapse" router text-color="#FFF" background-color="rgba(22, 131, 122,0)"
-      style="/*width: 150px;*/" default-active="1" class="elMenuVertical" :style="contentStyle">
+    <el-menu :collapse="isCollapse" router text-color="#FFF"  default-active="1"
+      class="elMenuVertical" :style="contentStyle" background-color="rgba(22, 131, 122,0)">
       <!-- 递归渲染 menuList -->
       <template v-for="(menuitem,index) of menuList">
 
@@ -95,6 +95,7 @@
   .elMenuVertical:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
+    /* background-color: transparent; */
   }
 
   /* 设置折叠展开动画 */
@@ -129,4 +130,12 @@
     color: white !important;
     background-color: #4b5a70 !important;
   }
+
+  .el-menu--vertical .el-menu-item-group{
+    animation-play-state: paused; /*  取消动画 */
+    background-color:   rgba(66, 79, 99,.8);
+    backdrop-filter: blur(10px);/* 模糊半径为10像素 */
+   
+  }
+
 </style>

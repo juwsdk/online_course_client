@@ -3,12 +3,15 @@ import CourseSelect from '@/pages/course/CourseSelect';
 import CourseSta from '@/pages/course/CourseSta';
 import CoursesDetail from '@/pages/course/CoursesDetail';
 import CourseSelectDetail from '@/pages/course/CourseSelectDetail';
+import MySche from '@/pages/course/MySche';
 export default {
   //课程路由
   name: 'path',
   path: '/course',
   component: { render: (e) => e("router-view") },
-  meta: { title: '课程管理', icon: 'el-icon-menu' },
+  meta: {
+    title: '课程管理', icon: 'el-icon-menu', requiresAuth: true, role: 'student'
+  },
   // redirect:'/course/courses',
   children: [
     {
@@ -16,14 +19,14 @@ export default {
       path: 'mycourse',
       component: { render: (e) => e("router-view") },
       meta: { title: '课程', icon: 'el-icon-monitor' },
-      redirect:'/course/mycourse/courses',
+      redirect: '/course/mycourse/courses',
       children: [
         {
           // 展示所有教学视频
-          name:'courses',
-          path:'courses',
-          component:Courses,
-          meta:{ title: '', icon: '' }
+          name: 'courses',
+          path: 'courses',
+          component: Courses,
+          meta: { title: '', icon: '' }
         },
         {
           // 根据卡片取出哪一个教学视频
@@ -37,16 +40,16 @@ export default {
     {
       name: 'course-selects',
       path: 'courseselects',
-      component: { render: (e) => e("keep-alive",[e("router-view")]) }, //缓存路由
+      component: { render: (e) => e("keep-alive", [e("router-view")]) }, //缓存路由
       meta: { title: '课程选择', icon: 'el-icon-reading' },
-      redirect:'/course/courseselects/courseselect',
+      redirect: '/course/courseselects/courseselect',
       children: [
         {
           // 展示所有教学视频
-          name:'course-select',
-          path:'courseselect',
-          component:CourseSelect,
-          meta:{ title: '', icon: '' }
+          name: 'course-select',
+          path: 'courseselect',
+          component: CourseSelect,
+          meta: { title: '', icon: '' }
         },
         {
           // 根据卡片取出哪一个教学视频
@@ -63,6 +66,12 @@ export default {
       path: 'coursesta',
       component: CourseSta,
       meta: { title: '课程信息统计', icon: 'el-icon-s-data' }
+    },
+    {
+      name: 'plan',
+      path: 'plan',
+      component: MySche,
+      meta: { title: '我的计划', icon: 'el-icon-date' }
     }
   ]
 }

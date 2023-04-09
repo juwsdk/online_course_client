@@ -6,7 +6,7 @@ export default{
     name:'manage',
     path:'/manage',
     component: {render: (e) => e("keep-alive",[e("router-view")])}, //缓存路由
-    meta:{title:'信息管理',icon:'el-icon-menu'},
+    meta:{title:'信息管理',icon:'el-icon-menu', requiresAuth: true, role: 'admin'},
     children:[
       {
         name:'manage-op',

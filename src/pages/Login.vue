@@ -63,11 +63,21 @@
     },
     methods: {
       onSubmit() {
+        if (this.chooseModle == 0) {//是学生登录
+
+        } else if (this.chooseModle == 10) {//是教师登录
+
+        } else if (this.chooseModle == 20) {//是管理员登录
+
+        } else {
+          this.$message.$warning('非法用户!');
+          return;
+        }
         console.log('submit!');
         this.$router.push('/myindex');
       },
       toRegister() {
-        this.$router.push('/register')
+        this.$router.push('/register');
       },
       handleModleChange() {
         this.form = {};
@@ -99,6 +109,7 @@
     height: 300px;
     background: linear-gradient(135deg, #ffcf71, #2376dd);
     border-radius: 5px;
+    /* backdrop-filter: blur(20px); */
   }
 
   /* 修改el-slider样式 */
