@@ -15,6 +15,7 @@
 </template>
 <script>
   import axios from '@/api';
+  
   export default {
     name: 'CourseSta',
     data() {
@@ -73,6 +74,7 @@
           .catch(err => {
             console.error(err);
           });
+          
       },
     },
     mounted() {

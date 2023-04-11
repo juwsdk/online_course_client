@@ -52,6 +52,7 @@
 
 </template>
 <script>
+  import { mapActions } from 'vuex';
   export default {
     name: 'Login',
     data() {
@@ -62,18 +63,22 @@
       }
     },
     methods: {
+      ...mapActions({ saveId: 'setId', setLoginType: 'setLoginType', setIsAuth: 'setIsAuth' }),//通过生成acitions中的方法来操作 id
       onSubmit() {
+        //判断登录类型
         if (this.chooseModle == 0) {//是学生登录
-
+          this.setLoginType('student');
         } else if (this.chooseModle == 10) {//是教师登录
-
+          this.setLoginType('teacher');
         } else if (this.chooseModle == 20) {//是管理员登录
-
+          this.setLoginType('admin');
         } else {
           this.$message.$warning('非法用户!');
           return;
         }
-        console.log('submit!');
+        //设置为授权状态
+        this.setIsAuth(true);
+        // console.log('submit!');
         this.$router.push('/myindex');
       },
       toRegister() {
@@ -119,5 +124,12 @@
 
   ::v-deep .el-slider__runway {
     background-image: linear-gradient(to left, #42e695, #3bb2b8);
+  }
+
+  ::v-deep .el-slider__marks-text,
+  ::v-deep .el-form-item__label,
+  .demonstration {
+    color: white;
+    font-weight: bold;
   }
 </style>

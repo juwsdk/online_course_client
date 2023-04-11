@@ -33,6 +33,7 @@
 </template>
 <script>
   import router from '@/router';
+  import { mapGetters } from 'vuex';
   export default {
     name: 'CourseSider',
     props: ['isCollapse'],//父传子,控制折叠
@@ -69,21 +70,26 @@
             if (route.children) {
               menu.children = this.getMenuList(route.children).flat();//flat合并为单层数组
             }
-            menuList.push(menu);
+            //根据route设置的角色和登录的角色信息对比,如果角色匹配则只生成角色相关的路由
+            // if(route.meta.role==this.getLoginType || route.meta.role=='all')
+              menuList.push(menu);
           }
         });
         return menuList;
       },
     },
     computed: {
+      //用来转换折叠和非折叠状态的样式
       contentStyle() {
         return this.isCollapse ? { width: '60px' } : { width: '200px' };
       },
+      //获取vuex中的getters
+      ...mapGetters({getLoginType:'getLoginType'})
     },
     mounted() {
       // console.log( router.options.routes);
-      this.menuList = this.getMenuList(router.options.routes[1].children);
-      console.log(router.options.routes[1].children);
+      this.menuList = this.getMenuList(router.options.routes[2].children);
+      console.log(router.options.routes[2].children);
       // console.log('---------------------------\n');
       // console.log(this.menuList);
       // console.log(JSON.stringify(this.menuList))

@@ -51,10 +51,10 @@
           // console.log(fileItem);
           //使用formdata封装数据
           let formData = new FormData();
-          formData.append('fileName', fileItem.name);
+          formData.append('resFileName', fileItem.name);
           formData.append('fileRaw', fileItem.raw);
-          formData.append('episode', fileItem.episode);
-          formData.append('alias', fileItem.alias);
+          formData.append('resBlues', fileItem.episode);
+          formData.append('resVideoName', fileItem.alias);
           //发送axios请求,上传数据
           axios.post("/video/upload", formData, {
             headers: {
@@ -82,7 +82,6 @@
       handleRemove(file) {
         const fileList = this.fileList.filter(item => item !== file);
         this.fileList = fileList;
-        // console.log(this.fileList);
       },
       //关闭了自带的文件查看，这里没有作用
       handlePreview(file) {
@@ -107,6 +106,7 @@
         } else {
           // 新文件，添加到已上传文件列表
           const index = fileList.indexOf(file);
+          this.$set(file,'resVideoName',file.name);
           this.$set(file, 'episode', index + 1);
           this.$set(file, 'alias', file.name.trim().split('.')[0]);
           this.fileList.push(file);

@@ -9,7 +9,7 @@
     </CourseSearchBar>
 
     <!-- 功能按钮 -->
-    <div style="margin: 10px;" v-if="showAlter">
+    <div style="margin: 10px;" v-if="showAlters && showOptions">
       <el-row>
         <el-col :span="1" :offset="0">
           <el-button type="primary" size="mini" @click="handleAdd" :disabled="loading">新增</el-button>
@@ -29,9 +29,9 @@
       <!-- 放置单元格 -->
       <slot name="atablecol"></slot>
       <!-- 功能操作区 -->
-      <el-table-column label="操作">
+      <el-table-column label="操作" v-if="showOptions">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" v-if="showAlter">编辑</el-button>
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" v-if="showAlters">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -69,7 +69,14 @@
     components: {
       CourseSearchBar
     },
-    props: ['tableInterfce', 'form', 'showAlters','parentPageSize'],//获取api接口
+    props: {//获取api接口
+      tableInterfce: { type: Object, required: true },
+      form: { type: Object, required: false },
+      showAlters: { type: Boolean, required: false, default: true },
+      showOptions: { type: Boolean, required: false, default: true },
+      parentPageSize: { type: Number, required: false, default: 10 }
+    },
+    // props: ['tableInterfce', 'form', 'showAlters','parentPageSize'],
     data() {
       return {
         tableData: [],
@@ -166,19 +173,17 @@
       }
     },
     created() {
-      if (this.showAlters == false && typeof this.showAlters != 'undefined')
-        this.showAlter = false;
+      // if (this.showAlters == false && typeof this.showAlters != 'undefined')
+      //   this.showAlter = false;
       this.loadData();
-      if(this.loading==true)
-       this.timerId=setInterval(()=>{
-        this.loadData();
-       },10000);//没有请求到数据,则开启定时器
-       //父组件是否传递了自定义一页多少数据显示
-       if(this.parentPageSize!=null && typeof this.pageSize!='undefined')
-        this.pageSize=this.parentPageSize;
+      if (this.loading == true)
+        this.timerId = setInterval(() => {
+          this.loadData();
+        }, 10000);//没有请求到数据,则开启定时器
+
     },
     beforeDestroy() {
-      
+
     },
 
   }

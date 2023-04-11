@@ -1,55 +1,51 @@
 <template lang="">
-  <div>
-
-    <el-container direction="vertical">
-      <el-header>
-        <h1>个人计划</h1>
-      </el-header>
-
-      <el-main>
-        <!-- Main content -->
-        <ul class="infinite-list" style="overflow:auto">
-          <li v-for="(item,index) in scheduleList">
-            <el-button class="file-card-delete-btn" type="text" icon="el-icon-delete" @click="handleRemove(item)"
-              style="float: right;color:#e4baba;"></el-button>
-            <div>
-              <h3>开始时间:</h3><span>{{item.start.formattedDate}}||{{item.start.formattedTime}}</span>
-            </div>
-            <div>
-              <h3>结束时间:</h3><span>{{item.end.formattedDate}}||{{item.end.formattedTime}}</span>
-            </div>
-            <div>
-              <h3>内容:</h3>{{item.info}}
-            </div>
-          </li>
-        </ul>
-      </el-main>
-      <el-footer>
-        <div id="timeBody">
-          <el-date-picker type="datetimerange" is-range v-model="scheduleItem.time" range-separator="至"
-            start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" size="mini" format="yyyy-MM-dd HH:mm"
-            :default-time="['07:00:00', '07:00:00']">
-          </el-date-picker>
-          <div id="dateFormatNowStyle">
-            {{dateFormatNow}}
+  <CommentVeiw>
+    <template v-slot:commentsHeader>
+      <h1>个人计划</h1>
+    </template>
+    <template v-slot:commentsMain>
+      <ul class="infinite-list" style="overflow:auto">
+        <li v-for="(item,index) in scheduleList">
+          <el-button class="file-card-delete-btn" type="text" icon="el-icon-delete" @click="handleRemove(item)"
+            style="float: right;color:#e4baba;"></el-button>
+          <div>
+            <h3>开始时间:</h3><span>{{item.start.formattedDate}}||{{item.start.formattedTime}}</span>
           </div>
           <div>
-            <el-button type="primary" size="small" style="float: right;height: 30px;margin: 7.5px;"
-              @click="addSche">添加</el-button>
+            <h3>结束时间:</h3><span>{{item.end.formattedDate}}||{{item.end.formattedTime}}</span>
           </div>
+          <div>
+            <h3>内容:</h3>{{item.info}}
+          </div>
+        </li>
+      </ul>
+    </template>
+    <template v-slot:commentsInput>
+      <div id="timeBody">
+        <el-date-picker type="datetimerange" is-range v-model="scheduleItem.time" range-separator="至"
+          start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" size="mini" format="yyyy-MM-dd HH:mm"
+          :default-time="['07:00:00', '07:00:00']">
+        </el-date-picker>
+        <div id="dateFormatNowStyle">
+          {{dateFormatNow}}
         </div>
         <div>
-          <el-input type="textarea" id="scheduleInput" resize="none" v-model="scheduleItem.info"></el-input>
+          <el-button type="primary" size="small" style="float: right;height: 30px;margin: 7.5px;"
+            @click="addSche">添加</el-button>
         </div>
-      </el-footer>
+      </div>
+      <div>
+        <el-input type="textarea" id="scheduleInput" resize="none" v-model="scheduleItem.info"></el-input>
+      </div>
+    </template>
+  </CommentVeiw>
 
-    </el-container>
+  
 
-
-  </div>
 </template>
 <script>
   import { dateFormatNow, datetimeFormat } from '@/utils/timeUtil';
+  import CommentVeiw from '@/layout/comments';
   export default {
     name: 'MySche',
     data() {
@@ -57,6 +53,9 @@
         scheduleList: [],
         scheduleItem: {},
       }
+    },
+    components: {
+      CommentVeiw //布局组件
     },
     methods: {
       addSche() {
@@ -121,22 +120,7 @@
   }
 </script>
 <style scoped>
-  .el-header {
-    background-image: linear-gradient(135deg, #424f63, #454263);
-    height: 60px;
-  }
-
-  .el-main {
-    /* background-color: aquamarine; */
-    border-left: #424f63 1px solid;
-    border-right: #424f63 1px solid;
-    height: calc(100vh - 360px);
-  }
-
-  .el-footer {
-    background-image: linear-gradient(135deg, #424f63, #454263);
-    height: 200px !important;
-  }
+  
 
   #timeBody {
     height: 40px;

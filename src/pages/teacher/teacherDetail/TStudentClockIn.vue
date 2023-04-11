@@ -1,11 +1,43 @@
 <template lang="">
   <div>
-    这是学生打卡页面
+    <CourseTable :tableInterfce="ATableInterface" :tableInfo="tableInfo"
+        :showOptions="showOptions">
+        <template v-slot:selectOneG>
+          <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
+            :key="index">
+          </el-option>
+        </template>
+        <template v-slot:atablecol>
+          <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
+            :prop="tableprop" sortable />
+          </el-table-column>
+        </template>
+      </CourseTable>
   </div>
 </template>
 <script>
+  import axios from '@/api';
+  import {clockInterface} from '@/api/questionInterface';
+  import {teacherFindStudentClock} from '@/api/teacherTableData';
+  import CourseTable from '@/components/CourseTable';
 export default {
   name:'TStudentClockIn',
+  components:{
+    CourseTable
+  },
+  data() {
+    return {
+      aTableInterface:clockInterface,
+      tableInfo:teacherFindStudentClock,
+      showOptions:false
+    }
+  },
+  computed:{
+    ATableInterface(){
+      this.aTableInterface.tableList='/'+this.$route.params.courseId+this.aTableInterface.tableList;
+      return this.aTableInterface;
+    }
+  }
 }
 </script>
 <style lang="">

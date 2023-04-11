@@ -4,14 +4,17 @@
       <el-page-header @back="goBack" :content="'课程详情'+$route.params.courseId">
       </el-page-header>
     </template>
-
+    <!-- 侧边栏 -->
     <template v-slot:pageAside>
-      <el-menu default-active="tStudentManage" class="el-menu-vertical-demo" style="width:200px;" @select="handleMenuItemClick">
+      <el-menu default-active="tStudentManage" class="el-menu-vertical-demo" style="width:200px;min-width: 200px;" @select="handleMenuItemClick">
         <el-menu-item index="tStudentManage">
           <span slot="title">学生管理</span>
         </el-menu-item>
         <el-menu-item index="tResSubmit">
           <span slot="title">上传资源</span>
+        </el-menu-item>
+        <el-menu-item index="tResManage">
+          <span slot="title">资源管理</span>
         </el-menu-item>
         <el-menu-item index="homeworkass">
           <span slot="title">作业布置</span>

@@ -12,28 +12,29 @@
         <template v-if="chooseModle">
           <el-form-item label="学生名">
             <el-input v-model="form.studentName"></el-input>
-            <el-form-item label="密码">
-              <el-input v-model="form.studentPassword"></el-input>
-            </el-form-item>
-            <el-form-item label="性别">
-              <template>
-                <el-radio v-model="form.studentGender" label="男">男</el-radio>
-                <el-radio v-model="form.studentGender" label="女">女</el-radio>
-              </template>
-            </el-form-item>
-            <el-form-item label="生日">
-              <el-date-picker v-model="form.studentBirthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="电话号码">
-              <el-input v-model="form.tstudentPhonenum" type="number"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱">
-              <el-input v-model="form.studentEmail" type="email"></el-input>
-            </el-form-item>
-            <el-form-item label="地址">
-              <el-input v-model="form.studentAddress"></el-input>
-            </el-form-item>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input v-model="form.studentPassword"></el-input>
+          </el-form-item>
+          <el-form-item label="性别">
+            <template>
+              <el-radio v-model="form.studentGender" label="男">男</el-radio>
+              <el-radio v-model="form.studentGender" label="女">女</el-radio>
+            </template>
+          </el-form-item>
+          <el-form-item label="生日">
+            <el-date-picker v-model="form.studentBirthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="电话号码">
+            <el-input v-model="form.tstudentPhonenum" type="number"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="form.studentEmail" type="email"></el-input>
+          </el-form-item>
+          <el-form-item label="地址">
+            <el-input v-model="form.studentAddress"></el-input>
+          </el-form-item>
           </el-form-item>
         </template>
         <!-- 教师 -->
@@ -122,10 +123,18 @@
     width: 450px;
     height: 50vh;
     background: linear-gradient(135deg, #ffcf71, #2376dd);
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
     border-radius: 5px;
     overflow-y: scroll;
+  }
+
+  ::v-deep .el-form-item__label,
+  ::v-deep span[aria-hidden="true"],
+  ::v-deep .el-radio__label {
+    color: white;
+    font-weight: bold;
+  }
+
+  ::v-deep span {
+    font-weight: bold;
   }
 </style>

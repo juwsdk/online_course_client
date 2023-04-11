@@ -8,6 +8,8 @@ import Manage from './manage';
 import Teacher from './teacher'
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
+import NotFound from '@/pages/NotFound';
+import store from '@/store';
 //创建并暴露路由
 const router = new VueRouter({
   // mode:'history',
@@ -17,7 +19,14 @@ const router = new VueRouter({
       name: 'login',
       path: '/login',
       component: Login,
-      meta: { title: '登录', icon: '' }
+      meta: { title: '登录', icon: '',requiresAuth:false }
+    },
+    //注册页面
+    {
+      name: 'register',
+      path: '/register',
+      component: Register,
+      meta: { title: '注册', icon: '',requiresAuth:false }
     },
     //用户交互页面
     {
@@ -25,31 +34,37 @@ const router = new VueRouter({
       path: '/',
       redirect: '/myindex',
       component: CourseLayout,
-      meta: { title: '主页', icon: 'el-icon-s-home',requiresAuth:true},
+      meta: { title: '主页', icon: 'el-icon-s-home', requiresAuth: true ,role:'all'},
       children: [
         {
           name: 'myindex',
           path: '/myindex',
           component: MyIndex,
-          meta: { title: '主页', icon: 'el-icon-s-home' }
+          meta: { title: '主页', icon: 'el-icon-s-home', requiresAuth: true,role:'all' }
         },
         Course,//课程路由
         Manage,//管理路由
         Teacher,//教师路由
       ]
     },
-    //注册页面
+    //404页面
     {
-      name: 'register',
-      path: '/register',
-      component: Register,
-      meta: { title: '注册', icon: '' }
-    }
+      name: 'notfound',
+      path: '/*',
+      component: NotFound,
+      meta: { title: '404', icon: '',requiresAuth:false }
+    },
+
 
   ]
 });
 //全局前置路由守卫，对路由进行拦截
 router.beforeEach((to, from, next) => {
+  /* if ((!store.getters.getIsAuth) && to.meta.requiresAuth==true) {
+    next('/login');
+  } else {
+    next();
+  } */
   next();
 })
 //全局后置路由守卫
