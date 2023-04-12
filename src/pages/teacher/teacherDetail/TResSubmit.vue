@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    <el-upload class="upload-demo" ref="upload" action="https://jsonplaceholder.typicode.com/posts/" :multiple="true"
+    <el-upload class="upload-demo" ref="upload" action="#" :multiple="true"
       :on-preview="handlePreview" :on-change="handleChange" :on-remove="handleRemove" :file-list="fileList"
       :show-file-list="false" :auto-upload="false">
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -56,7 +56,7 @@
           formData.append('resBlues', fileItem.episode);
           formData.append('resVideoName', fileItem.alias);
           //发送axios请求,上传数据
-          axios.post("/video/upload", formData, {
+          axios.post("/video/"+this.$route.params.courseId+"/upload", formData, {
             headers: {
               'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryVCFSAonTuDbVCoAN'
             }
