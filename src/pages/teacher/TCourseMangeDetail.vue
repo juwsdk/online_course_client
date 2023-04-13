@@ -6,7 +6,8 @@
     </template>
     <!-- 侧边栏 -->
     <template v-slot:pageAside>
-      <el-menu default-active="tStudentManage" class="el-menu-vertical-demo" style="width:200px;min-width: 200px;" @select="handleMenuItemClick">
+      <!-- default-active="tStudentManage" -->
+      <el-menu  class="el-menu-vertical-demo" style="width:200px;min-width: 200px;" @select="handleMenuItemClick">
         <el-menu-item index="tStudentManage">
           <span slot="title">学生管理</span>
         </el-menu-item>
@@ -24,6 +25,9 @@
         </el-menu-item>
         <el-menu-item index="tStudentClockIn">
           <span slot="title">学生打卡信息</span>
+        </el-menu-item>
+        <el-menu-item index="tAnsweringQuestions">
+          <span slot="title">学生答疑</span>
         </el-menu-item>
       </el-menu>
     </template>

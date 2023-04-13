@@ -3,45 +3,7 @@
     <!-- 教师个人信息描述 -->
     <el-descriptions title="教师信息" :labelStyle="{ fontSize: '16px',color:'#434863' }"
       :contentStyle="{ fontSize: '14px' }">
-      <template slot="extra">
-        <el-button type="primary" size="small" @click="alertteacherInfo">修改</el-button>
-        <!-- 修改教师信息对话框 -->
-        <el-dialog title="修改个人信息" :visible.sync="dialogVisible" width="450px">
-          <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="教师名">
-              <el-input v-model="form.teacherName"></el-input>
-            </el-form-item>
-            <el-form-item label="密码">
-              <el-input v-model="form.teacherPassword" type="password" show-password></el-input>
-            </el-form-item>
-            <el-form-item label="性别">
-              <template>
-                <el-radio v-model="form.teacherGender" label="男">男</el-radio>
-                <el-radio v-model="form.teacherGender" label="女">女</el-radio>
-              </template>
-            </el-form-item>
-            <el-form-item label="生日">
-              <el-date-picker v-model="form.teacherBirthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="电话号码">
-              <el-input v-model="form.teacherPhonenum" type="number"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱">
-              <el-input v-model="form.teacherEmail" type="email"></el-input>
-            </el-form-item>
-            <el-form-item label="地址">
-              <el-input v-model="form.teacherAddress"></el-input>
-            </el-form-item>
-          </el-form>
-          <span slot="footer">
-            <el-button type="success" size="small" @click="submitInfo"
-              style="float: left;margin-left: 100px;">修改</el-button>
-            <el-button type="warning" size="small" @click="handleDialogClose"
-              style="margin-right: 100px;">取消</el-button>
-          </span>
-        </el-dialog>
-      </template>
+
       <el-descriptions-item label="教师名">{{teacherInfo.teacherName}}</el-descriptions-item>
       <el-descriptions-item label="教授课程数">{{courses.length}}</el-descriptions-item>
       <el-descriptions-item label="选课人数">{{studentCount}}</el-descriptions-item>
@@ -49,16 +11,17 @@
         {{coursesNames}}
       </el-descriptions-item>
     </el-descriptions>
+
     <el-button type="success" size="mini" @click="addCourse">新增课程</el-button>
     <!-- 新增课程对话框 -->
     <template>
       <el-dialog title="新增课程" :visible.sync="dialogVisibleCourse" width="450px">
         <el-form ref="courseform" :model="courseform" label-width="80px">
           <el-form-item label="教师id">
-            <el-input v-model="courseform.teacherId=teacherId" disabled></el-input>
+            <el-input v-model="courseform.teacherId=teacherId" type="number" disabled></el-input>
           </el-form-item>
           <el-form-item label="课程名">
-            <el-input v-model="courseform.courseName" type="number"></el-input>
+            <el-input v-model="courseform.courseName"></el-input>
           </el-form-item>
           <el-form-item label="课程描述">
             <el-input v-model="courseform.courseInfo" type="textarea" autosize></el-input>
@@ -81,9 +44,12 @@
         </span>
       </el-dialog>
     </template>
+
+
     <div class="chartBodyStyle">
+      <!-- echarts -->
       <v-chart class="pieChartStyle" autoresize :option="teacherChartOptions" />
-      <!-- <div>放置一个表格</div> -->
+      <!-- 查询选课学生的表格 -->
       <CourseTable class="pieChartStyle" :tableInterfce="aTableInterface" :tableInfo="tableInfo"
         :showAlters="showAlters" :parentPageSize="parentPageSize">
         <template v-slot:selectOneG>
@@ -118,13 +84,13 @@
         teacherMangeStudent,//后端接口
         teacherId: this.$store.state.teacherId,
         teacherInfo: {},
-        form: {},//修改的信息
+
         courseform: {},//新增的课程信息放在这
         studentCount: 0,//教授学生数
         courses: {},//教授的课程
         teacherCourses: [],//教授的课程
         showAlters: false,//告诉表格子组件不展示修改新增功能
-        dialogVisible: false,//是否显示dialog修改个人信息
+        // dialogVisible: false,//是否显示dialog修改个人信息
         dialogVisibleCourse: false,//是否显示修改课程信息的对话框
         dataImage: { dialogImageUrl: '', dialogVisible: false, fileItem: {} },//图片上传框
         //展示教师教授课程选课人数的饼图
@@ -138,7 +104,7 @@
           series: [{ type: 'bar', name: '选课人数' }],
           dataset: { source: [] }
         },
-        parentPageSize:5//要请求的页数范围
+        parentPageSize: 5//要请求的页数范围
       }
     },
     computed: {
@@ -157,7 +123,7 @@
       //#region 教师相关操作
       loadData() {
         //拿到教师信息
-        axios.post(this.teacherMangeStudent.prefix + '/' +  this.teacherMangeStudent.teacherOne)
+        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.teacherOne)
           .then(res => {
             this.teacherInfo = res.data;//拿到教师的信息
           })
@@ -165,7 +131,7 @@
             console.error(err);
           });
         //拿到教授课程数
-        axios.get(this.teacherMangeStudent.prefix + '/' +   this.teacherMangeStudent.countObj)
+        axios.get(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.countObj)
           .then(res => {
             console.log(res);
             this.studentCount = res.data;
@@ -178,7 +144,7 @@
             // console.log(this.teacherMangeStudent);
           });
         //拿到教授的课程
-        axios.post(this.teacherMangeStudent.prefix + '/' +   this.teacherMangeStudent.teacherList)
+        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.teacherList)
           .then(res => {
             console.log(res);
             this.courses = res.data;
@@ -188,15 +154,7 @@
             console.error(err);
           })
       },
-      //修改教师信息
-      alertteacherInfo() {
-        this.form = this.teacherInfo;
-        this.dialogVisible = true;
-      },
-      //提交教师修改表单
-      submitInfo() {
 
-      },
       //#endregion 教师相关操作
       //#region 图片处理策略
       //删除要修改的图片
@@ -212,32 +170,50 @@
       handleImageChange(file) {
         this.dataImage.fileItem = file;
       },
-      //取消，关闭对话框
-      handleDialogClose() {
-        this.dialogVisible = false;
-      },
+
       //增加课程
       addCourse() {
         this.dialogVisibleCourse = true;
       },
-      //提交修改的课程信息
+      //新增加一门课程确认按钮
       submitInfoCourse() {
-        console.log(this.courseform);
+        let courseFile = new FormData();
+        courseFile.append('teacherId', this.courseform.teacherId);
+        courseFile.append('courseName', this.courseform.courseName);
+        courseFile.append('courseInfo', this.courseform.courseInfo);
+        courseFile.append('courseImage', this.dataImage.fileItem.name);
+        courseFile.append('fileRaw', this.dataImage.fileItem.raw);
+        axios.post('/teacher/courseInsert', courseFile)
+          .then(res => {
+            console.log(res);
+            if (res.data == 1) {
+              this.$message.success('添加成功!');
+              this.dialogVisibleCourse = false;
+              this.courseform = {};//将数据清空
+              this.dataImage.fileItem = {};
+            } else {
+              this.$message.danger('上传失败!')
+            }
+
+          })
+          .catch(err => {
+            console.error(err);
+            this.$message.warning('上传失败!')
+          })
       },
       //#endregion 图片处理策略
       //#region 统计表信息请求
-      loadStatisticsData(){
-        axios.post(this.teacherMangeStudent.prefix + '/' +  this.teacherMangeStudent.countCourseStudent)
-        .then(res => {
-          // console.log(res);
-          //将数据加入到统计表中 ['语文', 3], ['数学', 4], ['C', 6], ['人工', 1], ['语s文', 3], ['数z学', 4], ['Cz', 6], ['人z工', 1]
-          res.data.forEach(course => {
-            this.teacherChartOptions.dataset.source.push([course.name,course.res]);
-          });
-        })
-        .catch(err => {
-          console.error(err); 
-        })
+      loadStatisticsData() {
+        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.countCourseStudent)
+          .then(res => {
+            //将数据加入到统计表中 ['语文', 3], ['数学', 4], ['C', 6], ['人工', 1], ['语s文', 3], ['数z学', 4], ['Cz', 6], ['人z工', 1]
+            res.data.forEach(course => {
+              this.teacherChartOptions.dataset.source.push([course.name, course.res]);
+            });
+          })
+          .catch(err => {
+            console.error(err);
+          })
       }
       //#endregion 统计表信息请求
 
@@ -250,7 +226,7 @@
       this.loadStatisticsData();
     },
     destroyed() {
-      
+
     },
   }
 </script>

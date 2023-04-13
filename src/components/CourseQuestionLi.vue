@@ -8,8 +8,8 @@
       </div>
     </article>
 
-    <el-button type="text" size="small" id="expandButtonT" @click="answerThis">回复</el-button>
-    <el-button ref="showButton" type="text" size="small" id="expandButtonB" @click="showAnswer">展开</el-button>
+    <el-button type="text" size="small" id="expandButtonT" @click="answerThis" style="font-weight: bold;">回复</el-button>
+    <el-button ref="showButton" type="text" size="small" id="expandButtonB" @click="showAnswer" style="font-weight: bold;">展开</el-button>
     <template v-if="havingAnswer">
       <article id="qustionAnswer" v-for="answerItem in questionAnswerList" :key="answerItem.courseQuestionId">
         <h1 v-show="answerItem.studentId!=null">回复者:{{answerItem.studentId}}</h1>
@@ -27,7 +27,7 @@
   import axios from '@/api';
   export default {
     name: 'CourseQuestionLi',
-    props: { item: { type: Object, required: true } },
+    props: { item: { type: Object, required: true },liIndex:{type:Number,required:false} },
     data() {
       return {
         questionAnswerList: [],
@@ -61,7 +61,7 @@
       //回复这个评论
       answerThis() {
         //发送给父组件父组件处理
-        this.$emit('answerQuestion', this.item.courseQuestionId);
+        this.$emit('answerQuestion', this.item.courseQuestionId,this.liIndex);
       },
 
     },

@@ -2,15 +2,18 @@
   <div>
     <el-container direction="vertical">
       <!--  -->
-      <el-header height="" style="background-color: antiquewhite;">
+      <el-header height="" class="classHeader">
         <!-- 用于展示标题和回退页面 -->
         <el-page-header @back="goBack" :content="course.courseName">
         </el-page-header>
+        <el-button type="primary" size="small" style="float: right;" @click="chooseCourse"
+          :disabled="chooseDisable">选择</el-button>
+
       </el-header>
 
       <!--  -->
-      <el-main height="" style="background-color: aquamarine;padding: 0;">
-        <div style="background-color: aqua;height: 300px;">
+      <el-main height="" class="classMain">
+        <div class="classShow">
           <!-- 放置图像 -->
           <div class="demo-image__error">
             <div class="block">
@@ -24,7 +27,7 @@
           <article>{{course.courseInfo}}</article>
         </div>
       </el-main>
-      
+
     </el-container>
 
   </div>
@@ -36,8 +39,9 @@
     name: 'CourseSelectDetail',
     data() {
       return {
-        course: [],//从后端获得的路由信息
-        courseSelectInterface//接口
+        course: {},//从后端获得的路由信息
+        courseSelectInterface,//接口
+        chooseDisable: false,//是否禁用选课按钮
       }
     },
     methods: {
@@ -54,11 +58,41 @@
         })
           .then(res => {
             this.course = res.data;
-            console.log(this.$route.params.courseId);
+            console.log(res);
+            // console.log(this.$route.params.courseId);
           })
           .catch(err => {
             console.error(err);
           })
+      },
+      //选择课程
+      chooseCourse() {
+        //发送请求请求是否选择了此课程
+        axios.get(this.courseSelectInterface.prefix + this.courseSelectInterface.courseChoose + '/' + this.$route.params.courseId + '/' + this.$store.getters.getStudentId)
+          .then(res => {
+            console.log(res);
+            if (res.data == 1) {//说明已经选择
+              this.$message.warning('你已经选过了！');
+              this.chooseDisable = true;
+            } else {//发送请求选课
+              axios.put(this.courseSelectInterface.prefix + this.courseSelectInterface.courseChoose + '/' + this.$route.params.courseId + '/' + this.$store.getters.getStudentId)
+                .then(res => {
+                  console.log(res);
+                  if (res.data == 1) {
+                    this.$message.success('成功选课!');
+                    this.chooseCourse = true;
+                  } else {
+                    this.$message.warning('选课失败!');
+                  }
+                })
+                .catch(err => {
+                  console.error(err);
+                })
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
       }
     },
     mounted() {
@@ -74,5 +108,21 @@
 
   #courseInfo>* {
     font-size: large;
+  }
+
+  .classHeader {
+    background-color: azure;
+    width: auto;
+    /* background-color: antiquewhite; */
+  }
+
+  .classMain {
+    padding: 0;
+    background-color: azure;
+  }
+
+  .classShow {
+    background-color: rgba(255, 255, 255, .5);
+    height: 300px;
   }
 </style>

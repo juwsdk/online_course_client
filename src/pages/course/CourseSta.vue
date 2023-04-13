@@ -15,12 +15,12 @@
 </template>
 <script>
   import axios from '@/api';
-  
+
   export default {
     name: 'CourseSta',
     data() {
       return {
-        studentId: '31201900',
+        studentId: this.$store.getters.getStudentId,
         //统计学生选课数的统计表
         countChartOptions: {
           title: { text: '学生选课数统计' },
@@ -34,36 +34,36 @@
         //统计学生作业完成情况的饼图
         countHomeWorkChartOptions: {
           title: { text: '作业完成情况' },
-          legend: { data: ['已完成', '未完成'] },
+          legend: {},
           color: ['#91cc75', '#f36969'],
           tooltip: { trigger: 'item' },
           series: [{ type: 'pie' }],
-          dataset: { source: [{ value: 335, name: '已完成' }, { value: 234, name: '未完成' }] }
+          dataset: { source: [] }/* { value: 335, name: '已完成' }, { value: 234, name: '未完成' } */
         },
         //统计学生提问情况
         countAskQuestionsChartOptions: {
           title: { text: '提问情况' },
-          legend: { data: ['提问', '其他提问'] },
+          legend: {},/* data: ['提问', '其他提问']  */
           color: ['#73c0de', '#ffdc60'],
           tooltip: { trigger: 'item' },
           series: [{ type: 'pie' }],
-          dataset: { source: [{ value: 335, name: '提问' }, { value: 234, name: '其他提问' }] }
+          dataset: { source: [] }/* { value: 335, name: '提问' }, { value: 234, name: '其他提问' } */
         },
         //最近三周打卡情况
         weekClockOptins: {
           title: { text: '最近三周打卡情况' },
-          color:['#de33a5'],
-          xAxis: {type: 'category'},
+          color: ['#de33a5'],
+          xAxis: { type: 'category' },
           tooltip: { trigger: 'item' },
-          yAxis:{type:'value'},
-          series:[{type:'line'}],
-          dataset:{source:[['第一周',7],['第二周',5],['第三周',6]]}
+          yAxis: { type: 'value' },
+          series: [{ type: 'line' }],
+          dataset: { source: [] }/* ['第一周', 7], ['第二周', 5], ['第三周', 6] */
         }
       };
     },
     methods: {
-      // 请求加载数据
-      loadData() {
+      // 请求加载数据学生选课数统计
+      loadCountChartOptionsData() {
         axios.get('/course/' + this.studentId + '/countCourse')
           .then(res => {
             // this.courseNumberStatistics = res.data;
@@ -74,11 +74,49 @@
           .catch(err => {
             console.error(err);
           });
-          
       },
+      //请求加载学生学生作业完成情况的饼图
+      loadCountAskQuestionsChartData() {
+        axios.get('/student/' + this.studentId + '/studentHomeworkCount')
+          .then(res => {
+            this.countHomeWorkChartOptions.dataset.source.push({ value: res.data.student, name: '已完成' });
+            this.countHomeWorkChartOptions.dataset.source.push({ value: res.data.all - res.data.student, name: '未完成' });
+            // console.log(res);
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
+      //请求加载学生提问情况的饼图
+      loadCountHomeWorkChartData() {
+        axios.get('/student/' + this.studentId + '/studentQuestionsNum')
+          .then(res => {
+            this.countAskQuestionsChartOptions.dataset.source.push({ value: res.data.student, name: '提问' });
+            this.countAskQuestionsChartOptions.dataset.source.push({ value: res.data.all - res.data.student, name: '其他问题' });
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
+      //请求最近三周打卡情况
+      loadWeekClockData() {
+        axios.get('/student/' + this.studentId + '/studentAttendance')
+          .then(res => {
+            this.weekClockOptins.dataset.source.push(['第一周',res.data.firstWeek]);
+            this.weekClockOptins.dataset.source.push(['第二周',res.data.secondWeek]);
+            this.weekClockOptins.dataset.source.push(['第三周',res.data.thirdWeek]);
+            console.log(res);
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      }
     },
     mounted() {
-      this.loadData();
+      this.loadCountChartOptionsData();
+      this.loadCountAskQuestionsChartData();
+      this.loadCountHomeWorkChartData();
+      this.loadWeekClockData();
     },
   }
 </script>

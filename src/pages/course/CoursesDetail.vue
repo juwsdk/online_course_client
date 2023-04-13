@@ -48,6 +48,7 @@
             </ul>
           </template>
 
+          <!-- 底部输入框 -->
           <template v-slot:commentsInput>
             <div id="timeBody">
               <div class="dateFormatNowStyle">
@@ -71,6 +72,7 @@
                 resize="none"></el-input>
             </div>
           </template>
+          
         </CommentVeiw>
 
       </template>
@@ -155,7 +157,7 @@
           })
           .catch(err => {
             console.error(err);
-          })
+          });
       },
       //#endregion 数据请求
       //加载数据,课程的课程名路由表
@@ -250,11 +252,10 @@
             this.$message.warning('今天已经打过卡了哦!');
             this.clockInDisabled=true;
           }
-            
         })
         .catch(err => {
           console.error(err); 
-        })
+        });
       }
     },
     computed: {

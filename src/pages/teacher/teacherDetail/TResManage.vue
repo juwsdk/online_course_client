@@ -7,8 +7,8 @@
     </el-row>
 
     <div class="fileContainer">
-      <FileUploadCard v-for="(fileItem,index) in fileList" :key="index" :fileItem="fileItem"
-        @remove="handleRemove(fileItem)" style="width: 280px;" :fileType="true" @change="handleChange">
+      <FileUploadCard v-for="(fileItem,index) in fileList" :key="index" :fileItem="fileItem" style="width: 280px;"
+        @remove="handleRemove(fileItem)" :fileType="true" @change="handleChange">
         <template v-slot:fileCardFormItems>
           <el-form-item label="集数">
             <el-input v-model="fileItem.resBlues"></el-input>
@@ -47,27 +47,65 @@
           })
       },
       handleRemove(file) {
-        const fileList = this.fileList.filter(item => item !== file);
-        this.fileList = fileList;
+        const courseRes = { ...file };
+        //发送请求后端删除文件,成功后前端删除文件
+        axios({
+          method: 'delete',
+          url: "/video/" + this.$route.params.teacherId + "/fileDelete",
+          data: courseRes
+        }).then(res => {
+          console.log(res);
+          if (res.data == 1) {//删除成功
+            const fileList = this.fileList.filter(item => item !== file);
+            this.fileList = fileList;
+            this.$message.success("已经成功删除!");
+          }
+        })
+          .catch(err => {
+            console.error(err);
+            this.$message.danger("删除失败!");
+          });
+        console.log(file);
+
       },
-      handleChange(file){
-        //改变信息
+      //修改资源信息
+      handleChange(file) {
+        axios({
+          method:'put',
+          url: "/video/fileUpdate",
+          data: file
+        }).then(res=>{
+          if(res.data==1)
+            this.$message.success('修改成功!');
+        }).catch(err=>{
+          console.error(err);
+        })
       },
+      //清空上传的文件
       clearAll() {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        this.$confirm('此操作将永久删除上传的所有文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          axios({
+            method: 'delete',
+            url: "/video/" + this.$route.params.teacherId + "/" + this.$route.params.courseId + "/fileDeletes"
+          }).then(res => {
+            console.log(res);
+            if (res.data == 1) {//删除成功
+              this.fileList = [];//清空fileList
+              this.$message.success("已经成功删除!");
+            }
+          }).catch(err => {
+              console.error(err);
+              this.$message.danger("删除失败!");
+            });
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
       }
     },

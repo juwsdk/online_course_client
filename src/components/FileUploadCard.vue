@@ -2,11 +2,13 @@
   <el-card class="file-card">
     <div>
       <span>{{fileItem.resVideoName}}</span>
-      <el-button class="file-card-delete-btn" type="text" icon="el-icon-delete"
-        @click="handleRemove" style="color:#f67d7d"></el-button>
-      <el-button v-if="fileType" class="el-icon-edit-btn" type="text" icon="el-icon-edit" style="float: right;" @click="handleChange"></el-button>
+      <el-button class="file-card-delete-btn" type="text" icon="el-icon-delete" @click="handleRemove"
+        style="color:#f67d7d"></el-button>
+      <el-button v-if="fileType" class="el-icon-edit-btn" type="text" icon="el-icon-edit" style="float: right;"
+        @click="handleChange"></el-button>
       <div class="file-card-body">
         <el-form>
+          <!-- 插槽，放入内容体 -->
           <slot name="fileCardFormItems"></slot>
           <!-- <el-form-item label="集数">
             <el-input v-model="episode" @input="update"></el-input>
@@ -28,20 +30,20 @@
         type: Object,
         required: true
       },
-      fileType:{//false有修改,true没有
-        type:Boolean,
-        required:false,
-        default:false
+      fileType: {//false有修改,true没有
+        type: Boolean,
+        required: false,
+        default: false
       }
       // aEposide:{
       //   type:Number,
       //   required:true
       // }
     },
-    data(){
-      return{
+    data() {
+      return {
         // episode:this.aEposide,
-        alias:''
+        alias: ''
       }
     },
     methods: {
@@ -50,12 +52,21 @@
       //   this.$emit('update',{ episode: this.episode, alias: this.alias })
       // },
       //删除这个卡片，即不上传
-      handleRemove(){
-        this.$emit('remove',this.fileItem);
+      handleRemove() {
+        this.$emit('remove', this.fileItem);
       },
       //点击修改
-      handleChange(){
-        this.$emit('change',this.fileItem);
+      handleChange() {
+        this.$confirm('你确定要修改这个文件的信息吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$emit('change', this.fileItem);
+        }).catch(() => {
+          this.$message.info('已取消修改');
+        });
+
       }
     },
     mounted() {

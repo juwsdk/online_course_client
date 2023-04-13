@@ -54,7 +54,7 @@
     mounted() {
       if(this.courseInfo!=null)
         this.loading=false;
-        console.log(this.courseInfo);
+        
     },
 
   }

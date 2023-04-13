@@ -1,8 +1,8 @@
 <template lang="">
   <div>
-    <el-upload class="upload-demo" ref="upload" action="#" :multiple="true"
-      :on-preview="handlePreview" :on-change="handleChange" :on-remove="handleRemove" :file-list="fileList"
-      :show-file-list="false" :auto-upload="false">
+    <el-upload class="upload-demo" ref="upload" action="#" :multiple="true" :on-preview="handlePreview"
+      :on-change="handleChange" :on-remove="handleRemove" :file-list="fileList" :show-file-list="false"
+      :auto-upload="false">
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
       <el-button style="margin-left: 10px;" size="small" type="danger" @click="clearFileList">清空</el-button>
@@ -46,36 +46,48 @@
           this.$message.warning('不能上传空文件');
           return;
         }
-        this.fileList.forEach(fileItem => {
-          // console.log('这个文件为');
-          // console.log(fileItem);
-          //使用formdata封装数据
-          let formData = new FormData();
-          formData.append('resFileName', fileItem.name);
-          formData.append('fileRaw', fileItem.raw);
-          formData.append('resBlues', fileItem.episode);
-          formData.append('resVideoName', fileItem.alias);
-          //发送axios请求,上传数据
-          axios.post("/video/"+this.$route.params.courseId+"/upload", formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryVCFSAonTuDbVCoAN'
-            }
-          })
-            .then(res => {
-              // console.log(res);
-              //提示成功，fileList中删除这个元素
-              this.$message.success(res.data);
-              // 找到 fileItem 的索引
-              const index = this.fileList.indexOf(fileItem);
-              // 删除指定元素
-              if (index > -1) {
-                this.fileList.splice(index, 1);
+        this.$confirm('确定上传吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.fileList.forEach(fileItem => {
+            //使用formdata封装数据
+            let formData = new FormData();
+            formData.append('courseId', this.$route.params.courseId);
+            formData.append('teacherId', this.$route.params.teacherId);
+            formData.append('resFileName', fileItem.name);
+            formData.append('fileRaw', fileItem.raw);
+            formData.append('resBlues', fileItem.episode);
+            formData.append('resVideoName', fileItem.alias);
+            //发送axios请求,上传数据
+            axios.post("/video/upload", formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryVCFSAonTuDbVCoAN'
               }
             })
-            .catch(err => {
-              this.$message.error(fileItem.name.trim().split('.')[0] + '上传失败');
-            });
+              .then(res => {
+                // console.log(res);
+                //提示成功，fileList中删除这个元素
+                this.$message.success(res.data);
+                // 找到 fileItem 的索引
+                const index = this.fileList.indexOf(fileItem);
+                // 删除指定元素
+                if (index > -1) {
+                  this.fileList.splice(index, 1);
+                }
+              })
+              .catch(err => {
+                this.$message.error(fileItem.name.trim().split('.')[0] + '上传失败');
+              });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消上传'
+          });
         });
+
         // this.$refs.upload.submit();
       },
       //删除将要上传的文件
@@ -91,11 +103,11 @@
         // console.log('触发');
         // this.fileList = fileList;
         // 判断是否存在同名文件
-        if(fileList.length==0){
-          this.fileList=[];
+        if (fileList.length == 0) {
+          this.fileList = [];
           return;
         }
-          
+
         const isDuplicate = fileList.some(item => item.name === file.name && item !== file);
         if (isDuplicate) {
           // 重复文件，移除当前文件
@@ -106,7 +118,7 @@
         } else {
           // 新文件，添加到已上传文件列表
           const index = fileList.indexOf(file);
-          this.$set(file,'resVideoName',file.name);
+          this.$set(file, 'resVideoName', file.name);
           this.$set(file, 'episode', index + 1);
           this.$set(file, 'alias', file.name.trim().split('.')[0]);
           this.fileList.push(file);

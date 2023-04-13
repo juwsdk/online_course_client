@@ -7,6 +7,7 @@ import TStudentClockIn from '@/pages/teacher/teacherDetail/TStudentClockIn';
 import TStudentManage from '@/pages/teacher/teacherDetail/TStudentManage';
 import THomWAss from '@/pages/teacher/teacherDetail/THomeworkAssignments';
 import TResManage from '@/pages/teacher/teacherDetail/TResManage';
+import TAnsweringQuestions from '@/pages/teacher/teacherDetail/TAnsweringQuestions';
 export default {
   name: 'teacher',
   path: '/teacher',
@@ -75,6 +76,12 @@ export default {
               path: 'tStudentClockIn',
               component: TStudentClockIn,
               meta: { title: '学生打卡信息', icon: '',requiresAuth:true , role: 'teacher'}
+            },
+            {
+              name: 'tAnsweringQuestions',
+              path: 'tAnsweringQuestions',
+              component: TAnsweringQuestions,
+              meta: { title: '学生答疑', icon: '',requiresAuth:true , role: 'teacher'}
             }
           ]
         }

@@ -52,7 +52,7 @@
         this.list = list;
         if(list!=null)
           this.loading=false;
-        console.log(list);
+        // console.log(list);
       },
     },
 

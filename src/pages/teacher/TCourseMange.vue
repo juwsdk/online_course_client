@@ -1,6 +1,5 @@
 <template lang="">
   <div>
-    <p ><el-button type="primary" size="mini">新增课程</el-button></p>
     
     <CourseCards class="myCourseCards" :courseInterface="courseInterface" @loadCourse="loadCourse">
       <template v-slot:cards>

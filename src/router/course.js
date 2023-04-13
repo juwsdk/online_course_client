@@ -38,7 +38,7 @@ export default {
     {
       name: 'course-selects',
       path: 'courseselects',
-      component: { render: (e) => e("keep-alive", [e("router-view")]) }, //缓存路由
+      component: { render: (e) => e("router-view")/* ("keep-alive", [e("router-view")]) */ }, //缓存路由
       meta: { title: '课程选择', icon: 'el-icon-reading', requiresAuth: true , role: 'student' },
       redirect: '/course/courseselects/courseselect',
       children: [

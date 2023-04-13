@@ -2,15 +2,15 @@
   <div :style="isLoading" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)">
     <!-- 走马灯  v-show控制是否显示，在第一页则显示，否则不显示-->
-    <el-carousel indicator-position="outside" v-show="isNotableShow">
-      <el-carousel-item v-for="notableitem in notableList" :key="notableitem.courseId">
+    <el-carousel indicator-position="outside" v-show="isNotableShow" >
+      <el-carousel-item v-for="notableitem in notableList" :key="notableitem.courseId" @click.native="pushShow(notableitem)">
         <h3>{{ notableitem.courseName }}</h3>
       </el-carousel-item>
     </el-carousel>
 
     <!-- 卡片列表 -->
     <CourseCards :courseInterface="courseInterface" @loadCourse="loadCourse" @styleChange="styleChange"
-      :apageSize="apageSize">
+      :aPageSize="aPageSize">
       <!-- 通过插槽放入具体的卡片 -->
       <template v-slot:cards>
         <CourseCard v-for="(listItem of list" :key="listItem.courseId" style="
@@ -42,7 +42,7 @@
         // number:5,
         list: [],//存放课程信息，课程信息是courseCards通过axios请求获取的
         isNotableShow: true,
-        apageSize: 5,//给子传这个页面数据多少
+        aPageSize: 5,//给子传这个页面数据多少
         notableList: [],//走马灯的内容
         loading: true
       }
@@ -73,6 +73,15 @@
             console.error(err);
           })
       },
+      pushShow(notableitem) {//走马灯点击加载详情页面
+        this.$router.push({//通过push跳转页面
+          name: 'course-select-detial',
+          params: {
+            teacherId: notableitem.teacherId,
+            courseId: notableitem.courseId
+          },
+        });
+      }
     },
     mounted() {
       this.loadData();//加载走马灯
@@ -81,7 +90,7 @@
       //是否加载完成
       isLoading() {
         // console.log('1111111111');
-        return this.loading ?{ height: '88vh'}  : { height: 'auto' };
+        return this.loading ? { height: '88vh' } : { height: 'auto' };
       }
     }
 
