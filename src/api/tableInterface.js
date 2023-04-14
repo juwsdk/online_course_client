@@ -2,15 +2,23 @@
 const studentInterface = {
   "prefix": "/student",
   "tableList": "/studentList",
-  "insertOne": "/studentInsert"
+  "insertOne": "/studentInsert",
+  "deleteOne":"/studentDelete",
+  "updateOne":"/studentUpdate"
 };
 const teacherInterface = {
   "prefix": "/teacher",
-  "tableList": "/teacherList"
+  "tableList": "/teacherList",
+  "insertOne": "/teacherInsert",
+  "deleteOne":"/teacherDelete",
+  "updateOne":"/teacherUpdate"
 };
 const admInterface = {
   "prefix": "/admin",
-  "tableList": "/admList"
+  "tableList": "/admList",
+  "insertOne": "/admInsert",
+  "deleteOne":"/admDelete",
+  "updateOne":"/admUpdate"
 };
 
 export default studentInterface;

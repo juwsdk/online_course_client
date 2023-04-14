@@ -14,11 +14,11 @@
         <el-col :span="1" :offset="0">
           <el-button type="primary" size="mini" @click="handleAdd" :disabled="loading">新增</el-button>
         </el-col>
-        <el-col :span="2" :offset="18">
+        <!--  <el-col :span="2" :offset="18">
           <el-button type="success" size="mini" @click="" :disabled="loading">导入</el-button>
         </el-col>
         <el-col :span="1" :offset="0">
-          <el-button type="info" size="mini" @click="" :disabled="loading">导出</el-button>
+          <el-button type="info" size="mini" @click="" :disabled="loading">导出</el-button> -->
         </el-col>
       </el-row>
     </div>
@@ -85,6 +85,7 @@
         pageSize: 10,
         loading: true,//是否还在加载
         dialogVisible: false,//弹窗状态
+        dialogType: true,//弹窗执行任务,true为新增,false为修改
         fuzzyColumn: '',
         fuzzyValue: '',
         showAlter: true,//是否展示修改等功能按钮
@@ -105,21 +106,26 @@
     },
 
     methods: {
-      handleCurrentChange(pageNum) {//控制分页
+      //控制分页
+      handleCurrentChange(pageNum) {
         this.currentPage = pageNum;
         console.log(this.currentPage);
         this.loadData();
       },
-      handleSizeChange(pageSize) {//控制分页大小
+      //控制分页大小
+      handleSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.loadData();
       },
-      handleEdit(index, row) {//编辑/修改操作
+      //编辑/修改操作
+      handleEdit(index, row) {
         // console.log(index,row);
         this.$emit("alertForm", row);//发给父组件更新表单
         this.dialogVisible = true;//打开修改框
+        this.dialogType = false;//模式为修改
       },
-      loadData() {//请求加载数据
+      //请求加载数据
+      loadData() {
         axios.get(this.tableInterfce.prefix + this.tableInterfce.tableList, {
           params: {
             pageNum: this.currentPage,
@@ -129,40 +135,82 @@
           }
         })
           .then(res => {
-            // console.log(this.fuzzyValue);
             console.log(res);
             this.total = res.data.total;//拿到表格数据总数
             this.tableData = res.data.list;//拿到表格中的数据
             this.loading = false;//关闭表格转圈状态
-
-            // console.log(this.tableData)
           })
           .catch(err => {
             console.error(err);
             this.loading = true;
-            this.$message({//elementui错误提示
-              showClose: true,
-              message: '服务器连接失败!',
-              type: 'error'
-            });
+            this.$message.error('服务器连接失败!');
           });
       },
       handleAdd() {//添加数据
         this.dialogVisible = true;
+        this.dialogType = true;//这个为true表示弹窗模式为新增
         this.$emit("clearForm")//清空表单
       },
       handleDelete(index, row) {//删除操作
-        console.log(row);
+        const obj = row;
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //发送请求
+          axios.delete(this.tableInterfce.prefix + this.tableInterfce.deleteOne, obj)
+            .then(res => {
+              console.log(res);
+              if (res.data == 1) {
+                this.$message.success('已经成功删除!');
+                this.loadData();
+              } else
+                this.$message.warning('删除失败!');
+            })
+            .catch(err => {
+              console.error(err);
+              this.$message.error('删除失败!');
+            });
+        }).catch(() => {
+          this.$message.info('已取消操作!');
+        });
       },
       onSubmit() {//提交表单，发送给表格组件提交
         console.log(this.form);
-        axios.post(this.tableInterfce.prefix + this.tableInterfce.insertOne, this.form)
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.error(err);
-          })
+        //状态为真，表示是新增操作
+        if (this.dialogType) {
+          axios.post(this.tableInterfce.prefix + this.tableInterfce.insertOne, this.form)
+            .then(res => {
+              console.log(res);
+              if (res.data == 1) {
+                this.$message.success('添加成功');
+                this.dialogVisible = false;//关闭弹窗
+                this.loadData();//重新加载数据
+              } else
+                this.$message.warning('添加失败!');
+            })
+            .catch(err => {
+              console.error(err);
+              this.$message.error('添加失败!');
+            })
+        } else {//状态为假，表示是修改操作
+          axios.put(this.tableInterfce.prefix + this.tableInterfce.updateOne, this.form)
+            .then(res => {
+              console.log(res);
+              if (res.data == 1) {
+                this.$message.success('修改成功');
+                this.dialogVisible = false;//关闭弹窗
+                this.loadData();//重新加载数据
+              } else
+                this.$message.warning('修改失败');
+            })
+            .catch(err => {
+              console.error(err);
+              this.$message.error('修改失败!');
+            })
+        }
+
       },
       fuzzyQuery(searchSelect, searchinput) {//模糊查询
         // console.log(searchinput + '|||' + searchSelect);
@@ -173,8 +221,6 @@
       }
     },
     created() {
-      // if (this.showAlters == false && typeof this.showAlters != 'undefined')
-      //   this.showAlter = false;
       this.loadData();
       if (this.loading == true)
         this.timerId = setInterval(() => {

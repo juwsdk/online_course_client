@@ -143,15 +143,9 @@
           type: 'warning'
         }).then(() => {
           this.fileList = [];
-          this.$message({
-            type: 'success',
-            message: '操作成功!'
-          });
+          this.$message.success('操作成功!');
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消操作'
-          });
+          this.$message.info('已取消操作!');
         });
       },
     }

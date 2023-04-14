@@ -76,16 +76,18 @@
       }
     },
     methods: {
-      clearForm() {//初始化表单
-        this.form = {
+      //初始化表单
+      clearForm() {
+        this.form = {//初始化的表单数据
           studentGender: '男',
           studentPassword: '000000',
         };
-        this.showId = false;
+        this.showId = false;//为新增时，不显示id框
       },
-      alertForm(row) {//修改表单
+      //修改表单
+      alertForm(row) {
         this.form = JSON.parse(JSON.stringify(row));
-        this.showId = true;
+        this.showId = true;//点击编辑按钮时，显示id框
       }
     },
     mounted() {
