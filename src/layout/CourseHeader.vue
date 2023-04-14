@@ -9,14 +9,11 @@
       <el-col :span="4" :push="15" class="item">
         <el-dropdown>
           <span class="el-dropdown-link">
-            下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+            用户:{{getId}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>黄金糕</el-dropdown-item>
-            <el-dropdown-item>狮子头</el-dropdown-item>
-            <el-dropdown-item>螺蛳粉</el-dropdown-item>
-            <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-            <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+            <el-dropdown-item @click.native="logOut">登出</el-dropdown-item>
+            
           </el-dropdown-menu>
         </el-dropdown>
         <div class="grid-content bg-purple"></div>
@@ -25,15 +22,42 @@
   </el-header>
 </template>
 <script>
+  import {mapGetters,mapActions} from 'vuex';
   export default {
     name: 'CourseHeader',
     props:['isCollapse'],
     methods: {
+      ...mapActions({setIsAuth:'setIsAuth'}),
       //切换按钮
       changeMenu(){
         this.$emit('changeShow');//子传父
+      },
+      logOut(){
+        this.$confirm('你确定要登出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.get('dataCommit/logout')
+          .then(res => {
+            console.log(res);
+            if(res.code=1002){
+              this.$message.success(res.message);
+              this.setIsAuth(false);//取消授权
+              this.$router.push('/login');//前往登录页面
+            }
+          })
+          .catch(err => {
+            console.error(err); 
+          })
+        }).catch(() => {
+          this.$message.info('已取消操作!');
+        });
       }
     },
+    computed:{
+      ...mapGetters({getId:'getId'})
+    }
   }
 </script>
 <style scoped>

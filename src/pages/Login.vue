@@ -12,28 +12,28 @@
         <!-- 学生登录 -->
         <template v-if="chooseModle==0">
           <el-form-item label="学号">
-            <el-input v-model="form.studentId"></el-input>
+            <el-input v-model="form.userId"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="form.studentPassword" type="password"></el-input>
+            <el-input v-model="form.password" type="password"></el-input>
           </el-form-item>
         </template>
         <!-- 教师登录 -->
         <template v-if="chooseModle==10">
           <el-form-item label="教师号">
-            <el-input v-model="form.teacherId"></el-input>
+            <el-input v-model="form.userId"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="form.teacherPassword" type="password"></el-input>
+            <el-input v-model="form.password" type="password"></el-input>
           </el-form-item>
         </template>
         <!-- 管理员登录 -->
         <template v-if="chooseModle==20">
           <el-form-item label="管理员号">
-            <el-input v-model="form.admId"></el-input>
+            <el-input v-model="form.userId"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="form.admPassword" type="password"></el-input>
+            <el-input v-model="form.password" type="password"></el-input>
           </el-form-item>
         </template>
 
@@ -52,7 +52,8 @@
 
 </template>
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
+  import axios from '@/api';
   export default {
     name: 'Login',
     data() {
@@ -61,6 +62,9 @@
         chooseModle: 0,
         marks: { 0: '学生', 10: '教师', 20: 'admin' }
       }
+    },
+    computed: {
+      ...mapGetters({ getLoginType: 'getLoginType' })
     },
     methods: {
       ...mapActions({ saveId: 'setId', setLoginType: 'setLoginType', setIsAuth: 'setIsAuth' }),//通过生成acitions中的方法来操作 id
@@ -76,16 +80,34 @@
           this.$message.$warning('非法用户!');
           return;
         }
-        //设置为授权状态
-        this.setIsAuth(true);
-        // console.log('submit!');
-        this.$router.push('/myindex');
+        //发送请求登录
+        const user = {
+          ...this.form,
+          loginType: this.getLoginType
+        }
+        axios({
+          method: 'post',
+          url: '/dataCommit/login',
+          data: user
+        }).then(res => {
+            console.log(res);
+            if (res.code == 1000) {
+              //设置为授权状态
+              this.$message.success('登录成功');
+              this.setIsAuth(true);
+              this.$router.push('/myindex');
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            this.$message.error('登陆失败!');
+          })
       },
       toRegister() {
         this.$router.push('/register');
       },
       handleModleChange() {
-        this.form = {};
+        // this.form = {};
       }
     },
     mounted() {

@@ -3,6 +3,8 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8080/courseproj/server'
 axios.defaults.timeout = 20000;
 axios.defaults.responseType = 'json';
+//携带cookie
+axios.defaults.withCredentials = true;
 
 // 设置请求头部信息
 // axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');

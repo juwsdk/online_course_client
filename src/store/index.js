@@ -76,6 +76,15 @@ const getters = {
   },
   getAdmiId(state) {
     return state.admId;
+  },
+  //判断登录类型并获取id
+  getId(state) {
+    if (state.loginType == 'student')
+      return state.studentId;
+    else if (state.loginType == 'teacher')
+      return state.teacherId;
+    else
+      return state.admId;
   }
   //#endregion 获取id
 };

@@ -71,7 +71,7 @@
               menu.children = this.getMenuList(route.children).flat();//flat合并为单层数组
             }
             //根据route设置的角色和登录的角色信息对比,如果角色匹配则只生成角色相关的路由
-            // if(route.meta.role==this.getLoginType || route.meta.role=='all')
+            if(route.meta.role==this.getLoginType || route.meta.role=='all')
               menuList.push(menu);
           }
         });
