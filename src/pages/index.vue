@@ -49,10 +49,8 @@
           <el-input v-model="form.studentPassword" type="password" show-password></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <template>
             <el-radio v-model="form.studentGender" label="男">男</el-radio>
             <el-radio v-model="form.studentGender" label="女">女</el-radio>
-          </template>
         </el-form-item>
         <el-form-item label="生日">
           <el-date-picker v-model="form.studentBirthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
@@ -78,85 +76,90 @@
   </div>
 </template>
 <script>
-  import axios from '@/api';
-  import DescriptionsOfMyself from '@/components/DescriptionsOfMyself';
-  import { mapGetters } from 'vuex';
-  export default {
-    name: 'MyIndex',
-    components: {
-      DescriptionsOfMyself
+import axios from "@/api";
+import DescriptionsOfMyself from "@/components/DescriptionsOfMyself";
+import { mapGetters } from "vuex";
+export default {
+  name: "MyIndex",
+  components: {
+    DescriptionsOfMyself,
+  },
+  data() {
+    return {
+      dialogVisible: false, //是否显示dialog修改个人信息
+      form: {}, //修改的信息
+      formModel: "student",
+    };
+  },
+  computed: {
+    ...mapGetters({
+      getStudentId: "getStudentId",
+      getTeacherId: "getTeacherId",
+      getAdmiId: "getAdmiId",
+    }),
+  },
+  methods: {
+    //修改教师信息
+    handleUpdate(infoObj) {
+      // this.form = this.infoObj;
+      this.dialogVisible = true;
     },
-    data() {
-      return {
-        dialogVisible: false,//是否显示dialog修改个人信息
-        form: {},//修改的信息
-        formModel: 'student',
+    //提交修改表单
+    submitInfo() {
+      let url;
+      if (this.formModel == "student") {
+        url = "/student/studentUpdate";
+      } else if (this.formModel == "teacher") {
+        url = "/teacher/studentUpdate";
       }
+      axios
+        .put(url, this.form)
+        .then((res) => {
+          console.log(res);
+          if (res.data == 1) {
+            this.$message.success("修改成功!");
+            this.dialogVisible = false; //关闭对话框
+            this.loadData(); //重新加载数据
+          } else {
+            this.$message.warning("修改失败!");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$message.warning("修改失败!");
+        });
     },
-    computed: {
-      ...mapGetters({ getStudentId: 'getStudentId', getTeacherId: 'getTeacherId', getAdmiId: 'getAdmiId' })
+    //取消，关闭对话框
+    handleDialogClose() {
+      this.dialogVisible = false;
     },
-    methods: {
-      //修改教师信息
-      handleUpdate(infoObj) {
-        // this.form = this.infoObj;
-        this.dialogVisible = true;
-      },
-      //提交修改表单
-      submitInfo() {
-        let url;
-        if (this.formModel == 'student') {
-          url = '/student/studentUpdate';
-        } else if (this.formModel == 'teacher') {
-          url = '/teacher/studentUpdate';
-        }
-        axios.put(url, this.form)
-          .then(res => {
-            console.log(res);
-            if (res.data == 1) {
-              this.$message.success('修改成功!');
-              this.dialogVisible = false;//关闭对话框
-              this.loadData();//重新加载数据
-            } else {
-              this.$message.warning('修改失败!');
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            this.$message.warning('修改失败!');
-          })
-      },
-      //取消，关闭对话框
-      handleDialogClose() {
-        this.dialogVisible = false;
-      },
-      loadData() {
-        let url;
-        if (this.formModel == 'student') {
-          url = '/student/' + this.getStudentId;
-        } else if (this.formModel == 'teacher') {
-          url = '/teacher/' + this.getTeacherId + '/teacherOne';
-        } else if (this.formModel == 'adm') {
-          url = '/admin/' + this.getAdmiId + '/admOne';
-        }
-        console.log(this.getTeacherId);
-        axios.post(url)
-          .then(res => {
-            console.log(res);
-            this.form = res.data;
-            console.log(this.form);
-          })
-          .catch(err => {
-            console.error(err);
-          });
+    loadData() {
+      let url;
+      if (this.formModel == "student") {
+        url = "/student/" + this.getStudentId;
+      } else if (this.formModel == "teacher") {
+        url = "/teacher/" + this.getTeacherId + "/teacherOne";
+      } else if (this.formModel == "adm") {
+        url = "/admin/" + this.getAdmiId + "/admOne";
       }
+      console.log(this.getTeacherId);
+      axios
+        .post(url)
+        .then((res) => {
+          console.log(res);
+          this.form = res.data;
+          console.log(this.form);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
+  },
 
-    mounted() {
-      this.loadData();
-    },
-  }
+  mounted() {
+    this.loadData();
+  },
+};
 </script>
 <style lang="">
-
 </style>

@@ -17,8 +17,11 @@
           <!-- 放置图像 -->
           <div class="demo-image__error">
             <div class="block">
-              <span class="demonstration">默认</span>
+              <!-- <span class="demonstration">默认</span> -->
               <!-- <el-image></el-image> -->
+              <img ref="itemImg" src="@/assets/book.jpg" alt="" style="height: 300px;">
+              <!-- <el-image src="../assets/book.jpg" fit="fill" :lazy="true"></el-image> -->
+              
             </div>
           </div>
         </div>
@@ -58,8 +61,7 @@
         })
           .then(res => {
             this.course = res.data;
-            console.log(res);
-            // console.log(this.$route.params.courseId);
+            this.loadImage();
           })
           .catch(err => {
             console.error(err);
@@ -70,14 +72,12 @@
         //发送请求请求是否选择了此课程
         axios.get(this.courseSelectInterface.prefix + this.courseSelectInterface.courseChoose + '/' + this.$route.params.courseId + '/' + this.$store.getters.getStudentId)
           .then(res => {
-            console.log(res);
             if (res.data == 1) {//说明已经选择
               this.$message.warning('你已经选过了！');
               this.chooseDisable = true;
             } else {//发送请求选课
               axios.put(this.courseSelectInterface.prefix + this.courseSelectInterface.courseChoose + '/' + this.$route.params.courseId + '/' + this.$store.getters.getStudentId)
                 .then(res => {
-                  console.log(res);
                   if (res.data == 1) {
                     this.$message.success('成功选课!');
                     this.chooseCourse = true;
@@ -93,6 +93,27 @@
           .catch(err => {
             console.error(err);
           });
+      },
+      //加载课程图片
+      loadImage() {
+        if (this.course.courseImage != null) {
+          axios.get('/teacher/courseShow', {
+            params: {
+              courseId: this.course.courseId,
+              teacherId: this.course.teacherId,
+              courseImage: this.course.courseImage
+            },
+            responseType: 'blob'
+          },
+          ).then(res => {
+            console.log(res);
+            const imgUrl = URL.createObjectURL(res.data);
+            this.$refs.itemImg.setAttribute('src', imgUrl);
+          })
+            .catch(err => {
+              console.error(err);
+            })
+        }
       }
     },
     mounted() {

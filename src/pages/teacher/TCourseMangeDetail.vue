@@ -2,7 +2,7 @@
   <DetailView>
     <template v-slot:pageHeader>
       <el-page-header @back="goBack" :content="'课程详情'+$route.params.courseId">
-      </el-page-header>
+      </el-page-header>      
     </template>
     <!-- 侧边栏 -->
     <template v-slot:pageAside>

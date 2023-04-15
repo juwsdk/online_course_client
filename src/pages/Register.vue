@@ -85,13 +85,28 @@
     data() {
       return {
         form: {},
-        chooseModle: true
+        chooseModle: true//true为学生，false为教师
       }
     },
     methods: {
       onSubmit() {
         console.log(this.form);
-        // this.$router.push('/myindex');
+        let url;
+        if(this.chooseModle==true){//学生注册
+          url='/student/studentInsert';
+        }else{//教师注册
+          url='/teacher/teacherInsert';
+        }
+        axios({
+            method:'post',
+            url: url,
+            data: this.form
+          }).then(res=>{
+            if(res.data==1)
+              this.$message.success('注册成功');
+          }).catch(err=>{
+            this.$message.warning('注册失败');
+          })
       },
       handleModleChange() {
         // console.log('触发');

@@ -4,6 +4,11 @@
       <el-col :span="3">
         <el-button type="danger" size="small" @click="clearAll">清空资源</el-button>
       </el-col>
+      <el-col :span="3" :offset="3">
+        <el-button type="primary" size="small" @click="changeCorseInfo">修改信息</el-button>
+      </el-col>
+      <!-- 新增课程对话框 -->
+      <CourseInfoDialog :atype="atype" :dialogVisibleCourse="dialogVisibleCourse" @closeCourseDialoag="closeCourseDialoag" />
     </el-row>
 
     <div class="fileContainer">
@@ -25,14 +30,19 @@
 <script>
   import axios from '@/api';
   import FileUploadCard from '@/components/FileUploadCard';
+  import CourseInfoDialog from '@/components/CourseInfoDialog';
   export default {
     name: 'TResManage',
     components: {
-      FileUploadCard
+      FileUploadCard,
+      CourseInfoDialog,
+      atype:'courseUpdate',
     },
     data() {
       return {
-        fileList: []
+        fileList: [],//文件列表
+        dialogVisibleCourse: false,//是否显示修改课程信息的对话框
+        atype:'courseUpdate'
       }
     },
     methods: {
@@ -71,13 +81,13 @@
       //修改资源信息
       handleChange(file) {
         axios({
-          method:'put',
+          method: 'put',
           url: "/video/fileUpdate",
           data: file
-        }).then(res=>{
-          if(res.data==1)
+        }).then(res => {
+          if (res.data == 1)
             this.$message.success('修改成功!');
-        }).catch(err=>{
+        }).catch(err => {
           console.error(err);
         })
       },
@@ -98,16 +108,27 @@
               this.$message.success("已经成功删除!");
             }
           }).catch(err => {
-              console.error(err);
-              this.$message.danger("删除失败!");
-            });
+            console.error(err);
+            this.$message.danger("删除失败!");
+          });
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           });
         });
-      }
+      },
+
+
+      //修改课程信息相关操作
+      //修改课程信息
+      changeCorseInfo() {
+        this.dialogVisibleCourse = true;
+      },
+      //关闭增加课程对话框
+      closeCourseDialoag(value) {
+        this.dialogVisibleCourse = value;
+      },
     },
     mounted() {
       this.loadFileList();

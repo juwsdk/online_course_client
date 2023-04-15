@@ -15,7 +15,8 @@
       </template>
       <template>
         <el-card :body-style="{ padding: '0px', marginBottom: '1px' }" @click.native="pushShow">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+          <img ref="itemImg"
+            src="../assets/book.jpg"
             class="image" />
           <div style="padding: 14px;">
             <span>{{courseInfo.courseName}}</span>
@@ -29,38 +30,61 @@
   </div>
 </template>
 <script>
+  import axios from '@/api';
   export default {
     name: 'CourseCard',
-    props: ['courseImage', 'courseInfo','routeName'],
-    data () {
+    props: ['courseImage', 'courseInfo', 'routeName'],
+    data() {
       return {
         loading: true,
         currentDate: '2021-06-01'
       }
     },
     methods: {
-      pushShow(){//点击加载详情页面
+      pushShow() {//点击加载详情页面
         // alert("111111111");
         // console.log(this.$router);
         this.$router.push({//通过push跳转页面
-          name:this.routeName,
-          params:{
-            teacherId:this.courseInfo.teacherId,
-            courseId:this.courseInfo.courseId
+          name: this.routeName,
+          params: {
+            teacherId: this.courseInfo.teacherId,
+            courseId: this.courseInfo.courseId
           },
         });
+      },
+      loadImage() {
+        if (this.courseInfo.courseImage != null) {
+          axios.get('/teacher/courseShow', {
+            params: {
+              courseId: this.courseInfo.courseId,
+              teacherId: this.courseInfo.teacherId,
+              courseImage: this.courseInfo.courseImage
+            },
+            responseType: 'blob'
+          },
+          ).then(res => {
+            // console.log(res);
+            const imgUrl = URL.createObjectURL(res.data);
+            this.$refs.itemImg.setAttribute('src', imgUrl);
+          })
+            .catch(err => {
+              console.error(err);
+            })
+        }
       }
     },
     mounted() {
-      if(this.courseInfo!=null)
-        this.loading=false;
-        
+      if (this.courseInfo != null)
+        this.loading = false;
+      this.loadImage();
     },
 
   }
 </script>
 <style scoped>
-.image{
-  width: 224px;
-}
+  .image {
+    width: 224px;
+    height: 224px;
+  object-fit: fill;
+  }
 </style>

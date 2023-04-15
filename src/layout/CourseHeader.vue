@@ -23,6 +23,7 @@
 </template>
 <script>
   import {mapGetters,mapActions} from 'vuex';
+  import axios from '@/api/';
   export default {
     name: 'CourseHeader',
     props:['isCollapse'],
@@ -33,12 +34,13 @@
         this.$emit('changeShow');//子传父
       },
       logOut(){
+        
         this.$confirm('你确定要登出吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          axios.get('dataCommit/logout')
+          axios.get('/dataCommit/logout')
           .then(res => {
             console.log(res);
             if(res.code=1002){
@@ -47,10 +49,8 @@
               this.$router.push('/login');//前往登录页面
             }
           })
-          .catch(err => {
-            console.error(err); 
-          })
-        }).catch(() => {
+        }).catch((err) => {
+          console.error(err);
           this.$message.info('已取消操作!');
         });
       }

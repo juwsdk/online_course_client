@@ -14,7 +14,8 @@
 
     <el-button type="success" size="mini" @click="addCourse">新增课程</el-button>
     <!-- 新增课程对话框 -->
-    <template>
+    <CourseInfoDialog :dialogVisibleCourse="dialogVisibleCourse" @closeCourseDialoag="closeCourseDialoag"/>
+    <!-- <template>
       <el-dialog title="新增课程" :visible.sync="dialogVisibleCourse" width="450px">
         <el-form ref="courseform" :model="courseform" label-width="80px">
           <el-form-item label="教师id">
@@ -43,7 +44,7 @@
             style="margin-right: 100px;">取消</el-button>
         </span>
       </el-dialog>
-    </template>
+    </template> -->
 
 
     <div class="chartBodyStyle">
@@ -72,10 +73,12 @@
   import { teacherFindStudetTable } from '@/api/teacherTableData';
   import axios from '@/api';
   import teacherMangeStudent from '@/api/teacherInterface';
+  import CourseInfoDialog from '@/components/CourseInfoDialog';
   export default {
     name: 'TeacherIndex',
     components: {
       CourseTable,
+      CourseInfoDialog
     },
     data() {
       return {
@@ -84,15 +87,14 @@
         teacherMangeStudent,//后端接口
         teacherId: this.$store.state.teacherId,
         teacherInfo: {},
-
-        courseform: {},//新增的课程信息放在这
+        // courseform: {},//新增的课程信息放在这
+        dialogVisibleCourse: false,//是否显示增加课程信息的对话框
+        // dataImage: { dialogImageUrl: '', dialogVisible: false, fileItem: {} },//图片上传框
         studentCount: 0,//教授学生数
         courses: {},//教授的课程
         teacherCourses: [],//教授的课程
         showAlters: false,//告诉表格子组件不展示修改新增功能
         // dialogVisible: false,//是否显示dialog修改个人信息
-        dialogVisibleCourse: false,//是否显示修改课程信息的对话框
-        dataImage: { dialogImageUrl: '', dialogVisible: false, fileItem: {} },//图片上传框
         //展示教师教授课程选课人数的饼图
         teacherChartOptions: {
           title: { text: '选课人数统计' },
@@ -158,49 +160,53 @@
       //#endregion 教师相关操作
       //#region 图片处理策略
       //删除要修改的图片
-      handleImageRemove(file) {
-        this.dataImage.fileItem = {};
-      },
-      //查看图片时
-      handleImagePreview(file) {
-        this.dataImage.dialogImageUrl = file.url;
-        this.dataImage.dialogVisible = true;
-      },
-      //当新加入图片时
-      handleImageChange(file) {
-        this.dataImage.fileItem = file;
-      },
+      // handleImageRemove(file) {
+      //   this.dataImage.fileItem = {};
+      // },
+      // //查看图片时
+      // handleImagePreview(file) {
+      //   this.dataImage.dialogImageUrl = file.url;
+      //   this.dataImage.dialogVisible = true;
+      // },
+      // //当新加入图片时
+      // handleImageChange(file) {
+      //   this.dataImage.fileItem = file;
+      // },
 
       //增加课程
       addCourse() {
         this.dialogVisibleCourse = true;
       },
-      //新增加一门课程确认按钮
-      submitInfoCourse() {
-        let courseFile = new FormData();
-        courseFile.append('teacherId', this.courseform.teacherId);
-        courseFile.append('courseName', this.courseform.courseName);
-        courseFile.append('courseInfo', this.courseform.courseInfo);
-        courseFile.append('courseImage', this.dataImage.fileItem.name);
-        courseFile.append('fileRaw', this.dataImage.fileItem.raw);
-        axios.post('/teacher/courseInsert', courseFile)
-          .then(res => {
-            console.log(res);
-            if (res.data == 1) {
-              this.$message.success('添加成功!');
-              this.dialogVisibleCourse = false;
-              this.courseform = {};//将数据清空
-              this.dataImage.fileItem = {};
-            } else {
-              this.$message.danger('上传失败!')
-            }
-
-          })
-          .catch(err => {
-            console.error(err);
-            this.$message.warning('上传失败!')
-          })
+      //关闭增加课程对话框
+      closeCourseDialoag(value){
+        this.dialogVisibleCourse=value;
       },
+      //新增加一门课程确认按钮
+      // submitInfoCourse() {
+      //   let courseFile = new FormData();
+      //   courseFile.append('teacherId', this.courseform.teacherId);
+      //   courseFile.append('courseName', this.courseform.courseName);
+      //   courseFile.append('courseInfo', this.courseform.courseInfo);
+      //   courseFile.append('courseImage', this.dataImage.fileItem.name);
+      //   courseFile.append('fileRaw', this.dataImage.fileItem.raw);
+      //   axios.post('/teacher/courseInsert', courseFile)
+      //     .then(res => {
+      //       console.log(res);
+      //       if (res.data == 1) {
+      //         this.$message.success('添加成功!');
+      //         this.dialogVisibleCourse = false;
+      //         this.courseform = {};//将数据清空
+      //         this.dataImage.fileItem = {};
+      //       } else {
+      //         this.$message.danger('上传失败!')
+      //       }
+
+      //     })
+      //     .catch(err => {
+      //       console.error(err);
+      //       this.$message.warning('上传失败!')
+      //     })
+      // },
       //#endregion 图片处理策略
       //#region 统计表信息请求
       loadStatisticsData() {
