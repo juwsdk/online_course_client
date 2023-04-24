@@ -45,7 +45,6 @@
             <el-button type="primary" @click="toRegister">注册</el-button>
           </el-col>
         </el-row>
-        </el-form-item>
       </el-form>
     </div>
   </div>
@@ -96,6 +95,8 @@
               this.$message.success('登录成功');
               this.setIsAuth(true);
               this.$router.push('/myindex');
+            }else{
+              this.$message.warning(res.message);
             }
           })
           .catch(err => {

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <CourseTable :tableInterfce="ATableInterface" :tableInfo="tableInfo"
         :showOptions="showOptions">
@@ -7,11 +7,13 @@
             :key="index">
           </el-option>
         </template>
+
         <template v-slot:atablecol>
           <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
             :prop="tableprop" sortable />
-          </el-table-column>
+          <!-- </el-table-column> -->
         </template>
+
       </CourseTable>
   </div>
 </template>
@@ -21,7 +23,7 @@
   import {teacherFindStudentClock} from '@/api/teacherTableData';
   import CourseTable from '@/components/CourseTable';
 export default {
-  name:'TStudentClockIn',
+  name:'TStudentClockIn',//学生打卡
   components:{
     CourseTable
   },
@@ -35,6 +37,7 @@ export default {
   computed:{
     ATableInterface(){
       this.aTableInterface.tableList='/'+this.$route.params.courseId+this.aTableInterface.tableList;
+      console.log(this.aTableInterface.tableList);
       return this.aTableInterface;
     }
   }

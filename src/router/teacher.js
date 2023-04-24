@@ -11,7 +11,7 @@ import TAnsweringQuestions from '@/pages/teacher/teacherDetail/TAnsweringQuestio
 export default {
   name: 'teacher',
   path: '/teacher',
-  component: { render: (e) => e("keep-alive",[e("router-view")]) },
+  component: { render: (e) => e("router-view") },//render: (e) => e("keep-alive",[e("router-view")])
   meta: { title: '学员管理', icon: 'el-icon-menu', requiresAuth: true, role: 'teacher' },
   children: [
     {

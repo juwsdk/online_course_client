@@ -8,7 +8,8 @@
         <el-button type="primary" size="small" @click="changeCorseInfo">修改信息</el-button>
       </el-col>
       <!-- 新增课程对话框 -->
-      <CourseInfoDialog :atype="atype" :dialogVisibleCourse="dialogVisibleCourse" @closeCourseDialoag="closeCourseDialoag" />
+      <CourseInfoDialog :atype="atype" :dialogVisibleCourse="dialogVisibleCourse"
+        @closeCourseDialoag="closeCourseDialoag" />
     </el-row>
 
     <div class="fileContainer">
@@ -36,13 +37,13 @@
     components: {
       FileUploadCard,
       CourseInfoDialog,
-      atype:'courseUpdate',
+      atype: 'courseUpdate',
     },
     data() {
       return {
         fileList: [],//文件列表
         dialogVisibleCourse: false,//是否显示修改课程信息的对话框
-        atype:'courseUpdate'
+        atype: 'courseUpdate'
       }
     },
     methods: {
@@ -59,22 +60,32 @@
       handleRemove(file) {
         const courseRes = { ...file };
         //发送请求后端删除文件,成功后前端删除文件
-        axios({
-          method: 'delete',
-          url: "/video/" + this.$route.params.teacherId + "/fileDelete",
-          data: courseRes
-        }).then(res => {
-          console.log(res);
-          if (res.data == 1) {//删除成功
-            const fileList = this.fileList.filter(item => item !== file);
-            this.fileList = fileList;
-            this.$message.success("已经成功删除!");
-          }
+        //提示是否要删除
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios({
+            method: 'delete',
+            url: "/video/" + this.$route.params.teacherId + "/fileDelete",
+            data: courseRes
+          }).then(res => {
+            console.log(res);
+            if (res.data == 1) {//删除成功
+              const fileList = this.fileList.filter(item => item !== file);
+              this.fileList = fileList;
+              this.$message.success("已经成功删除!");
+            }
+          })
+            .catch(err => {
+              console.error(err);
+              this.$message.danger("删除失败!");
+            });
+        }).catch(err => {
+          console.error(err);
+          this.$message.danger("删除失败!");
         })
-          .catch(err => {
-            console.error(err);
-            this.$message.danger("删除失败!");
-          });
         console.log(file);
 
       },
@@ -111,7 +122,8 @@
             console.error(err);
             this.$message.danger("删除失败!");
           });
-        }).catch(() => {
+        }).catch((err) => {
+          console.log(err);
           this.$message({
             type: 'info',
             message: '已取消删除'

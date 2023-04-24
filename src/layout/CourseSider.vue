@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <el-aside class="myside" :style="contentStyle">
     <el-menu :collapse="isCollapse" router text-color="#FFF"  default-active="1"
       class="elMenuVertical" :style="contentStyle" background-color="rgba(22, 131, 122,0)">

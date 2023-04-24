@@ -4,7 +4,7 @@
     <template v-slot:commentsMain>
       <ul class="infinite-list" style="overflow:auto;height: 100%;">
         <CourseQuestionLi v-for="(item,index) in questionsList" :key="questionsList.courseQuestionId" :item="item"
-          @answerQuestion="answerQuestion" :liIndex="index"/>
+          @answerQuestion="answerQuestion" :liIndex="index" />
       </ul>
     </template>
 
@@ -48,7 +48,7 @@
       return {
         questionsList: [],//存放请求到的提问以及回答数据
         inputInfo: '',//输入框的内容
-        questionsObj:{questionsId:null,liIndex:-100},//回复的问题的ID
+        questionsObj: { questionsId: null, liIndex: -100 },//回复的问题的ID
       }
     },
     methods: {
@@ -64,29 +64,29 @@
       },
       //发送对问题的回复
       sendQus() {
-        if(this.questionsObj.questionsId==null || this.questionsObj.liIndex<0)
+        if (this.questionsObj.questionsId == null || this.questionsObj.liIndex < 0)
           this.$message.warning('请选择要回复的问题!');
         //封装数据
-        const answer={
-          courseId:this.$route.params.courseId,
-          courseQuestionInfo:this.inputInfo,
-          parentQuestionId:this.questionsObj.questionsId
+        const answer = {
+          courseId: this.$route.params.courseId,
+          courseQuestionInfo: this.inputInfo,
+          parentQuestionId: this.questionsObj.questionsId
         };
-        if(this.questionsObj.questionsId==0){
-          this.questionsObj.questionsId==null;//防止bug
+        if (this.questionsObj.questionsId == 0) {
+          this.questionsObj.questionsId == null;//防止bug
           return;
         }
-          
+
         axios.put(questionInterface.prefix + questionInterface.insertOne, answer)
           .then(res => {
             console.log(res);
             if (res.data == 1) {
               //将父id置为空并将输入框置为空
               this.$message.success('回复成功!');
-              this.questionsObj.questionsId= null;
-              this.questionsObj.liIndex=-100;
+              this.questionsObj.questionsId = null;
+              this.questionsObj.liIndex = -100;
               this.inputInfo = '';
-            }else
+            } else
               this.$message.warning('服务器处理失败');
           })
           .catch(err => {
@@ -95,8 +95,8 @@
           })
       },
       //点击li的回复时会发送自定义事件传给这个函数
-      answerQuestion(questionsId,liIndex) {
-        this.questionsObj={questionsId,liIndex};//传递给设定的值，获取id
+      answerQuestion(questionsId, liIndex) {
+        this.questionsObj = { questionsId, liIndex };//传递给设定的值，获取id
       },
     },
     mounted() {

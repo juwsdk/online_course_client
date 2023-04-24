@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <!-- 教师个人信息描述 -->
     <el-descriptions title="教师信息" :labelStyle="{ fontSize: '16px',color:'#434863' }"
@@ -15,37 +15,6 @@
     <el-button type="success" size="mini" @click="addCourse">新增课程</el-button>
     <!-- 新增课程对话框 -->
     <CourseInfoDialog :dialogVisibleCourse="dialogVisibleCourse" @closeCourseDialoag="closeCourseDialoag"/>
-    <!-- <template>
-      <el-dialog title="新增课程" :visible.sync="dialogVisibleCourse" width="450px">
-        <el-form ref="courseform" :model="courseform" label-width="80px">
-          <el-form-item label="教师id">
-            <el-input v-model="courseform.teacherId=teacherId" type="number" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="课程名">
-            <el-input v-model="courseform.courseName"></el-input>
-          </el-form-item>
-          <el-form-item label="课程描述">
-            <el-input v-model="courseform.courseInfo" type="textarea" autosize></el-input>
-          </el-form-item>
-          <el-form-item label="课程图片">
-            <el-upload action="#" list-type="picture-card" :on-remove="handleImageRemove"
-              :on-preview="handleImagePreview" :auto-upload="false" :limit="1" :on-change="handleImageChange">
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dataImage.dialogVisible">
-              <img width="100%" :src="dataImage.dialogImageUrl" class="el-upload-list__item-thumbnail" alt="">
-            </el-dialog>
-          </el-form-item>
-        </el-form>
-        <span slot="footer">
-          <el-button type="success" size="small" @click="submitInfoCourse"
-            style="float: left;margin-left: 100px;">提交</el-button>
-          <el-button type="warning" size="small" @click="dialogVisibleCourse=false"
-            style="margin-right: 100px;">取消</el-button>
-        </span>
-      </el-dialog>
-    </template> -->
-
 
     <div class="chartBodyStyle">
       <!-- echarts -->

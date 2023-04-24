@@ -80,12 +80,12 @@
                 this.courseform = {};//将数据清空
                 this.dataImage.fileItem = {};
               } else {
-                this.$message.danger('上传失败!')
+                this.$message.danger('上传失败!');
               }
             })
             .catch(err => {
               console.error(err);
-              this.$message.warning('上传失败!')
+              this.$message.warning('上传失败!');
             })
         }//修改课程
         else if (this.atype == 'courseUpdate') {
@@ -95,7 +95,8 @@
           courseFile.append('courseName', this.courseform.courseName);
           courseFile.append('courseInfo', this.courseform.courseInfo);
           courseFile.append('courseImage', this.dataImage.fileItem.name);
-          courseFile.append('fileRaw', this.dataImage.fileItem.raw);
+          if (typeof this.dataImage.fileItem.raw != 'undefined' && this.dataImage.fileItem.raw != null)//上传了文件才修改
+            courseFile.append('fileRaw', this.dataImage.fileItem.raw);
           console.log('=================================');
           axios.post('/teacher/courseUpdate', courseFile)
             .then(res => {
@@ -103,7 +104,6 @@
                 this.$message.success('修改成功!');
                 this.loadData();
               }
-
             }).catch(err => {
 
             })
@@ -120,7 +120,7 @@
             this.courseform = res.data;
             // console.log('===============================');
             // console.log('/' + this.$route.params.courseId + '/' + this.$route.params.teacherId + '/courseShow/' + this.courseform.courseImage);
-            
+
           })
           .catch(err => {
             console.error(err);

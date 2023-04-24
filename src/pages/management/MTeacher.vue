@@ -1,10 +1,10 @@
-<template lang="">
+<template>
   <div>
     <!-- <CourseSearchBar>
       <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
         v-if="searchlable !='密码'" :key="index" slot="selectOne"></el-option>
     </CourseSearchBar> -->
-    <CourseTable :tableInterfce="aTableInterface" :form="form" @clearForm="clearForm">
+    <CourseTable :tableInterfce="aTableInterface" :form="form" @clearForm="clearForm" @alertForm="alertForm">
 
       <template v-slot:selectOneG>
         <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
@@ -29,7 +29,7 @@
           <el-radio v-model="form.teacherGender" label="女">女</el-radio>
         </el-form-item>
         <el-form-item label="生日">
-          <el-date-picker value-format="yyyy-M-d" v-model="form.teacherBirthday" type="date" placeholder="选择日期">
+          <el-date-picker value-format="yyyy-M-d" v-model="form.teacherBirthday" placeholder="选择日期">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="电话">
@@ -83,6 +83,11 @@
           teacherEmail: '',
           teacherAddress: ''
         }
+      },
+      //修改表单
+      alertForm(row) {
+        this.form = JSON.parse(JSON.stringify(row));
+        this.showId = true;//点击编辑按钮时，显示id框
       }
     },
     mounted() {

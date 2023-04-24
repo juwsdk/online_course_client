@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="1" :offset="0">
           <el-button type="info" size="mini" @click="" :disabled="loading">导出</el-button> -->
-        </el-col>
+<!--        </el-col>-->
       </el-row>
     </div>
 
@@ -29,7 +29,7 @@
       <!-- 放置单元格 -->
       <slot name="atablecol"></slot>
       <!-- 功能操作区 -->
-      <el-table-column label="操作" v-if="showOptions">
+      <el-table-column label="操作" v-if="showOptions && showDelete">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" v-if="showAlters">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -74,7 +74,8 @@
       form: { type: Object, required: false },
       showAlters: { type: Boolean, required: false, default: true },
       showOptions: { type: Boolean, required: false, default: true },
-      parentPageSize: { type: Number, required: false, default: 10 }
+      parentPageSize: { type: Number, required: false, default: 10 },
+      showDelete:{type:Boolean,required:false,default:true}
     },
     // props: ['tableInterfce', 'form', 'showAlters','parentPageSize'],
     data() {
@@ -120,6 +121,7 @@
       //编辑/修改操作
       handleEdit(index, row) {
         // console.log(index,row);
+        console.log(row);
         this.$emit("alertForm", row);//发给父组件更新表单
         this.dialogVisible = true;//打开修改框
         this.dialogType = false;//模式为修改
@@ -159,10 +161,10 @@
           type: 'warning'
         }).then(() => {
           //发送请求
-          axios.delete(this.tableInterfce.prefix + this.tableInterfce.deleteOne, obj)
+          axios.post(this.tableInterfce.prefix + this.tableInterfce.deleteOne, obj)
             .then(res => {
               console.log(res);
-              if (res.data == 1) {
+              if (res.data == 1 || res.data==null) {
                 this.$message.success('已经成功删除!');
                 this.loadData();
               } else
@@ -197,8 +199,9 @@
         } else {//状态为假，表示是修改操作
           axios.put(this.tableInterfce.prefix + this.tableInterfce.updateOne, this.form)
             .then(res => {
-              console.log(res);
-              if (res.data == 1) {
+              console.log('===============');
+              console.log(res.data);
+              if (res.data == 1 ) {
                 this.$message.success('修改成功');
                 this.dialogVisible = false;//关闭弹窗
                 this.loadData();//重新加载数据

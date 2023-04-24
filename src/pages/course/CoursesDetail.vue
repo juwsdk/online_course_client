@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <DetailView>
     <template v-slot:pageHeader>
       <el-page-header @back="goBack" :content="'课程页面'+$route.params.courseId">

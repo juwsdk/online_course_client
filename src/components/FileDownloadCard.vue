@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <el-collapse-item :title="homeworkItem.courseHomeworkName" :name="index">
     <template>
 

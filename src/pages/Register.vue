@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div id="loginBody">
     <div id="loginMain">
       <el-row :gutter="20">
@@ -14,7 +14,7 @@
             <el-input v-model="form.studentName"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="form.studentPassword"></el-input>
+            <el-input v-model="form.studentPassword" type="password"></el-input>
           </el-form-item>
           <el-form-item label="性别">
             <template>
@@ -27,7 +27,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="电话号码">
-            <el-input v-model="form.tstudentPhonenum" type="number"></el-input>
+            <el-input v-model="form.studentPhonenum" type="number"></el-input>
           </el-form-item>
           <el-form-item label="邮箱">
             <el-input v-model="form.studentEmail" type="email"></el-input>
@@ -43,7 +43,7 @@
             <el-input v-model="form.teacherName"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="form.teacherPassword" type="number"></el-input>
+            <el-input v-model="form.teacherPassword" type="password"></el-input>
           </el-form-item>
           <el-form-item label="性别">
             <template>
@@ -77,36 +77,50 @@
         </el-form-item>
       </el-form>
     </div>
+
   </div>
 </template>
 <script>
+  import axios from '@/api';
   export default {
     name: 'Register',
     data() {
       return {
         form: {},
-        chooseModle: true//true为学生，false为教师
+        chooseModle: true,//true为学生，false为教师
       }
     },
     methods: {
       onSubmit() {
         console.log(this.form);
         let url;
-        if(this.chooseModle==true){//学生注册
-          url='/student/studentInsert';
-        }else{//教师注册
-          url='/teacher/teacherInsert';
+        if (this.chooseModle == true) {//学生注册
+          url = '/dataCommit/register/student';
+        } else {//教师注册
+          url = '/dataCommit/register/teacher';
         }
         axios({
-            method:'post',
-            url: url,
-            data: this.form
-          }).then(res=>{
-            if(res.data==1)
-              this.$message.success('注册成功');
-          }).catch(err=>{
-            this.$message.warning('注册失败');
-          })
+          method: 'post',
+          url: url,
+          data: this.form
+        }).then(res => {
+          console.log(res);
+          if (res.data === 0) {
+            this.$message.error('注册失败');
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '注册成功,你的编号是:' + res.data,
+              duration: 0
+            });
+            // this.$router.push('/login');
+            this.form={};//清空表单
+          }
+
+        }).catch(err => {
+          console.log(err); 
+          this.$message.warning('注册失败');
+        })
       },
       handleModleChange() {
         // console.log('触发');

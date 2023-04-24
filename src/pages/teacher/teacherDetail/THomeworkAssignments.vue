@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <el-upload class="upload-demo" drag :action="uploadUrl" multiple :file-list="fileList" :on-change="handleFileChange"
       ref="upload" :on-remove="handleRemove" :auto-upload="false" :show-file-list="false">

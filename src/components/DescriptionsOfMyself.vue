@@ -126,7 +126,7 @@
     </template>
 
     <!-- 管理员展示这个 -->
-    <template v-if="infoModel=='adm'">
+    <template v-if="infoModel=='admin'">
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-user"></i>
@@ -154,6 +154,10 @@
       infoUpdate() {
         this.$emit('handleUpdate', this.info);
       }
+    },
+    mounted() {
+      console.log('=============================');
+      console.log(this.info);
     },
   }
 </script>

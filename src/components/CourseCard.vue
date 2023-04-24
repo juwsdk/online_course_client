@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div style="width: 224px;
   ">
     <el-skeleton style="width: 224px;margin: 0 auto;" :loading="loading" animated>
@@ -42,8 +42,6 @@
     },
     methods: {
       pushShow() {//点击加载详情页面
-        // alert("111111111");
-        // console.log(this.$router);
         this.$router.push({//通过push跳转页面
           name: this.routeName,
           params: {

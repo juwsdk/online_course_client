@@ -15,7 +15,17 @@ module.exports = defineConfig({
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
-    }
+    },
+    proxy: 'http://localhost:8080/courseproj/server'
+    // proxy: {
+    //   "/api": {
+    //     target: 'http://localhost:8080/courseproj/server',//后端接口的根目录
+    //     changeOrigin: true,//是否跨域
+    //     pathRewrite: {
+    //       '^/api': '/'
+    //     }
+    //   }
+    // }
   }
 
 })

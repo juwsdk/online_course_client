@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <el-upload class="upload-demo" ref="upload" action="#" :multiple="true" :on-preview="handlePreview"
       :on-change="handleChange" :on-remove="handleRemove" :file-list="fileList" :show-file-list="false"
@@ -69,7 +69,9 @@
               .then(res => {
                 // console.log(res);
                 //提示成功，fileList中删除这个元素
-                this.$message.success(res.data);
+                if(res.data==1){
+                  this.$message.success('上传成功');
+                }
                 // 找到 fileItem 的索引
                 const index = this.fileList.indexOf(fileItem);
                 // 删除指定元素

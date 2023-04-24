@@ -5,11 +5,7 @@
 
     </el-header>
     <el-container direction="horizontal" style="height:calc( 100vh - 180px );">
-      <!-- <el-aside width="200px" style="height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;"> -->
       <slot name="pageAside"></slot>
-      <!-- </el-aside> -->
       <el-container direction="vertical">
         <el-main>
           <slot name="pageMain"></slot>
@@ -30,7 +26,7 @@
 
   .el-main {
     height: 100%;
-    background-color: rgba(247, 247, 248);
+    background-color: rgb(247, 247, 248);
     padding-top: 0;
     padding-bottom: 0;
   }

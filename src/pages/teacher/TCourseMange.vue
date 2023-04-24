@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     
     <CourseCards class="myCourseCards" :courseInterface="courseInterface" @loadCourse="loadCourse">

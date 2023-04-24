@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <!-- <CourseSearchBar>
       通过具名插槽传入下拉框信息
@@ -35,7 +35,7 @@
           <el-radio v-model="form.studentGender" label="女">女</el-radio>
         </el-form-item>
         <el-form-item label="生日">
-          <el-date-picker value-format="yyyy-MM-dd" v-model="form.studentBirthday" type="date" placeholder="选择日期">
+          <el-date-picker value-format="yyyy-MM-dd" v-model="form.studentBirthday" placeholder="选择日期">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="电话">

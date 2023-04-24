@@ -1,7 +1,5 @@
-<template lang="">
+<template>
   <div>
-    <!-- <CourseSearchBar/>
-    <CourseTable /> -->
     <DescriptionsOfMyself @handleUpdate="handleUpdate" :info="form" :infoModel="formModel" />
     <!-- 修改教师信息对话框 -->
     <el-dialog title="修改个人信息" :visible.sync="dialogVisible" width="450px">
@@ -67,9 +65,22 @@
         </el-form-item>
       </el-form>
 
+      <!-- 修改管理员信息 -->
+      <el-form v-if="formModel=='admin'" ref="form" :model="form" label-width="80px">
+        <el-form-item label="管理员号">
+          <el-input v-model="form.admId" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="管理员名">
+          <el-input v-model="form.admName"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="form.admPassword" type="password" show-password></el-input>
+        </el-form-item>
+      </el-form>
+
       <span slot="footer">
         <el-button type="success" size="small" @click="submitInfo" style="float: left;margin-left: 100px;"
-          v-if="formModel!='admin'">修改</el-button>
+          >修改</el-button>
         <el-button type="warning" size="small" @click="handleDialogClose" style="margin-right: 100px;">取消</el-button>
       </span>
     </el-dialog>
@@ -88,7 +99,7 @@ export default {
     return {
       dialogVisible: false, //是否显示dialog修改个人信息
       form: {}, //修改的信息
-      formModel: "student",
+      formModel: this.$store.getters.getLoginType,
     };
   },
   computed: {
@@ -96,6 +107,7 @@ export default {
       getStudentId: "getStudentId",
       getTeacherId: "getTeacherId",
       getAdmiId: "getAdmiId",
+      getLoginType:"getLoginType"
     }),
   },
   methods: {
@@ -110,7 +122,9 @@ export default {
       if (this.formModel == "student") {
         url = "/student/studentUpdate";
       } else if (this.formModel == "teacher") {
-        url = "/teacher/studentUpdate";
+        url = "/teacher/teacherUpdate";
+      }else if(this.formModel=="admin"){
+        url="/admin/admUpdate"
       }
       axios
         .put(url, this.form)
@@ -139,7 +153,7 @@ export default {
         url = "/student/" + this.getStudentId;
       } else if (this.formModel == "teacher") {
         url = "/teacher/" + this.getTeacherId + "/teacherOne";
-      } else if (this.formModel == "adm") {
+      } else if (this.formModel == "admin") {
         url = "/admin/" + this.getAdmiId + "/admOne";
       }
       console.log(this.getTeacherId);
@@ -161,5 +175,5 @@ export default {
   },
 };
 </script>
-<style lang="">
+<style>
 </style>

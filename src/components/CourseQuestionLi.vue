@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <li class="questionsLi" :style="changeStyleIfHavingAnswer">
     <article>
       <h1>提问学生学号:{{item.studentId}}</h1>
@@ -10,6 +10,7 @@
 
     <el-button type="text" size="small" id="expandButtonT" @click="answerThis" style="font-weight: bold;">回复</el-button>
     <el-button ref="showButton" type="text" size="small" id="expandButtonB" @click="showAnswer" style="font-weight: bold;">展开</el-button>
+
     <template v-if="havingAnswer">
       <article id="qustionAnswer" v-for="answerItem in questionAnswerList" :key="answerItem.courseQuestionId">
         <h1 v-show="answerItem.studentId!=null">回复者:{{answerItem.studentId}}</h1>

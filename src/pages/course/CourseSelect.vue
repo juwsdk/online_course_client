@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div :style="isLoading" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)">
     <!-- 走马灯  v-show控制是否显示，在第一页则显示，否则不显示-->

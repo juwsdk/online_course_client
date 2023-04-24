@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <CommentVeiw>
     <template v-slot:commentsHeader>
       <h1>个人计划</h1>
