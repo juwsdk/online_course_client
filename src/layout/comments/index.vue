@@ -26,9 +26,6 @@
   }
 
   .el-main {
-    /* background-color: aquamarine; */
-    /* border-left: #424f63 1px solid; */
-    /* border-right: #424f63 1px solid; */
     height: calc(100vh - 360px);
   }
 

@@ -1,6 +1,7 @@
 <template>
   <div style="height: calc( 100vh - 100px);" v-loading="loading" element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+
     <CourseCards class="myCourseCards" :courseInterface="courseInterface" @loadCourse="loadCourse"
       :apageSize="apageSize">
       <template v-slot:cards>
@@ -18,7 +19,7 @@
   import CourseCard from '@/components/CourseCard';
   import { courseInfoInterface } from '@/api/courseInterface';
   export default {
-    name: 'Courses',
+    name: 'Courses',//课程页面
     components: {
       CourseCards,
       CourseCard
@@ -41,6 +42,12 @@
         // console.log(list);
       },
     },
+    created() {
+
+    },
+    destroyed() {
+
+    }
 
   }
 </script>

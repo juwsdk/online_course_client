@@ -5,7 +5,7 @@
     </template>
     <template v-slot:commentsMain>
       <ul class="infinite-list" style="overflow:auto">
-        <li v-for="(item,index) in scheduleList">
+        <li v-for="(item,index) in scheduleList" :key="index">
           <el-button class="file-card-delete-btn" type="text" icon="el-icon-delete" @click="handleRemove(item)"
             style="float: right;color:#e4baba;"></el-button>
           <div>
@@ -20,6 +20,7 @@
         </li>
       </ul>
     </template>
+
     <template v-slot:commentsInput>
       <div id="timeBody">
         <el-date-picker type="datetimerange" is-range v-model="scheduleItem.time" range-separator="至"
@@ -104,6 +105,7 @@
       },
     },
     computed: {
+      //返回格式化的时间格式
       dateFormatNow() {
         return dateFormatNow();
       }
@@ -120,7 +122,6 @@
   }
 </script>
 <style scoped>
-  
 
   #timeBody {
     height: 40px;

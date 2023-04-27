@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <el-header class="myheader">
     <el-row>
       <el-col :span="1" :offset="0">

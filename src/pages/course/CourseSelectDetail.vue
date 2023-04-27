@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <el-container direction="vertical">
       <!--  -->
@@ -17,11 +17,7 @@
           <!-- 放置图像 -->
           <div class="demo-image__error">
             <div class="block">
-              <!-- <span class="demonstration">默认</span> -->
-              <!-- <el-image></el-image> -->
               <img ref="itemImg" src="@/assets/book.jpg" alt="" style="height: 300px;">
-              <!-- <el-image src="../assets/book.jpg" fit="fill" :lazy="true"></el-image> -->
-              
             </div>
           </div>
         </div>
@@ -39,7 +35,7 @@
   import { courseSelectInterface } from '@/api/courseInterface';
   import axios from '@/api';
   export default {
-    name: 'CourseSelectDetail',
+    name: 'CourseSelectDetail',//课程选择详情页面
     data() {
       return {
         course: {},//从后端获得的路由信息

@@ -94,6 +94,7 @@
 <script>
   import axios from '@/api';
   import dateFormatNow from '@/utils/timeUtil';
+  import {handleA} from "@/utils/fileUtil";
   export default {
     name: 'FileDownloadCard',
     props: ['index', 'homeworkItem', 'srcPrefix', 'comptype'],
@@ -112,7 +113,7 @@
     },
     computed: {
       dowloadSrc() {
-        return this.srcPrefix + '/' + this.$route.params.teacherId + '/' + this.homeworkItem.courseId + '/' + this.homeworkItem.courseHomeworkRes;
+        return this.srcPrefix;
       }
     },
     methods: {
@@ -127,15 +128,20 @@
       dowloadItem() {
         console.log(this.dowloadSrc);
         axios({
-          method: 'post',
-          url: this.dowloadSrc,
+          method: 'get',
+          params:{
+            teacherId:this.$route.params.teacherId,
+            courseId:this.homeworkItem.courseId ,
+            courseHomeworkRes:this.homeworkItem.courseHomeworkRes
+          },
+          url: this.srcPrefix,
           responseType: 'blob'
         })
           .then(res => {
             // console.log('得到的回复是:');
             console.log(res);
             //生成A标签
-            this.handleA(res);
+            handleA(res);
           })
           .catch(err => {
             this.$message.error('文件下载失败!');
@@ -175,7 +181,7 @@
                 this.$message.warning('上传失败！')
 
             })
-            .catch(err => {
+            .catch(() => {
               this.$message.error(fileItem.name.trim().split('.')[0] + '上传失败');
             });
         });
@@ -254,7 +260,7 @@
           data: courseSubmitVo,
           responseType: 'blob'
         }).then(res => {
-          this.handleA(res);
+          handleA(res);
         })
           .catch(err => {
             console.error(err);
@@ -285,25 +291,25 @@
       //#endregion 教师
 
       //处理a标签的方法
-      handleA(res) {
-        // 拿到相应头
-        const contentType = res.headers['content-type'];
-        //获取文件名
-        const contentDispositionHeader = res.headers['content-disposition'];
-        const encodedFileName = contentDispositionHeader.split('filename*=UTF-8\'\'')[1];
-        const fileName = decodeURI(encodedFileName);
-        // 生成Blob对象然后创建URL
-        const url = window.URL.createObjectURL(new Blob([res.data], { type: contentType }));
-        // 创建 a 标签，设置下载链接和文件名
-        const link = document.createElement('a');
-        link.href = url;
-        //下载
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-        // 下载完成后释放URL
-        window.URL.revokeObjectURL(url);
-      }
+      // handleA(res) {
+      //   // 拿到相应头
+      //   const contentType = res.headers['content-type'];
+      //   //获取文件名
+      //   const contentDispositionHeader = res.headers['content-disposition'];
+      //   const encodedFileName = contentDispositionHeader.split('filename*=UTF-8\'\'')[1];
+      //   const fileName = decodeURI(encodedFileName);
+      //   // 生成Blob对象然后创建URL
+      //   const url = window.URL.createObjectURL(new Blob([res.data], { type: contentType }));
+      //   // 创建 a 标签，设置下载链接和文件名
+      //   const link = document.createElement('a');
+      //   link.href = url;
+      //   //下载
+      //   link.setAttribute('download', fileName);
+      //   document.body.appendChild(link);
+      //   link.click();
+      //   // 下载完成后释放URL
+      //   window.URL.revokeObjectURL(url);
+      // }
     },
     mounted() {
       // console.log(this.comptype);

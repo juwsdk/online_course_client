@@ -4,25 +4,25 @@ import Vue from 'vue';
 const actions = {
   //设置登录类型
   setLoginType(context, value) {
-    console.log('=======actions======');
-    console.log(context);
-    console.log(value);
     context.commit('SETLOGINTYPE', value);
   },
   //设置id 根据登录类型来确定
   setId(context, value) {
-    if (context.loginType == 'student')
+    if (context.state.loginType == 'student')
       context.commit('SETSTUDENTID', value);
-    else if (context.loginType == 'teacher')
+    else if (context.state.loginType == 'teacher')
       context.commit('SETTEACHERID', value);
-    else if (context.loginType == 'admin')
+    else if (context.state.loginType == 'admin')
       context.commit('SETADMINID', value);
   },
   //设置是否授权
   setIsAuth(context, value) {
-    console.log('1111111111111');
     console.log(typeof value);
     context.commit('SETISAUTH', value);
+  },
+  //如果是管理员设置管理员类型
+  setAdmType(context,value){
+    context.commit('SETADMTYPE',value);
   }
 };
 //mutations用于操作数据 commit
@@ -46,15 +46,19 @@ const mutations = {
   //设置是否授权
   SETISAUTH(state, value) {
     state.isAuth = value;
+  },
+  SETADMTYPE(state,value){
+    state.admType=value;
   }
 
 };
 //state用于存储数据
 const state = {
   loginType: '',
-  teacherId: '6120101',
-  studentId: '31201900',
-  admId: '1',
+  teacherId: '',
+  studentId: '',
+  admId: '',
+  admType:2,
   isAuth: false
 };
 //getters用于加工state
@@ -85,6 +89,10 @@ const getters = {
       return state.teacherId;
     else
       return state.admId;
+  },
+  //管理员类型
+  getAdmType(state){
+    return state.admType;
   }
   //#endregion 获取id
 };

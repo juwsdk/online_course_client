@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CourseTable :tableInterfce="ATableInterface" :tableInfo="tableInfo"
+    <CourseTable :tableInterfce="aTableInterface" :tableInfo="tableInfo"
         :showOptions="showOptions">
         <template v-slot:selectOneG>
           <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
@@ -31,16 +31,30 @@ export default {
     return {
       aTableInterface:clockInterface,
       tableInfo:teacherFindStudentClock,
-      showOptions:false
+      showOptions:false,
+      prefix:'',//存放前缀，用来拼接url
     }
   },
-  computed:{
-    ATableInterface(){
+  methods: {
+    assembleUrl(){
+      this.prefix=this.aTableInterface.tableList;
       this.aTableInterface.tableList='/'+this.$route.params.courseId+this.aTableInterface.tableList;
-      console.log(this.aTableInterface.tableList);
-      return this.aTableInterface;
-    }
-  }
+    },
+
+  },
+  created() {
+    this.assembleUrl();
+  },
+  destroyed() {
+    // this.aTableInterface
+  },
+  // computed:{
+  //   ATableInterface(){
+  //     this.aTableInterface.tableList='/'+this.$route.params.courseId+this.aTableInterface.tableList;
+  //     console.log(this.aTableInterface.tableList);
+  //     return this.aTableInterface;
+  //   }
+  // }
 }
 </script>
 <style lang="">

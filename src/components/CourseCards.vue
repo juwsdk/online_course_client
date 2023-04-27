@@ -17,12 +17,10 @@
   </div>
 </template>
 <script>
-  import CourseCard from './CourseCard';
   import axios from '@/api';
   export default {
     name: 'CourseCards',
     components: {
-      CourseCard,
     },
     props: { courseInterface: { type: Object, required: true }, aPageSize: { type: Number, required: false, default: 10 } },
     data() {
@@ -69,7 +67,6 @@
           }
         })
           .then(res => {
-            // console.log(res);
             this.total = res.data.total;
             this.courseData = res.data.list;
             console.log(res.data.list);
@@ -82,15 +79,11 @@
                   pageNum: 2,
                   pageSize: 5,
                 }
-              })
-                .then(res => {
-                  // console.log(res);
-                  // const newData = res.data.list.filter(item => !this.courseData.some(course => course.courseId === item.courseId));
+              }).then(res => {
                   this.courseData.push(...res.data.list);
-                  console.log('=====================');
+                  // console.log('=====================');
                   console.log(this.courseData);
-                  // console.log(res.data.list);
-                  this.$emit('loadCourse', this.courseData);
+                  this.$emit('loadCourse', this.courseData);//把请求到的信息发送给父组件
                 })
                 .catch(err => {
                   console.error(err);

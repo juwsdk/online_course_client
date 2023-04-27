@@ -29,7 +29,7 @@
         </template>
         <template v-slot:atablecol>
           <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
-            :prop="tableprop" sortable />
+            :prop="tableprop" sortable >
           </el-table-column>
         </template>
       </CourseTable>

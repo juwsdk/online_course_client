@@ -162,9 +162,9 @@
   }
 </script>
 <style scoped>
-  ::v-deep table {
+  /* ::v-deep table {
     height: calc(100vh - 160px);
-  }
+  } */
 
   span {
     font-weight: bold;

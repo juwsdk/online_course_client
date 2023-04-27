@@ -1,20 +1,44 @@
-import store from '@/store';
+import store from "@/store";
 
-const prefix="/teacher";
-const teacherId='/'+store.state.teacherId;
-const teacherMangeStudent={
+const prefix = "/teacher";
+const teacherMangeStudent = {
   prefix,
-  "tableList":teacherId+"/studentList",
-  "teacherList":teacherId+"/teacherList",
-  "teacherOne":teacherId+"/teacherOne",
-  "countObj":teacherId+ "/countStudent",
-  "countCourseStudent":teacherId+"/countCourseStudent",
-  "studentRemove":"/studentRemove",//删除学生
+  get teacherId() {
+    return "/" + store.state.teacherId;
+  },
+  get tableList() {
+    return this.teacherId + "/studentList";
+  },
+  get teacherList() {
+    return this.teacherId + "/teacherList";
+  },
+  get teacherOne() {
+    return this.teacherId + "/teacherOne";
+  },
+  get countObj() {
+    return this.teacherId + "/countStudent";
+  },
+  get countCourseStudent() {
+    return this.teacherId + "/countCourseStudent";
+  },
+
+  // "tableList":this.teacherId+"/studentList",
+  // "teacherList":this.teacherId+"/teacherList",
+  // "teacherOne":this.teacherId+"/teacherOne",
+  // "countObj":this.teacherId+ "/countStudent",
+  // "countCourseStudent":this.teacherId+"/countCourseStudent",
+  studentRemove: "/studentRemove", //删除学生
 };
-const teacherOneCourseMangeStudent={
+const teacherOneCourseMangeStudent = {
   prefix,
-  "tableList":teacherId+"/studentList",
-  "studentRemove":"/studentRemove",//删除学生
+  get teacherId() {
+    return "/" + store.state.teacherId;
+  },
+  get tableList() {
+    return this.teacherId + "/studentList";
+  },
+  // "tableList":this.teacherId+"/studentList",
+  studentRemove: "/studentRemove", //删除学生
 };
 export default teacherMangeStudent;
-export {teacherOneCourseMangeStudent};
+export { teacherOneCourseMangeStudent };

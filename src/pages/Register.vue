@@ -116,7 +116,6 @@
             // this.$router.push('/login');
             this.form={};//清空表单
           }
-
         }).catch(err => {
           console.log(err); 
           this.$message.warning('注册失败');

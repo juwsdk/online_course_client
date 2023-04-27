@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <el-card class="file-card">
     <div>
       <span>{{fileItem.resVideoName}}</span>

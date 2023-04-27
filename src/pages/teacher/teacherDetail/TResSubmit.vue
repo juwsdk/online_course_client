@@ -2,21 +2,31 @@
   <div>
     <el-upload class="upload-demo" ref="upload" action="#" :multiple="true" :on-preview="handlePreview"
       :on-change="handleChange" :on-remove="handleRemove" :file-list="fileList" :show-file-list="false"
-      :auto-upload="false">
+      :auto-upload="false"
+      :accept="['video/*']">
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
       <el-button style="margin-left: 10px;" size="small" type="danger" @click="clearFileList">清空</el-button>
       <div slot="tip" class="el-upload__tip">只能上传mp4文件</div>
     </el-upload>
+    <el-row :gutter="20">
+      <el-col :span="12" :offset="0">
+          版权信息:<el-input v-model="copyright" style="width: 200px;" size="mini"></el-input>
+      </el-col>
+    </el-row>
+    
     <div class="fileContainer">
       <FileUploadCard v-for="(fileItem,index) in fileList" :key="index" :fileItem="fileItem"
-        @remove="handleRemove(fileItem)" style="width: 280px;">
+        @remove="handleRemove(fileItem)" style="width: 280px;height: auto;">
         <template v-slot:fileCardFormItems>
           <el-form-item label="集数">
             <el-input v-model="fileItem.episode"></el-input>
           </el-form-item>
           <el-form-item label="播放时名称">
             <el-input v-model="fileItem.alias"></el-input>
+          </el-form-item>
+          <el-form-item label="版权所有">
+            <el-input v-model="fileItem.copyright"></el-input>
           </el-form-item>
         </template>
       </FileUploadCard>
@@ -35,9 +45,11 @@
     data() {
       return {
         fileList: [],
+        copyright:'',
         // i: 0//用来记录change执行了多少次,优化代码
       };
     },
+
     methods: {
       //点击上传文件
       submitUpload() {
@@ -60,6 +72,7 @@
             formData.append('fileRaw', fileItem.raw);
             formData.append('resBlues', fileItem.episode);
             formData.append('resVideoName', fileItem.alias);
+            formData.append('copyright',fileItem.copyright)
             //发送axios请求,上传数据
             axios.post("/video/upload", formData, {
               headers: {
@@ -123,6 +136,9 @@
           this.$set(file, 'resVideoName', file.name);
           this.$set(file, 'episode', index + 1);
           this.$set(file, 'alias', file.name.trim().split('.')[0]);
+          this.$set(file, 'copyright', this.copyright);
+          console.log('1111111111111111111111');
+          console.log(this.copyright);
           this.fileList.push(file);
         }
       },

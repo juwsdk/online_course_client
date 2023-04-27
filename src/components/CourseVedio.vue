@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div>
     <div style="text-align: center;">
       <video ref="video" :src="videoUrl" type="video/mp4" controls width="80%" style="height: 80vh;

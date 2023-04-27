@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div style=" padding-bottom: 5px;">
     <el-input placeholder="请输入内容" v-model="searchinput" class="input-with-select">
       <el-select v-model="searchSelect" slot="prepend" placeholder="请选择"

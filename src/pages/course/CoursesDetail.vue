@@ -91,7 +91,7 @@
   import questionInterface from '@/api/questionInterface';
   import CourseQuestionLi from '@/components/CourseQuestionLi';
   export default {
-    name: 'CoursesDetail',
+    name: 'CoursesDetail',//课程详情页面
     components: {
       DetailView,
       CommentVeiw,
@@ -149,6 +149,7 @@
             console.error(err);
           })
       },
+      //加载提问列表
       loadqestionList() {
         axios.post(questionInterface.prefix + '/' + this.$route.params.courseId + questionInterface.tableList)
           .then(res => {

@@ -81,7 +81,7 @@
           this.$message.warning('已存在同名文件，重复文件已被移除');
         } else {
           // 新文件，添加到已上传文件列表
-          const index = fileList.indexOf(file);
+          // const index = fileList.indexOf(file);
           this.$set(file, 'courseHomeworkName', file.name.trim().split('.')[0]);
           this.$set(file, 'courseHomeworkDate', dateFormatNow());
           // this.$set(file, 'alias', file.name.trim().split('.')[0]);

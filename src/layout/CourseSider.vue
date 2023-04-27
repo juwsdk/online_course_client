@@ -71,8 +71,12 @@
               menu.children = this.getMenuList(route.children).flat();//flat合并为单层数组
             }
             //根据route设置的角色和登录的角色信息对比,如果角色匹配则只生成角色相关的路由
-            if(route.meta.role==this.getLoginType || route.meta.role=='all')
+            if(route.meta.role==this.getLoginType || route.meta.role=='all'){
               menuList.push(menu);
+              if(route.meta.role=='admin'&& (this.getAdmType>route.meta.admLevel) )
+                menuList.pop(menu);
+            }
+              
           }
         });
         return menuList;
@@ -84,7 +88,7 @@
         return this.isCollapse ? { width: '60px' } : { width: '200px' };
       },
       //获取vuex中的getters
-      ...mapGetters({getLoginType:'getLoginType'})
+      ...mapGetters({getLoginType:'getLoginType',getAdmType:"getAdmType"})
     },
     mounted() {
       // console.log( router.options.routes);

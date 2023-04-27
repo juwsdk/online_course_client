@@ -30,7 +30,7 @@
   import CourseCard from '@/components/CourseCard';
   import { courseSelectInterface } from '@/api/courseInterface';
   export default {
-    name: 'CourseSelect',
+    name: 'CourseSelect',//课程选择页面
     components: {
       CourseCards,
       CourseCard
@@ -46,8 +46,6 @@
         notableList: [],//走马灯的内容
         loading: true
       }
-    },
-    computed: {
     },
     methods: {
       //子传父,子页面发送axios请求将数据发送到这里
@@ -89,7 +87,6 @@
     computed: {
       //是否加载完成
       isLoading() {
-        // console.log('1111111111');
         return this.loading ? { height: '88vh' } : { height: 'auto' };
       }
     }

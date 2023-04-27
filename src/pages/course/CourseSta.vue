@@ -8,16 +8,13 @@
     <div class="chartBodyStyle">
       <v-chart style="width: 100%;height: 100%;" :option="weekClockOptins" />
     </div>
-    <!-- <div class="ddd"></div>
-    <div class="ddd"></div> -->
-
   </div>
 </template>
 <script>
   import axios from '@/api';
 
   export default {
-    name: 'CourseSta',
+    name: 'CourseSta',//课程统计页面
     data() {
       return {
         studentId: this.$store.getters.getStudentId,
@@ -66,10 +63,8 @@
       loadCountChartOptionsData() {
         axios.get('/course/' + this.studentId + '/countCourse')
           .then(res => {
-            // this.courseNumberStatistics = res.data;
             //将得到的数据加入到统计图中
             this.countChartOptions.dataset.source.push(['课程数', res.data.countAll, res.data.studentCountAll])
-            // console.log(this.courseNumberStatistics);
           })
           .catch(err => {
             console.error(err);
@@ -81,7 +76,6 @@
           .then(res => {
             this.countHomeWorkChartOptions.dataset.source.push({ value: res.data.student, name: '已完成' });
             this.countHomeWorkChartOptions.dataset.source.push({ value: res.data.all - res.data.student, name: '未完成' });
-            // console.log(res);
           })
           .catch(err => {
             console.error(err);
