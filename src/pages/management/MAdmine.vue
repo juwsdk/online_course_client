@@ -26,8 +26,8 @@
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import { admTable } from '@/api/tableData';
-  import { admInterface } from '@/api/tableInterface';
+  import { admTable } from '@/api/manage/tableData';
+  import { admInterface } from '@/api/manage/tableInterface';
   export default {
     name: 'MAdmine',
     components: {

@@ -55,14 +55,12 @@
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import CourseSearchBar from '@/components/CourseSearchBar';
-  import studentTable from '@/api/tableData';
-  import studentInterface from '@/api/tableInterface';
+  import {studentTable} from '@/api/manage/tableData';
+  import {studentInterface} from '@/api/manage/tableInterface';
   export default {
     name: 'MStu',
     components: {
       CourseTable,
-      CourseSearchBar
     },
     data() {
       return {
