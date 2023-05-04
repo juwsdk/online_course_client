@@ -3,7 +3,7 @@
     <el-upload class="upload-demo" ref="upload" action="#" :multiple="true" :on-preview="handlePreview"
       :on-change="handleChange" :on-remove="handleRemove" :file-list="fileList" :show-file-list="false"
       :auto-upload="false"
-      :accept="['video/*']">
+      :accept="'video/*'">
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
       <el-button style="margin-left: 10px;" size="small" type="danger" @click="clearFileList">清空</el-button>

@@ -21,23 +21,13 @@ const teacherMangeStudent = {
   get countCourseStudent() {
     return this.teacherId + "/countCourseStudent";
   },
-
-  // "tableList":this.teacherId+"/studentList",
-  // "teacherList":this.teacherId+"/teacherList",
-  // "teacherOne":this.teacherId+"/teacherOne",
-  // "countObj":this.teacherId+ "/countStudent",
-  // "countCourseStudent":this.teacherId+"/countCourseStudent",
   studentRemove: "/studentRemove", //删除学生
 };
 const teacherOneCourseMangeStudent = {
   prefix,
-  get teacherId() {
-    return "/" + store.state.teacherId;
-  },
   get tableList() {
-    return this.teacherId + "/studentList";
+    return "/" + store.state.teacherId + "/studentList";
   },
-  // "tableList":this.teacherId+"/studentList",
   studentRemove: "/studentRemove", //删除学生
 };
 export default teacherMangeStudent;

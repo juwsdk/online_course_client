@@ -9,7 +9,7 @@
       </template>
       <template v-slot:atablecol>
         <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
-          :prop="tableprop" sortable />
+          :prop="tableprop" sortable >
         </el-table-column>
       </template>
     </CourseTable>
@@ -17,14 +17,12 @@
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import CourseSearchBar from '@/components/CourseSearchBar';
   import {teacherOneCourseMangeStudent} from '@/api/teacherInterface';
   import teacherTableData from '@/api/teacherTableData';
   export default {
     name: 'TStudentManage',//学生管理
     components: {
       CourseTable,
-      CourseSearchBar,
     },
     data() {
       return {

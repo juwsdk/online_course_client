@@ -15,7 +15,7 @@
           {{clockInDate}}
         </div>
         <div class="dateFormatNowStyle">
-          回复:{{questionsObj.liIndex+1}}
+          回复:{{answerObj}}
         </div>
         <!--  <div class="dateFormatNowStyle">
           <el-button type="text" v-show="inputMode=='回复'" @click="changeInputMode">取消</el-button>
@@ -64,8 +64,14 @@
       },
       //发送对问题的回复
       sendQus() {
-        if (this.questionsObj.questionsId == null || this.questionsObj.liIndex < 0)
+        if (this.questionsObj.questionsId == null || this.questionsObj.liIndex < 0){
           this.$message.warning('请选择要回复的问题!');
+          return;
+        }
+        if (this.inputInfo.trim()==''){
+          this.$message.warning(' 请输入要回复的内容!');
+          return;
+        }
         //封装数据
         const answer = {
           courseId: this.$route.params.courseId,
@@ -73,7 +79,7 @@
           parentQuestionId: this.questionsObj.questionsId
         };
         if (this.questionsObj.questionsId == 0) {
-          this.questionsObj.questionsId == null;//防止bug
+          this.questionsObj.questionsId = null;//防止bug
           return;
         }
 
@@ -106,6 +112,10 @@
       //获取当前时间并格式化
       clockInDate() {
         return dateFormatNow();
+      },
+      //用作显示回复哪一个学生
+      answerObj(){
+        return this.questionsObj.liIndex<0?'无':this.questionsObj.liIndex+1;
       }
     },
   }

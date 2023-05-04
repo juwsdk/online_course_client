@@ -13,7 +13,7 @@
     </el-row>
 
     <div class="fileContainer">
-      <FileUploadCard v-for="(fileItem,index) in fileList" :key="index" :fileItem="fileItem" style="width: 280px;"
+      <FileUploadCard v-for="(fileItem,index) in fileList" :key="index" :fileItem="fileItem" style="width: 280px;height: auto;"
         @remove="handleRemove(fileItem)" :fileType="true" @change="handleChange">
         <template v-slot:fileCardFormItems>
           <el-form-item label="集数">
@@ -21,6 +21,9 @@
           </el-form-item>
           <el-form-item label="播放时名称">
             <el-input v-model="fileItem.resVideoName"></el-input>
+          </el-form-item>
+          <el-form-item label="版权信息">
+            <el-input v-model="fileItem.copyright"></el-input>
           </el-form-item>
         </template>
       </FileUploadCard>
