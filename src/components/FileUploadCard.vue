@@ -10,12 +10,6 @@
         <el-form>
           <!-- 插槽，放入内容体 -->
           <slot name="fileCardFormItems"></slot>
-          <!-- <el-form-item label="集数">
-            <el-input v-model="episode" @input="update"></el-input>
-          </el-form-item>
-          <el-form-item label="播放时名称">
-            <el-input v-model="alias" @input="update"></el-input>
-          </el-form-item> -->
         </el-form>
       </div>
     </div>
@@ -43,7 +37,7 @@
     data() {
       return {
         // episode:this.aEposide,
-        alias: ''
+        // alias: ''
       }
     },
     methods: {

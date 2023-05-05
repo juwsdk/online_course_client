@@ -11,7 +11,11 @@
   </div>
 </template>
 <script>
-  import axios from '@/api';
+  import {
+    loadCountAskQuestionsChartData,
+    loadCountChartOptionsData,
+    loadCountHomeWorkChartData, loadWeekClockData
+  } from "@/api/course/courseStaApi";
 
   export default {
     name: 'CourseSta',//课程统计页面
@@ -61,7 +65,7 @@
     methods: {
       // 请求加载数据学生选课数统计
       loadCountChartOptionsData() {
-        axios.get('/course/' + this.studentId + '/countCourse')
+        loadCountChartOptionsData()
           .then(res => {
             //将得到的数据加入到统计图中
             this.countChartOptions.dataset.source.push(['课程数', res.data.countAll, res.data.studentCountAll])
@@ -72,7 +76,7 @@
       },
       //请求加载学生学生作业完成情况的饼图
       loadCountAskQuestionsChartData() {
-        axios.get('/student/' + this.studentId + '/studentHomeworkCount')
+        loadCountAskQuestionsChartData()
           .then(res => {
             this.countHomeWorkChartOptions.dataset.source.push({ value: res.data.student, name: '已完成' });
             this.countHomeWorkChartOptions.dataset.source.push({ value: res.data.all - res.data.student, name: '未完成' });
@@ -83,7 +87,7 @@
       },
       //请求加载学生提问情况的饼图
       loadCountHomeWorkChartData() {
-        axios.get('/student/' + this.studentId + '/studentQuestionsNum')
+        loadCountHomeWorkChartData()
           .then(res => {
             this.countAskQuestionsChartOptions.dataset.source.push({ value: res.data.student, name: '提问' });
             this.countAskQuestionsChartOptions.dataset.source.push({ value: res.data.all - res.data.student, name: '其他问题' });
@@ -94,7 +98,7 @@
       },
       //请求最近三周打卡情况
       loadWeekClockData() {
-        axios.get('/student/' + this.studentId + '/studentAttendance')
+        loadWeekClockData()
           .then(res => {
             this.weekClockOptins.dataset.source.push(['第一周',res.data.firstWeek]);
             this.weekClockOptins.dataset.source.push(['第二周',res.data.secondWeek]);

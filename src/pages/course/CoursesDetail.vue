@@ -49,7 +49,6 @@
             :index="index"
             :comptype="comptype"
             :homeworkItem="homeworkItem"
-            :srcPrefix="homeworkInterface.prefix + homeworkInterface.downLoad"
           />
         </el-collapse>
       </template>
@@ -60,7 +59,7 @@
           <template v-slot:commentsMain>
             <ul class="infinite-list" style="overflow: auto; height: 100%">
               <CourseQuestionLi
-                v-for="(item, index) in questionsList"
+                v-for="item in questionsList"
                 :key="questionsList.courseQuestionId"
                 :item="item"
                 @answerQuestion="answerQuestion"
@@ -120,13 +119,12 @@
 import DetailView from "@/layout/coursedetail";
 import CommentVeiw from "@/layout/comments";
 import CourseVedio from "@/components/CourseVedio";
-import { courseInfoInterface } from "@/api/courseInterface";
-import homeworkInterface from "@/api/homeworkInterface";
 import FileDownloadCard from "@/components/FileDownloadCard";
-import axios from "@/api";
 import { dateFormatNow } from "@/utils/timeUtil";
-import questionInterface from "@/api/questionInterface";
 import CourseQuestionLi from "@/components/CourseQuestionLi";
+import { loadCourseVedio } from "@/api/course/courseApi";
+import { loadHomework } from "@/api/course/homeworkApi";
+import { clockIn, loadQuestions, sedQues } from "@/api/question/questionApi";
 export default {
   name: "CoursesDetail", //课程详情页面
   components: {
@@ -138,8 +136,6 @@ export default {
   },
   data() {
     return {
-      courseInfoInterface, //课程接口信息
-      homeworkInterface, //作业接口信息
       courseRoutes: [], //课程集数目录
       homeworkList: [], //课程作业集合
       srcUrl: "", //传递给子组件文件url
@@ -169,15 +165,9 @@ export default {
     },
     //#region 数据请求
     loadData() {
-      axios
-        .post(
-          courseInfoInterface.prefix +
-            courseInfoInterface.courseDetail +
-            "/" +
-            this.$route.params.courseId
-        )
+      loadCourseVedio(this.$route.params.courseId)
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           this.courseRoutes = res.data;
           this.showVedio(res.data[0].resFileName);
         })
@@ -187,15 +177,8 @@ export default {
     },
     //加载作业数据
     loadHomeworkData() {
-      axios
-        .post(
-          this.homeworkInterface.prefix +
-            "/" +
-            this.$route.params.courseId +
-            this.homeworkInterface.homeworkList
-        )
+      loadHomework(this.$route.params.courseId)
         .then((res) => {
-          // console.log(res);
           this.homeworkList = res.data;
         })
         .catch((err) => {
@@ -204,13 +187,7 @@ export default {
     },
     //加载提问列表
     loadqestionList() {
-      axios
-        .post(
-          questionInterface.prefix +
-            "/" +
-            this.$route.params.courseId +
-            questionInterface.tableList
-        )
+      loadQuestions(this.$route.params.courseId)
         .then((res) => {
           console.log(res);
           this.questionsList = res.data;
@@ -287,8 +264,9 @@ export default {
         courseQuestionInfo: this.inputInfo, //主要内容
         parentQuestionId: this.courseQuestionId, //父id
       };
-      axios
-        .put(questionInterface.prefix + questionInterface.insertOne, answer)
+      sedQues(answer)
+        // axios
+        //   .put(questionInterface.prefix + questionInterface.insertOne, answer)
         .then((res) => {
           console.log(res);
           if (res.data == 1) {
@@ -296,7 +274,7 @@ export default {
             this.courseQuestionId = null;
             this.inputInfo = "";
             this.inputMode = "提问";
-            this.loadqestionList();//重新加载问答列表
+            this.loadqestionList(); //重新加载问答列表
           } else this.$message.warning("服务器处理失败");
         })
         .catch((err) => {
@@ -312,11 +290,7 @@ export default {
         courseId: this.$route.params.courseId,
         courseAttDate: this.clockInDate,
       };
-      axios
-        .put(
-          questionInterface.prefix + questionInterface.clock,
-          courseAttendance
-        )
+      clockIn(courseAttendance)
         .then((res) => {
           console.log(res);
           if (res.data == 0) this.$message.warning("网络原因打卡失败!");

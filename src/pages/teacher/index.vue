@@ -39,12 +39,18 @@
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import { teacherFindStudetTable } from '@/api/teacherTableData';
-  import axios from '@/api';
-  import teacherMangeStudent from '@/api/teacherInterface';
+  import { teacherFindStudetTable } from '@/api/teacher/teacherTableData';
+  // import teacherMangeStudent from '@/api/teacherInterface';
   import CourseInfoDialog from '@/components/CourseInfoDialog';
+  import {
+    loadStaData,
+    loadTeacherCourses,
+    loadTeacherCoursesNum,
+    loadTeacherData
+  } from "@/api/teacher/teacherManageApi";
+  import {courseTableList} from "@/api/teacher/courseTableAPi";
   export default {
-    name: 'TeacherIndex',
+    name: 'TeacherIndex',//教师主页
     components: {
       CourseTable,
       CourseInfoDialog
@@ -52,8 +58,8 @@
     data() {
       return {
         tableInfo: teacherFindStudetTable,//表格的信息配置
-        aTableInterface: teacherMangeStudent,//表格的访问接口
-        teacherMangeStudent,//后端接口
+        aTableInterface: courseTableList,//表格的访问接口
+        // teacherMangeStudent,//后端接口
         teacherId: this.$store.state.teacherId,
         teacherInfo: {},
         // courseform: {},//新增的课程信息放在这
@@ -94,7 +100,8 @@
       //#region 教师相关操作
       loadData() {
         //拿到教师信息
-        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.teacherOne)
+        loadTeacherData()
+        //axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.teacherOne)
           .then(res => {
             this.teacherInfo = res.data;//拿到教师的信息
           })
@@ -102,20 +109,18 @@
             console.error(err);
           });
         //拿到教授课程数
-        axios.get(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.countObj)
+        loadTeacherCoursesNum()
+        //axios.get(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.countObj)
           .then(res => {
             console.log(res);
             this.studentCount = res.data;
-            // console.log(this.teacherMangeStudent);
-            // console.log(res)
           })
           .catch(err => {
             console.error(err);
-            // console.log('2222222222');
-            // console.log(this.teacherMangeStudent);
           });
         //拿到教授的课程
-        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.teacherList)
+        loadTeacherCourses()
+        //axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.teacherList)
           .then(res => {
             console.log(res);
             this.courses = res.data;
@@ -125,7 +130,10 @@
             console.error(err);
           })
       },
+      //拼接串
+      assembleUrl(){
 
+      },
       //#endregion 教师相关操作
       //#region 图片处理策略
       //删除要修改的图片
@@ -179,7 +187,8 @@
       //#endregion 图片处理策略
       //#region 统计表信息请求
       loadStatisticsData() {
-        axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.countCourseStudent)
+        loadStaData()
+        //axios.post(this.teacherMangeStudent.prefix + '/' + this.teacherMangeStudent.countCourseStudent)
           .then(res => {
             //将数据加入到统计表中 ['语文', 3], ['数学', 4], ['C', 6], ['人工', 1], ['语s文', 3], ['数z学', 4], ['Cz', 6], ['人z工', 1]
             res.data.forEach(course => {
@@ -194,7 +203,7 @@
 
     },
     created() {
-      // this.assembleUrl();
+      this.assembleUrl();
     },
     mounted() {
       this.loadData();

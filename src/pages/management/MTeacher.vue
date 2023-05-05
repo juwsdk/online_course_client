@@ -14,7 +14,6 @@
       <template v-slot:atablecol>
         <el-table-column v-for="(tableprop,tablelable,index) in tableInfo" :key="index" :label="tablelable"
           :prop="tableprop" sortable />
-        </el-table-column>
       </template>
 
       <template v-slot:adialogitem>
@@ -48,14 +47,12 @@
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import CourseSearchBar from '@/components/CourseSearchBar';
   import { teacherTable } from '@/api/manage/tableData';
   import { teacherInterface } from '@/api/manage/tableInterface';
   export default {
     name: 'MTeacher',
     components: {
       CourseTable,
-      CourseSearchBar
     },
     data() {
       return {

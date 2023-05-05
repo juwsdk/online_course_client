@@ -1,7 +1,7 @@
-import axios from "@/api";
+import request from "@/api";
 //加载请求表格数据
 export function loadTableData(url,parameter){
-  return axios({
+  return request({
     url:url,
     method:'get',
     params:parameter,
@@ -9,7 +9,7 @@ export function loadTableData(url,parameter){
 }
 //增加表格数据
 export function addData(url,parameter){
-  return axios({
+  return request({
     url:url,
     method:'post',
     data:parameter
@@ -18,7 +18,7 @@ export function addData(url,parameter){
 
 //修改表格数据
 export function changeData(url,parameter){
-  return axios({
+  return request({
     url:url,
     method:'put',
     data:parameter
@@ -26,7 +26,7 @@ export function changeData(url,parameter){
 }
 //删除表格数据
 export function deleteData(url,parameter){
-  return axios({
+  return request({
     url:url,
     method:'post',
     data:parameter

@@ -31,7 +31,7 @@
   </el-dialog>
 </template>
 <script>
-  import axios from '@/api';
+  import {addCourse, showCourse, updateCourse} from "@/api/teacher/courseApi";
   export default {
     name: 'CourseInfoDialog',
     props: {
@@ -71,7 +71,8 @@
           courseFile.append('courseInfo', this.courseform.courseInfo);
           courseFile.append('courseImage', this.dataImage.fileItem.name);
           courseFile.append('fileRaw', this.dataImage.fileItem.raw);
-          axios.post('/teacher/courseInsert', courseFile)
+          addCourse(courseFile)
+          //axios.post('/teacher/courseInsert', courseFile)
             .then(res => {
               console.log(res);
               if (res.data == 1) {
@@ -97,34 +98,34 @@
           courseFile.append('courseImage', this.dataImage.fileItem.name);
           if (typeof this.dataImage.fileItem.raw != 'undefined' && this.dataImage.fileItem.raw != null)//上传了文件才修改
             courseFile.append('fileRaw', this.dataImage.fileItem.raw);
-          console.log('=================================');
-          axios.post('/teacher/courseUpdate', courseFile)
+          // console.log('=================================');
+          updateCourse(courseFile)
+          //axios.post('/teacher/courseUpdate', courseFile)
             .then(res => {
               if (res.data == 1) {
                 this.$message.success('修改成功!');
                 this.loadData();
               }
             }).catch(err => {
-
-            })
+              console.log(err);
+              this.$message.warning('修改失败!');
+            });
         }
       },
       handleClose() {
         this.$emit('closeCourseDialoag', false);
       },
       loadData() {
-        //修改课程
-        axios.get('/teacher/' + this.$route.params.courseId + '/courseShow')
+        //页面是修改课程时，首先加载课程信息
+        showCourse(this.$route.params.courseId)
+        //axios.get('/teacher/' + this.$route.params.courseId + '/courseShow')
           .then(res => {
             console.log(res);
             this.courseform = res.data;
-            // console.log('===============================');
-            // console.log('/' + this.$route.params.courseId + '/' + this.$route.params.teacherId + '/courseShow/' + this.courseform.courseImage);
-
           })
           .catch(err => {
             console.error(err);
-          })
+          });
       }
 
     },

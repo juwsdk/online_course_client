@@ -59,8 +59,8 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import axios from "@/api";
 import { userValidation } from "@/utils/validation";
+import {login} from "@/api/loginRegister/loginApi";
 export default {
   name: "Login", //登录界面
   data() {
@@ -112,11 +112,7 @@ export default {
         ...this.form,
         loginType: this.getLoginType,
       };
-      axios({
-        method: "post",
-        url: "/dataCommit/login",
-        data: user,
-      })
+      login(user)
         .then((res) => {
           console.log(res);
           if (res.code == 1000) {

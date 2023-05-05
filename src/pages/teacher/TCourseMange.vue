@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <CourseCards class="myCourseCards" :courseInterface="courseInterface" @loadCourse="loadCourse">
       <template v-slot:cards>
         <CourseCard v-for="listItem of list" :key="listItem.courseId" style="
@@ -14,9 +13,9 @@
   </div>
 </template>
 <script>
-  import {teacherCourseInterface} from '@/api/courseInterface';
   import CourseCards from '@/components/CourseCards';
   import CourseCard from '@/components/CourseCard';
+  import {teacherCourseInterface} from "@/api/teacher/courseApi";
   export default {
     name: 'TCourseMange',
     components:{

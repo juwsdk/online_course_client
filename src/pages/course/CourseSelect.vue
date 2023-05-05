@@ -19,16 +19,14 @@
       align-items: center;
       " :courseInfo="listItem" :routeName="routeName" />
       </template>
-
     </CourseCards>
 
   </div>
 </template>
 <script>
-  import axios from '@/api';
   import CourseCards from '@/components/CourseCards';
   import CourseCard from '@/components/CourseCard';
-  import { courseSelectInterface } from '@/api/courseInterface';
+  import {courseCarousel, courseSelectList} from "@/api/course/courseApi";
   export default {
     name: 'CourseSelect',//课程选择页面
     components: {
@@ -38,7 +36,7 @@
     data() {
       return {
         routeName: 'course-select-detial',
-        courseInterface: courseSelectInterface,
+        courseInterface: courseSelectList,
         // number:5,
         list: [],//存放课程信息，课程信息是courseCards通过axios请求获取的
         isNotableShow: true,
@@ -55,12 +53,13 @@
         this.loading = false;
       },
       //子传父，chards页面根据当前是第几页来决定是否展示走马灯notable
-      styleChange(isShow) {
+      styleChange(isShow,pageSize) {
         this.isNotableShow = isShow;
+        this.aPageSize=pageSize;
       },
       //加载请求走马灯的内容
       loadData() {
-        axios.get("/course/courseTopList")
+        courseCarousel()
           .then(res => {
             console.log('走马灯数据');
             console.log(res)

@@ -24,8 +24,7 @@
   </li>
 </template>
 <script>
-  import questionInterface from '@/api/questionInterface';
-  import axios from '@/api';
+  import {showAnswer} from "@/api/question/questionApi";
   export default {
     name: 'CourseQuestionLi',
     props: { item: { type: Object, required: true },liIndex:{type:Number,required:false} },
@@ -40,7 +39,8 @@
       showAnswer() {
         //发送请求查看有没有子评论,有则发送给父组件进行展示
         if (this.$refs.showButton.$el.innerText == '展开') {
-          axios.post(questionInterface.prefix + '/' + this.item.courseQuestionId + questionInterface.tableChild)
+          showAnswer(this.item.courseQuestionId)
+          //axios.post(questionInterface.prefix + '/' + this.item.courseQuestionId + questionInterface.tableChild)
             .then(res => {
               // console.log('子评论');
               // console.log(res);

@@ -17,8 +17,8 @@
 </template>
 <script>
   import CourseTable from '@/components/CourseTable';
-  import {teacherOneCourseMangeStudent} from '@/api/teacherInterface';
-  import teacherTableData from '@/api/teacherTableData';
+  import {oneCourseTableList} from '@/api/teacher/courseTableAPi';
+  import {studentTable} from '@/api/teacher/teacherTableData';
   export default {
     name: 'TStudentManage',//学生管理
     components: {
@@ -26,25 +26,19 @@
     },
     data() {
       return {
-        tableInfo: teacherTableData,//导入的表名
-        aTableInterface: teacherOneCourseMangeStudent,//请求接口
+        tableInfo: studentTable,//导入的表名
+        aTableInterface: oneCourseTableList,//请求接口
         showAlters: false,//告诉表格子组件不展示修改新增功能
-        prefix:'',//用来恢复前缀，避免多点击变长
       }
     },
     methods: {
       //拼接前缀
       assembleUrl(){
-        this.prefix=this.aTableInterface.prefix;
-        this.aTableInterface.prefix=this.aTableInterface.prefix+'/'+this.$route.params.courseId;
+        oneCourseTableList.tableList=this.$route.params.courseId;
       }
     },
     created() {
       this.assembleUrl();
-    },
-    destroyed() {
-      //还原prefix
-      this.aTableInterface.prefix=this.prefix;
     },
   }
 </script>

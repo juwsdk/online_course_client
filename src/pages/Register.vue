@@ -82,6 +82,7 @@
 </template>
 <script>
   import axios from '@/api';
+  import {register} from "@/api/loginRegister/loginApi";
   export default {
     name: 'Register',
     data() {
@@ -93,17 +94,13 @@
     methods: {
       onSubmit() {
         console.log(this.form);
-        let url;
+        let type;
         if (this.chooseModle == true) {//学生注册
-          url = '/dataCommit/register/student';
+          type='student';
         } else {//教师注册
-          url = '/dataCommit/register/teacher';
+          type = 'teacher';
         }
-        axios({
-          method: 'post',
-          url: url,
-          data: this.form
-        }).then(res => {
+        register(type,this.form).then(res => {
           console.log(res);
           if (res.data === 0) {
             this.$message.error('注册失败');
@@ -113,7 +110,6 @@
               message: '注册成功,你的编号是:' + res.data,
               duration: 0
             });
-            // this.$router.push('/login');
             this.form={};//清空表单
           }
         }).catch(err => {
@@ -122,11 +118,10 @@
         })
       },
       handleModleChange() {
-        // console.log('触发');
         this.form = {};
       },
       toLoginPage() {
-        this.$router.push('/login');
+        this.$router.push('/loginApi');
       }
     }
   }

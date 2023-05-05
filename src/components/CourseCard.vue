@@ -28,7 +28,7 @@
           :body-style="{ padding: '0px', marginBottom: '1px' }"
           @click.native="pushShow"
         >
-          <img ref="itemImg" src="../assets/book.jpg" class="image" />
+          <img ref="itemImg" src="@/assets/book.jpg" class="image" />
           <div style="padding: 14px">
             <span>{{ courseInfo.courseName }}</span>
             <div class="bottom card-header">
@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-import axios from "@/api";
+import {loadCourseImage} from "@/api/course/courseApi";
 export default {
   name: "CourseCard",
   props: ["courseImage", "courseInfo", "routeName"],
@@ -65,17 +65,12 @@ export default {
     },
     loadImage() {
       if (this.courseInfo.courseImage != null) {
-        axios
-          .get("/teacher/courseShow", {
-            params: {
-              courseId: this.courseInfo.courseId,
-              teacherId: this.courseInfo.teacherId,
-              courseImage: this.courseInfo.courseImage,
-            },
-            responseType: "blob",
-          })
+        loadCourseImage({
+          courseId: this.courseInfo.courseId,
+          teacherId: this.courseInfo.teacherId,
+          courseImage: this.courseInfo.courseImage
+        })
           .then((res) => {
-            // console.log(res);
             const imgUrl = URL.createObjectURL(res.data);
             this.$refs.itemImg.setAttribute("src", imgUrl);
           })
