@@ -106,7 +106,7 @@ export default {
             formData.append("resVideoName", fileItem.alias);
             formData.append("copyright", fileItem.copyright);
             //发送axios请求,上传数据
-            uploadVideo()
+            uploadVideo(formData)
               // axios.post("/video/upload", formData, {
               //   headers: {
               //     'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryVCFSAonTuDbVCoAN'
@@ -127,7 +127,7 @@ export default {
               .catch((err) => {
                 console.log(err);
                 this.$message.error(
-                  fileItem.name.trim().split(".")[0] + "上传失败"
+                 "由于网络原因,"+ fileItem.name.trim().split(".")[0] + "上传失败"
                 );
               });
           });

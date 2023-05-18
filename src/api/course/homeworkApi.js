@@ -8,6 +8,17 @@ const courseHomeworkInterface = {
     };
   },
   download: "/homework/downLoad",
+  get uploadBefore() {
+    return function (courseHomeworkId) {
+      return (
+        "/homework/" +
+        store.getters.getStudentId +
+        "/" +
+        courseHomeworkId +
+        "/homeWorkFinishedUpload"
+      );
+    };
+  },
   upload: "/homework/homeWorkFinishedUpload",
   get score() {
     return function (courseHomeworkId) {
@@ -37,6 +48,14 @@ export function downloadHomework(parameter) {
     responseType: "blob",
   });
 }
+//上传作业前查询之前是否上传了作业
+export function uploadHomeworkBefore(courseHomeworkId) {
+  return request({
+    url: courseHomeworkInterface.uploadBefore(courseHomeworkId),
+    method: "post",
+  });
+}
+
 //上传作业
 export function uploadHomework(formData) {
   return request({
@@ -49,10 +68,23 @@ export function uploadHomework(formData) {
     },
   });
 }
+
+//修改再上传作业
+export function updateHomework(formData) {
+  return request({
+    url: courseHomeworkInterface.upload,
+    method: "put",
+    data: formData,
+    headers: {
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundaryVCFSAonTuDbVCoAN",
+    },
+  });
+}
 //查看得分
 export function seeScore(courseId) {
   return request({
-    url:courseHomeworkInterface.score(courseId),
-    method:'get',
-  })
+    url: courseHomeworkInterface.score(courseId),
+    method: "get",
+  });
 }

@@ -6,7 +6,7 @@
         <el-button class="floatButton" type="text" @click="seeScore"
           >查看得分</el-button
         >
-        <el-button class="floatButton" type="text" @click="dialogVisible = true"
+        <el-button class="floatButton" type="text" @click="showHomeworkSubmit"
           >上传作业</el-button
         >
         <el-button class="floatButton" type="text" @click="dowloadItem"
@@ -20,9 +20,9 @@
           >查看学生完成情况</el-button
         >
 
-        <!--   <el-popconfirm title="确定删除这个作业？" confirmButtonText="确定" cancelButtonText="取消" @confirm="deleteHomework">
-          <el-button class="floatButton" type="text" slot="reference" style="color:#f43336;">删除</el-button>
-        </el-popconfirm> -->
+        <!--        <el-popconfirm title="确定删除这个作业？" confirmButtonText="确定" cancelButtonText="取消" @confirm="deleteHomework">-->
+        <!--          <el-button class="floatButton" type="text" slot="reference" style="color:#f43336;">删除</el-button>-->
+        <!--        </el-popconfirm>-->
 
         <!-- 抽屉筐，展示学生的作业 -->
         <el-drawer
@@ -164,7 +164,9 @@ import { handleA } from "@/utils/fileUtil";
 import {
   downloadHomework,
   seeScore,
+  updateHomework,
   uploadHomework,
+  uploadHomeworkBefore,
 } from "@/api/course/homeworkApi";
 import {
   downloadHomeworkSubmit,
@@ -179,7 +181,9 @@ export default {
     return {
       dialogVisible: false, //控制学生上传文件对话框开关
       dialogVisibleTeacher: false, //控制教师下载对话框开关
-      fileList: [],
+      fileList: [], //学生上传作业的fileList
+      studentSubmitFlag: false, //学生是否上传作业前已经上传过了一次作业
+      oldName: "", //学生如果上一次上传了作业，则获得这个作业名
       drawer: false, //控制抽屉开关
       score: 60, //给学生作业的评分
       studentSumbmitList: [], //所有学生上传的文件列表
@@ -214,6 +218,21 @@ export default {
           console.error(err);
         });
     },
+    //上传作业框打开
+    showHomeworkSubmit() {
+      this.dialogVisible = true; //显示上传作业对话框
+      uploadHomeworkBefore(this.homeworkItem.courseHomeworkId) //如果以前上传过，则数据库中查询
+        .then((res) => {
+          if (res.data != null) {
+            this.fileList.push({ name: res.data.courseHomeworkRes, url: "#" });
+            this.oldName = res.data.courseHomeworkRes;
+            this.studentSubmitFlag = true; //已经上传过了，则后面是修改而不是新增
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     //上传作业
     uploadItem() {
       this.fileList.forEach((fileItem) => {
@@ -225,27 +244,70 @@ export default {
         formData.append("courseHomeworkRes", fileItem.name);
         formData.append("teacherId", this.$route.params.teacherId);
         formData.append("courseId", this.$route.params.courseId);
+        if (fileItem.raw == null) {
+          this.$message.warning("请选择要上传的文件!");
+          return;
+        }
         formData.append("fileRaw", fileItem.raw);
-        //发送axios请求,上传数据
-        uploadHomework(formData)
-          .then((res) => {
-            //提示成功，fileList中删除这个元素
-            if (res.data == 1) {
-              this.$message.success("上传成功");
-              this.dialogVisible = false; //关闭对话框
-              // 找到 fileItem 的索引
-              const index = this.fileList.indexOf(fileItem);
-              // 删除指定元素
-              if (index > -1) {
-                this.fileList.splice(index, 1);
-              }
-            } else this.$message.warning("上传失败！");
-          })
-          .catch(() => {
-            this.$message.error(
-              fileItem.name.trim().split(".")[0] + "上传失败"
-            );
-          });
+        if (this.oldName != "") {
+          formData.append("oldName", this.oldName);
+        }
+        //先查询教师是否批改，批改则无法再上传作业
+        let isCorrect = false;
+        seeScore(this.homeworkItem.courseHomeworkId).then((res) => {
+          console.log(res);
+          if (typeof res.data == "number") isCorrect = true;
+          if (isCorrect) {
+            //如果已经批改了，则无法上传了
+            this.$message.warning("你的作业教师已经批改过了，不能再上传了!");
+            console.log("????????????????????????????????");
+            return;
+          } else {
+            if (!this.studentSubmitFlag) {
+              //发送axios请求,上传数据,是第一次提交
+              uploadHomework(formData)
+                .then((res) => {
+                  //提示成功，fileList中删除这个元素
+                  if (res.data == 1) {
+                    this.$message.success("上传成功");
+                    this.dialogVisible = false; //关闭对话框
+                    // 找到 fileItem 的索引
+                    const index = this.fileList.indexOf(fileItem);
+                    // 删除指定元素
+                    if (index > -1) {
+                      this.fileList.splice(index, 1);
+                    }
+                  } else this.$message.warning("上传失败！");
+                })
+                .catch(() => {
+                  this.$message.error(
+                    fileItem.name.trim().split(".")[0] + "上传失败"
+                  );
+                });
+            } else {
+              //能够修改
+              updateHomework(formData)
+                .then((res) => {
+                  //提示成功，fileList中删除这个元素
+                  if (res.data == 1) {
+                    this.$message.success("修改成功");
+                    this.dialogVisible = false; //关闭对话框
+                    // 找到 fileItem 的索引
+                    const index = this.fileList.indexOf(fileItem);
+                    // 删除指定元素
+                    if (index > -1) {
+                      this.fileList.splice(index, 1);
+                    }
+                  } else this.$message.warning("修改失败！");
+                })
+                .catch(() => {
+                  this.$message.error(
+                    fileItem.name.trim().split(".")[0] + "修改上传失败"
+                  );
+                });
+            }
+          }
+        });
       });
     },
     //关闭对话框
@@ -255,7 +317,7 @@ export default {
     },
     //查看得分
     seeScore() {
-      seeScore(this.$store.getters.getStudentId)
+      seeScore(this.homeworkItem.courseHomeworkId)
         // axios.get('/homework/' + this.$store.getters.getStudentId + '/' + this.homeworkItem.courseHomeworkId + '/scoreShowToStudent')
         .then((res) => {
           console.log(res);

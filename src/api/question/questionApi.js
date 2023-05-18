@@ -25,7 +25,7 @@ export function loadQuestions(courseId) {
 export function sedQues(answer) {
   return request({
     url: questInterface.insertOne,
-    methods: "put",
+    method: "put",
     data: answer,
   });
 }

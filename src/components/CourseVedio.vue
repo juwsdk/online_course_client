@@ -14,6 +14,7 @@
 </template>
 <script>
 import {playVideo} from "@/api/course/playVedioApi";
+import {BlobToUrl} from "@/utils/fileUtil";
 export default {
   name: "CourseVedio",
   props: ["srcUrl"],
@@ -33,15 +34,11 @@ export default {
       //     responseType: "blob",
       //   })
         .then((response) => {
-          // console.log();
-          let videoBlob = new Blob([response.data], { type: "video/mp4" });
-          // console.log(videoBlob);
-          this.videoUrl = URL.createObjectURL(videoBlob);
-          // this.videoUrl=this.videoUrl.substr(this.videoUrl.lastIndexOf("/") + 1);
-          console.log(this.videoUrl);
+          let blobFile=BlobToUrl(response);
+          // let videoBlob = new Blob([response.data], { type: "video/mp4" });
+          // this.videoUrl = URL.createObjectURL(videoBlob);
+          this.videoUrl=blobFile.url;
           this.noRepeatedRequests();
-          // let player = videojs(this.$refs.video)
-          // player.src(this.videoUrl)
         })
         .catch((error) => {
           console.log(error);
@@ -64,6 +61,9 @@ export default {
       this.loadData();
     },
   },
+  beforeDestroy() {
+    window.URL.revokeObjectURL(this.videoUrl);
+  }
 };
 </script>
 <style></style>

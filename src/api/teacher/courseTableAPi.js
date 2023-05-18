@@ -23,4 +23,9 @@ export const oneCourseTableList = {
   set tableList(courseId) {
     this.courseId = courseId;
   },
+  get deleteOne(){
+    // /teacher/{courseId}/studentRemove 教师删除自己课程的学生
+    return "/teacher/"+this.courseId+"/studentRemove";
+  }
+
 };

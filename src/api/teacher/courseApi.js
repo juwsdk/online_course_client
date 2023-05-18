@@ -22,6 +22,15 @@ export const teacherCourseInterface = {
       return this.prefix + "/" + courseId + "/courseShow";
     };
   },
+  get showCourseImage() {
+    // /teacher/courseShow
+    return this.prefix + "/courseShow";
+  },
+  get deleteCourse(){
+    return function (courseId){
+      return this.prefix+"/"+courseId+"/courseDelete";
+    };
+  }
 };
 //教师新增一门课程
 export function addCourse(courseFile) {
@@ -45,4 +54,20 @@ export function showCourse(courseId) {
     url: teacherCourseInterface.showCourse(courseId),
     method: "get",
   });
+}
+//展示课程时，如果有图片，则展示图片
+export function showCourseImage(imgObj) {
+  return request({
+    url: teacherCourseInterface.showCourseImage,
+    method: "get",
+    params: imgObj,
+    responseType:"blob"
+  });
+}
+//删除课程
+export function deleteCourse(courseId){
+  return request({
+    url:teacherCourseInterface.deleteCourse(courseId),
+    method:"delete"
+  })
 }

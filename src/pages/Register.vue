@@ -121,7 +121,7 @@
         this.form = {};
       },
       toLoginPage() {
-        this.$router.push('/loginApi');
+        this.$router.push('/login');
       }
     }
   }

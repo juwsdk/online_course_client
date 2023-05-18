@@ -71,6 +71,8 @@ export default {
           courseImage: this.courseInfo.courseImage
         })
           .then((res) => {
+            console.log('===============');
+            console.log(res)
             const imgUrl = URL.createObjectURL(res.data);
             this.$refs.itemImg.setAttribute("src", imgUrl);
           })

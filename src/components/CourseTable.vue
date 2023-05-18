@@ -220,7 +220,9 @@ export default {
           });
       } else {
         //状态为假，表示是修改操作
-        changeData(this.tableData.updateOne, this.form)
+        console.log("------------------------------")
+        console.log(this.form)
+        changeData(this.tableInterfce.updateOne, this.form)
           .then((res) => {
             console.log("===============");
             console.log(res.data);

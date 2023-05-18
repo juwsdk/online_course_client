@@ -11,8 +11,11 @@
           >修改信息</el-button
         >
       </el-col>
-      <el-col :span="3" :offset="6">
+      <el-col :span="3" :offset="3">
         <el-button type="success" size="small" @click="dialogVisibleCourse=true">修改课程信息</el-button>
+      </el-col>
+      <el-col :span="3" :offset="3">
+        <el-button type="danger" size="small" @click="deleteCourse">删除课程</el-button>
       </el-col>
       <!-- 更新课程信息课程对话框 -->
       <CourseInfoDialog
@@ -54,12 +57,13 @@ import FileUploadCard from "@/components/FileUploadCard";
 import CourseInfoDialog from "@/components/CourseInfoDialog";
 import {clearAllVideo, deleteVideo, loadVideo, updateVideo} from "@/api/teacher/CourseResApi";
 import {MessageConfirmBox} from "@/utils/dialogUtil";
+import {deleteCourse} from "@/api/teacher/courseApi";
 export default {
   name: "TResManage",
   components: {
     FileUploadCard,
     CourseInfoDialog,
-    atype: "courseUpdate",
+    // atype: "courseUpdate",
   },
   data() {
     return {
@@ -184,6 +188,26 @@ export default {
     closeCourseDialoag(value) {
       this.dialogVisibleCourse = value;
     },
+    //删除课程
+    deleteCourse(){
+      MessageConfirmBox(this,"此操作将删除整个课程，且不可逆，是否继续?")
+        .then(()=>{
+          deleteCourse(this.$route.params.courseId)
+            .then(()=>{
+              this.$message.success("删除成功!");
+              this.$router.push("/teacher/coursemanges");
+            }).catch(error=>{
+              console.log(error);
+              this.$message.warning("删除失败!");
+          })
+
+        })
+        .catch(error=>{
+          this.$message.error("删除失败!");
+          console.error(error);
+        })
+    }
+
   },
   mounted() {
     this.loadFileList();

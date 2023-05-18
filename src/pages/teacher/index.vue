@@ -21,7 +21,7 @@
       <v-chart class="pieChartStyle" autoresize :option="teacherChartOptions" />
       <!-- 查询选课学生的表格 -->
       <CourseTable class="pieChartStyle" :tableInterfce="aTableInterface" :tableInfo="tableInfo"
-        :showAlters="showAlters" :parentPageSize="parentPageSize">
+        :showOptions="showOptions" :parentPageSize="parentPageSize">
         <template v-slot:selectOneG>
           <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
             :key="index">
@@ -68,7 +68,7 @@
         studentCount: 0,//教授学生数
         courses: {},//教授的课程
         teacherCourses: [],//教授的课程
-        showAlters: false,//告诉表格子组件不展示修改新增功能
+        showOptions: false,//告诉表格子组件不展示修改新增功能
         // dialogVisible: false,//是否显示dialog修改个人信息
         //展示教师教授课程选课人数的饼图
         teacherChartOptions: {

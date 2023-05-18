@@ -15,9 +15,10 @@
       </el-form-item>
       <el-form-item label="课程图片">
         <el-upload action="#" list-type="picture-card" :on-remove="handleImageRemove" :on-preview="handleImagePreview"
-          :auto-upload="false" :limit="1" :on-change="handleImageChange">
+          :auto-upload="false" :limit="1" :on-change="handleImageChange" :file-list="dataImage.fileItem">
           <i class="el-icon-plus"></i>
         </el-upload>
+<!--        <img :src="dataImage.imageUrl" v-if="dataImage.imageShow" style="object-fit: ">-->
         <el-dialog :visible.sync="dataImage.dialogVisible">
           <img width="100%" :src="dataImage.dialogImageUrl" class="el-upload-list__item-thumbnail" alt="">
         </el-dialog>
@@ -31,7 +32,8 @@
   </el-dialog>
 </template>
 <script>
-  import {addCourse, showCourse, updateCourse} from "@/api/teacher/courseApi";
+import {addCourse, showCourse, showCourseImage, updateCourse} from "@/api/teacher/courseApi";
+import {BlobToUrl} from "@/utils/fileUtil";
   export default {
     name: 'CourseInfoDialog',
     props: {
@@ -41,7 +43,8 @@
     data() {
       return {
         courseform: {},//课程信息放在这
-        dataImage: { dialogImageUrl: '', dialogVisible: false, fileItem: {} },//图片上传框
+        dataImage: { dialogImageUrl: '', dialogVisible: false, fileItem: [] },//图片上传框 图片放大功能
+        image:{imageUrl:'',imageShow:false},//如果事先上传了图片，则让图片回显
         teacherId: this.$store.state.teacherId,
       }
     },
@@ -49,16 +52,19 @@
       //#region 图片处理策略
       //删除要修改的图片
       handleImageRemove(file) {
-        this.dataImage.fileItem = {};
+        this.dataImage.fileItem = [];
       },
       //查看图片时
       handleImagePreview(file) {
+        console.log("===================")
         this.dataImage.dialogImageUrl = file.url;
         this.dataImage.dialogVisible = true;
+        console.log(file.raw);
       },
       //当新加入图片时
       handleImageChange(file) {
-        this.dataImage.fileItem = file;
+        if(this.dataImage.fileItem.length<1)
+          this.dataImage.fileItem.push(file);
       },
       //#endregion 图片处理策略
       //新增加一门课程确认按钮
@@ -69,8 +75,11 @@
           courseFile.append('teacherId', this.courseform.teacherId);
           courseFile.append('courseName', this.courseform.courseName);
           courseFile.append('courseInfo', this.courseform.courseInfo);
-          courseFile.append('courseImage', this.dataImage.fileItem.name);
-          courseFile.append('fileRaw', this.dataImage.fileItem.raw);
+          console.log(this.dataImage.fileItem.length>0)
+          if(this.dataImage.fileItem.length>0){
+            courseFile.append('courseImage', this.dataImage.fileItem[0].name);
+            courseFile.append('fileRaw', this.dataImage.fileItem[0].raw);
+          }
           addCourse(courseFile)
           //axios.post('/teacher/courseInsert', courseFile)
             .then(res => {
@@ -79,7 +88,7 @@
                 this.$message.success('添加成功!');
                 this.$emit('closeCourseDialoag', false);//让父组件关闭这个对话框
                 this.courseform = {};//将数据清空
-                this.dataImage.fileItem = {};
+                this.dataImage.fileItem = [];
               } else {
                 this.$message.danger('上传失败!');
               }
@@ -95,16 +104,22 @@
           courseFile.append('teacherId', this.courseform.teacherId);
           courseFile.append('courseName', this.courseform.courseName);
           courseFile.append('courseInfo', this.courseform.courseInfo);
-          courseFile.append('courseImage', this.dataImage.fileItem.name);
-          if (typeof this.dataImage.fileItem.raw != 'undefined' && this.dataImage.fileItem.raw != null)//上传了文件才修改
-            courseFile.append('fileRaw', this.dataImage.fileItem.raw);
+          if (typeof this.dataImage.fileItem[0].raw != 'undefined' && this.dataImage.fileItem[0].raw != null){
+            //上传了文件才修改
+            courseFile.append('courseImage', this.dataImage.fileItem[0].name);
+            courseFile.append('fileRaw', this.dataImage.fileItem[0].raw);
+          }
+          console.log(courseFile);
           // console.log('=================================');
           updateCourse(courseFile)
           //axios.post('/teacher/courseUpdate', courseFile)
             .then(res => {
               if (res.data == 1) {
                 this.$message.success('修改成功!');
+                this.dataImage.fileItem.pop();
                 this.loadData();
+              }else {
+                this.$message.warning("网络原因，修改失败 ！");
               }
             }).catch(err => {
               console.log(err);
@@ -122,18 +137,38 @@
           .then(res => {
             console.log(res);
             this.courseform = res.data;
+            if(this.courseform.courseImage!=null){
+              //请求访问图片
+              showCourseImage({
+                teacherId:this.$route.params.teacherId,
+                courseId:this.$route.params.courseId,
+                courseImage:this.courseform.courseImage
+              }).then(res=>{
+                //将url设置为图片url并展示
+                let blobFile=BlobToUrl(res);
+                this.image.imageUrl=blobFile.url;
+                this.image.imageShow=true;
+                //设置为fileItem
+                this.dataImage.fileItem.push(blobFile);
+                // this.dataImage.imageUrl=blobFile.url;
+                // this.dataImage.imageShow=true;
+              }).catch(err=>{
+                console.error(err);
+              })
+            }
           })
           .catch(err => {
             console.error(err);
+            this.$message.warning('服务器异常!');
           });
-      }
-
+      },
     },
     mounted() {
       if (this.atype == 'courseUpdate')
         this.loadData();
       console.log(this.atype);
     },
+
   }
 </script>
 <style>
