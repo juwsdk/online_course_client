@@ -151,13 +151,17 @@ export default {
               // })
               .then((res) => {
                 //提示成功，fileList中删除这个元素
-                this.$message.success(res.data);
-                // 找到 fileItem 的索引
-                const index = this.fileList.indexOf(fileItem);
-                // 删除指定元素
-                if (index > -1) {
-                  this.fileList.splice(index, 1);
-                }
+                if (res.data == 1) {
+                  this.$message.success("作业已经成功上传");
+                  // 找到 fileItem 的索引
+                  const index = this.fileList.indexOf(fileItem);
+                  // 删除指定元素
+                  if (index > -1) {
+                    this.fileList.splice(index, 1);
+                  }
+                } else
+                  this.$message.warning("服务器异常");
+
               })
               .catch((err) => {
                 console.log(err);

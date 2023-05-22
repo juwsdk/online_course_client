@@ -96,6 +96,7 @@
         </el-form-item>
       </el-form>
 
+
       <span slot="footer">
         <el-button type="success" size="small" @click="submitInfo"
           style="float: left; margin-left: 100px">修改</el-button>
@@ -174,7 +175,7 @@
         } else if (this.formModel == "admin") {
           url = "/admin/" + this.getAdmiId + "/admOne";
         }
-        console.log(this.getTeacherId);
+        // console.log(this.getTeacherId);
         axios
           .post(url)
           .then((res) => {

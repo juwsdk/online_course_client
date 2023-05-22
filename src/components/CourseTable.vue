@@ -57,13 +57,13 @@
     <!-- 分页 -->
     <div style="margin: 10px 0">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[5, 10, 20, 25]"
-        :page-size="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 20, 25]"
+          :page-size="parentPageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
       >
       </el-pagination>
     </div>
@@ -108,7 +108,7 @@ export default {
       tableData: [], //table数据
       currentPage: 1, //控制分页
       total: 10, //文本总数
-      pageSize: 10,
+      pageSize: this.parentPageSize,
       loading: true, //是否还在加载
       dialogVisible: false, //弹窗状态
       dialogType: true, //弹窗执行任务,true为新增,false为修改

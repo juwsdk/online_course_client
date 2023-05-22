@@ -121,8 +121,9 @@ export default {
             if(this.getLoginType=='admin')
               this.setAdmType(res.data);
             this.$message.success("登录成功");
+            localStorage.setItem("token", res.data.Authorization);
             this.setIsAuth(true);
-            this.saveId(this.form.userId);
+            // this.saveId(this.form.userId);
             this.$router.push("/myindex");
           } else {
             this.$message.warning(res.message);

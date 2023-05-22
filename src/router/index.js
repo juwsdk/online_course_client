@@ -10,6 +10,7 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
 import store from '@/store';
+import {parseToken} from "@/api/loginRegister/loginApi";
 //创建并暴露路由
 const router = new VueRouter({
   // mode:'history',
@@ -60,11 +61,37 @@ const router = new VueRouter({
 });
 //全局前置路由守卫，对路由进行拦截
 router.beforeEach((to, from, next) => {
-  if ((!store.getters.getIsAuth) && to.meta.requiresAuth == true) {
-    next('/login');
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    const token = localStorage.getItem("token");
+    if (!token)
+      next('/login');
+    else {
+      if (store.getters.getLoginType == '' || store.getters.getId == '') {
+        parseToken().then(res => {
+          console.log(JSON.stringify(res.data));
+          store.dispatch("setLoginType", res.data.loginType);
+          store.dispatch("setId", res.data.userId);
+          if (res.data.loginType === "admin") {
+            store.dispatch("setAdmType", res.data.admType);
+          }
+
+          next();
+        }).catch(err => {
+          console.error(err);
+        });
+
+      } else {
+        next();
+      }
+    }
   } else {
     next();
   }
+  // if ((!store.getters.getIsAuth) && to.meta.requiresAuth == true) {
+  //   next('/login');
+  // } else {
+  //   next();
+  // }
   // next();
 })
 //全局后置路由守卫

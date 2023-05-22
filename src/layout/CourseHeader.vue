@@ -52,10 +52,12 @@ export default {
         .then(() => {
           logOut().then((res) => {
             console.log(res);
-            if ((res.code = 1002)) {
+            if (res.code == 1003) {
               this.$message.success(res.message);
               this.setIsAuth(false); //取消授权
+              localStorage.removeItem("token");//移除token
               this.$router.push("/login"); //前往登录页面
+              location.reload();//刷新页面，清除vuex里面的内容
             }
           });
         })

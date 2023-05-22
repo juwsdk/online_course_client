@@ -20,10 +20,6 @@
           >查看学生完成情况</el-button
         >
 
-        <!--        <el-popconfirm title="确定删除这个作业？" confirmButtonText="确定" cancelButtonText="取消" @confirm="deleteHomework">-->
-        <!--          <el-button class="floatButton" type="text" slot="reference" style="color:#f43336;">删除</el-button>-->
-        <!--        </el-popconfirm>-->
-
         <!-- 抽屉筐，展示学生的作业 -->
         <el-drawer
           :title="homeworkItem.courseHomeworkName + '完成情况'"
@@ -260,7 +256,7 @@ export default {
           if (isCorrect) {
             //如果已经批改了，则无法上传了
             this.$message.warning("你的作业教师已经批改过了，不能再上传了!");
-            console.log("????????????????????????????????");
+            // console.log("????????????????????????????????");
             return;
           } else {
             if (!this.studentSubmitFlag) {

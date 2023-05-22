@@ -4,7 +4,7 @@ const request = axios.create({
   baseURL: "http://localhost:8080/courseproj/server",
   timeout: 20000,
   responseType: "json",
-  withCredentials: true,
+  // withCredentials: true,
 });
 //请求拦截器
 request.interceptors.request.use(

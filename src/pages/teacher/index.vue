@@ -22,6 +22,7 @@
       <!-- 查询选课学生的表格 -->
       <CourseTable class="pieChartStyle" :tableInterfce="aTableInterface" :tableInfo="tableInfo"
         :showOptions="showOptions" :parentPageSize="parentPageSize">
+        <!--搜索框插槽-->
         <template v-slot:selectOneG>
           <el-option v-for="(searchvalue,searchlable,index) in tableInfo" :label="searchlable" :value="searchvalue"
             :key="index">

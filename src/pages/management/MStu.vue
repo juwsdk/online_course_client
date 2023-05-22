@@ -46,7 +46,6 @@
         <el-form-item label="地址">
           <el-input type="textarea" v-model="form.studentAddress"></el-input>
         </el-form-item>
-
       </template>
 
     </CourseTable>
