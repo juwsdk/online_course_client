@@ -34,8 +34,8 @@
         </el-form-item>
         <el-form-item label="性别">
           <template>
-            <el-radio v-model="form.teacherGender" label="男">男</el-radio>
-            <el-radio v-model="form.teacherGender" label="女">女</el-radio>
+            <el-radio v-model="form.teacherGender" label="男" disabled>男</el-radio>
+            <el-radio v-model="form.teacherGender" label="女" disabled>女</el-radio>
           </template>
         </el-form-item>
         <el-form-item label="生日">
@@ -65,8 +65,8 @@
           <el-input v-model="form.studentPassword" type="password" show-password></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-radio v-model="form.studentGender" label="男">男</el-radio>
-          <el-radio v-model="form.studentGender" label="女">女</el-radio>
+          <el-radio v-model="form.studentGender" label="男" disabled>男</el-radio>
+          <el-radio v-model="form.studentGender" label="女" disabled>女</el-radio>
         </el-form-item>
         <el-form-item label="生日">
           <el-date-picker v-model="form.studentBirthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
@@ -140,6 +140,11 @@
         let url;
         if (this.formModel == "student") {
           url = "/student/studentUpdate";
+          //学生修改密码后，设置非第一次登录
+          console.log(this.form.studentFirstlogin);
+          this.form.studentFirstlogin = 0;
+          console.log(this.form.studentFirstlogin)
+          console.log(this.form)
         } else if (this.formModel == "teacher") {
           url = "/teacher/teacherUpdate";
         } else if (this.formModel == "admin") {
@@ -166,6 +171,7 @@
       handleDialogClose() {
         this.dialogVisible = false;
       },
+      //加载数据
       loadData() {
         let url;
         if (this.formModel == "student") {
@@ -181,16 +187,27 @@
           .then((res) => {
             console.log(res);
             this.form = res.data;
-            console.log(this.form);
+            this.studentTips();
           })
           .catch((err) => {
             console.error(err);
           });
       },
+      //如果是学生且是第一次登录，则可提示改密码
+      studentTips() {
+        if (this.formModel == "student") {
+          if (this.form.studentFirstlogin == 1) {
+            this.$message.warning("你使用的是初始密码，可以考虑更改密码!");
+          }
+
+
+        }
+
+      }
     },
 
     mounted() {
-      this.loadData();
+      this.loadData();//请求加载数据
     },
   };
 </script>

@@ -15,7 +15,8 @@
       </el-form-item>
       <el-form-item label="课程图片">
         <el-upload action="#" list-type="picture-card" :on-remove="handleImageRemove" :on-preview="handleImagePreview"
-          :auto-upload="false" :limit="1" :on-change="handleImageChange" :file-list="dataImage.fileItem">
+                   :auto-upload="false" :limit="1" :on-change="handleImageChange" :file-list="dataImage.fileItem"
+                   accept=".jpg,.jpeg,.png">
           <i class="el-icon-plus"></i>
         </el-upload>
 <!--        <img :src="dataImage.imageUrl" v-if="dataImage.imageShow" style="object-fit: ">-->
@@ -104,21 +105,21 @@ import {BlobToUrl} from "@/utils/fileUtil";
           courseFile.append('teacherId', this.courseform.teacherId);
           courseFile.append('courseName', this.courseform.courseName);
           courseFile.append('courseInfo', this.courseform.courseInfo);
-          if (typeof this.dataImage.fileItem[0].raw != 'undefined' && this.dataImage.fileItem[0].raw != null){
-            //上传了文件才修改
-            courseFile.append('courseImage', this.dataImage.fileItem[0].name);
-            courseFile.append('fileRaw', this.dataImage.fileItem[0].raw);
-          }
+          if (this.dataImage.fileItem.length > 0)
+            if (typeof this.dataImage.fileItem[0].raw != 'undefined' && this.dataImage.fileItem[0].raw != null) {
+              //上传了文件才修改
+              courseFile.append('courseImage', this.dataImage.fileItem[0].name);
+              courseFile.append('fileRaw', this.dataImage.fileItem[0].raw);
+            }
           console.log(courseFile);
-          // console.log('=================================');
           updateCourse(courseFile)
-          //axios.post('/teacher/courseUpdate', courseFile)
+            //axios.post('/teacher/courseUpdate', courseFile)
             .then(res => {
               if (res.data == 1) {
                 this.$message.success('修改成功!');
                 this.dataImage.fileItem.pop();
                 this.loadData();
-              }else {
+              } else {
                 this.$message.warning("网络原因，修改失败 ！");
               }
             }).catch(err => {

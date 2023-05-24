@@ -61,11 +61,13 @@ const router = new VueRouter({
 });
 //全局前置路由守卫，对路由进行拦截
 router.beforeEach((to, from, next) => {
+  //有需要授权的页面才进行拦截
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const token = localStorage.getItem("token");
-    if (!token)
+    if (!token) //没有token直接进入登录页面
       next('/login');
     else {
+      //有token，请求后端解析，加载到vuex中，如果vuex中加载有数据了后续路由就不用重复加载
       if (store.getters.getLoginType == '' || store.getters.getId == '') {
         parseToken().then(res => {
           console.log(JSON.stringify(res.data));
@@ -74,17 +76,15 @@ router.beforeEach((to, from, next) => {
           if (res.data.loginType === "admin") {
             store.dispatch("setAdmType", res.data.admType);
           }
-
           next();
         }).catch(err => {
           console.error(err);
         });
-
       } else {
-        next();
+        next();//vuex中有数据，放行
       }
     }
-  } else {
+  } else {//页面不需要权限就可以进入的
     next();
   }
   // if ((!store.getters.getIsAuth) && to.meta.requiresAuth == true) {

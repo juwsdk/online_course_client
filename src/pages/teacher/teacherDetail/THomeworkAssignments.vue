@@ -1,16 +1,17 @@
 <template>
   <div>
     <el-upload
-      class="upload-demo"
-      drag
-      :action="uploadUrl"
-      multiple
-      :file-list="fileList"
-      :on-change="handleFileChange"
-      ref="upload"
-      :on-remove="handleRemove"
-      :auto-upload="false"
-      :show-file-list="false"
+        class="upload-demo"
+        drag
+        :action="uploadUrl"
+        multiple
+        :file-list="fileList"
+        :on-change="handleFileChange"
+        accept=".doc,.docx,.pdf,.txt"
+        ref="upload"
+        :on-remove="handleRemove"
+        :auto-upload="false"
+        :show-file-list="false"
     >
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -30,8 +31,8 @@
             <el-container direction="horizontal">
               <el-aside width="200px">
                 <el-image
-                  style="width: 200px; height: 200px"
-                  src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                    style="width: 200px; height: 200px"
+                    :src="require('@/assets/homeworkUpload.jpeg')"
                 >
                   <div slot="placeholder" class="image-slot">
                     加载中<span class="dot">...</span>
@@ -122,11 +123,7 @@ export default {
         this.$message.warning("不能上传空文件");
         return;
       }
-      this.$confirm("确定上传吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
+      MessageConfirmBox(this, "确定上传吗?")
         .then(() => {
           this.fileList.forEach((fileItem) => {
             //使用formdata封装数据

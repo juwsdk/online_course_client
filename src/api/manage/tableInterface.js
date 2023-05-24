@@ -8,12 +8,18 @@ export const studentInterface = {
 export const teacherInterface = {
   tableList: "/teacher/teacherList",
   insertOne: "/teacher/teacherInsert",
-  deleteOne:"/teacher/teacherDelete",
-  updateOne:"/teacher/teacherUpdate"
+  deleteOne: "/teacher/teacherDelete",
+  updateOne: "/teacher/teacherUpdate"
 };
 export const admInterface = {
   tableList: "/admin/admList",
   insertOne: "/admin/admInsert",
-  deleteOne:"/admin/admDelete",
-  updateOne:"/admin/admUpdate"
+  deleteOne: "/admin/admDelete",
+  updateOne: "/admin/admUpdate"
 };
+export const staTeacherInterface = {
+  tableList: "/admin/staTeacher",
+};
+export const staStudentInterface = {
+  tableList: "/admin/staStudent",
+}

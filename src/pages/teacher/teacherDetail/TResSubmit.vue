@@ -89,11 +89,12 @@ export default {
         this.$message.warning("不能上传空文件");
         return;
       }
-      this.$confirm("确定上传吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
+      MessageConfirmBox(this, "确定上传吗?")
+        // this.$confirm("确定上传吗?", "提示", {
+        //   confirmButtonText: "确定",
+        //   cancelButtonText: "取消",
+        //   type: "warning",
+        // })
         .then(() => {
           this.fileList.forEach((fileItem) => {
             //使用formdata封装数据

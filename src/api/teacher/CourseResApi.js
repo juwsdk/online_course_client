@@ -14,7 +14,7 @@ const courseResInterface = {
   update:"/video/fileUpdate",
   get clearAll(){
     return function (courseId){
-      return "/video/"+store.getters.getTeacherId+"/"+courseId+"/fileDeletes"
+      return "/video/" + store.getters.getTeacherId + "/" + courseId + "/filesDelete"
     }
   }
 };

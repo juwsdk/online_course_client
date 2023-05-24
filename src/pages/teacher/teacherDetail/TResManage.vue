@@ -98,11 +98,7 @@ export default {
       // })
         .then(() => {
           deleteVideo(courseRes)
-          // axios({
-          //   method: "delete",
           //   url: "/video/" + this.$route.params.teacherId + "/fileDelete",
-          //   data: courseRes,
-          // })
             .then((res) => {
               console.log(res);
               if (res.data == 1) {
@@ -114,12 +110,12 @@ export default {
             })
             .catch((err) => {
               console.error(err);
-              this.$message.danger("删除失败!");
+              this.$message.error("删除失败!");
             });
         })
         .catch((err) => {
           console.error(err);
-          this.$message.danger("删除失败!");
+          this.$message.error("删除失败!");
         });
       console.log(file);
     },
@@ -141,33 +137,20 @@ export default {
     //清空上传的文件
     clearAll() {
       MessageConfirmBox(this,"此操作将永久删除所有文件，是否继续?")
-      // this.$confirm("此操作将永久删除上传的所有文件, 是否继续?", "提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消",
-      //   type: "warning",
-      // })
         .then(() => {
           clearAllVideo(this.$route.params.courseId)
-          // axios({
-          //   method: "delete",
-          //   url:
-          //     "/video/" +
-          //     this.$route.params.teacherId +
-          //     "/" +
-          //     this.$route.params.courseId +
-          //     "/fileDeletes",
-          // })
             .then((res) => {
               console.log(res);
-              if (res.data == 1) {
+              if (res.data == this.fileList.length) {
                 //删除成功
                 this.fileList = []; //清空fileList
                 this.$message.success("已经成功删除!");
+                this.loadFileList();//重新加载
               }
             })
             .catch((err) => {
               console.error(err);
-              this.$message.danger("删除失败!");
+              this.$message.error("删除失败!");
             });
         })
         .catch((err) => {

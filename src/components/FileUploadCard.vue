@@ -17,27 +17,23 @@
 
 </template>
 <script>
-  export default {
-    name: 'FileUploadCard',
-    props: {
-      fileItem: {
-        type: Object,
-        required: true
-      },
-      fileType: {//false有修改,true没有
-        type: Boolean,
-        required: false,
-        default: false
-      }
-      // aEposide:{
-      //   type:Number,
-      //   required:true
-      // }
+import {MessageConfirmBox} from "@/utils/dialogUtil";
+
+export default {
+  name: 'FileUploadCard',//自定义文件下载框
+  props: {
+    fileItem: {
+      type: Object,
+      required: true
+    },
+    fileType: {//false有修改,true没有
+      type: Boolean,
+      required: false,
+      default: false
+    }
     },
     data() {
       return {
-        // episode:this.aEposide,
-        // alias: ''
       }
     },
     methods: {
@@ -51,13 +47,11 @@
       },
       //点击修改
       handleChange() {
-        this.$confirm('你确定要修改这个文件的信息吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$emit('change', this.fileItem);
-        }).catch(() => {
+        console.log(this.fileItem)
+        MessageConfirmBox(this, "你确定修改这个文件的信息吗?")
+          .then(() => {
+            this.$emit('change', this.fileItem);
+          }).catch(() => {
           this.$message.info('已取消修改');
         });
 

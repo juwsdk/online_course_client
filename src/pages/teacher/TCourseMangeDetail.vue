@@ -40,9 +40,7 @@
     </template>
 
     <template v-slot:pageMain>
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+      <router-view></router-view>
     </template>
   </DetailView>
 </template>
